@@ -56,3 +56,23 @@ __7.__ The game will be a vertical, top-down shooter, need to set an aspect rati
 
 
 # Making the Hero Ship
+__1.__ Open the disclosure triangles for the _Assets > Assets by Peter Burroughs > Models_ folder in the Project pane and select the _heroShip_ model
+
+__2.__ Drag _heroShip_ from the Project pane to the Hierarchy
+
+__3.__ Create an empty GameObject and name it __Hero (GameObject > Create Empty)_. If it is not there already, rester its tranform to
+* P:[0, 0, 0]
+* R:[0, 0, 0]
+* S:[1, 1, 1]
+
+__4.__ Make _heroShip_ a child of __Hero_ by dragging heroShip onto _Hero in the Hierarchy pane
+
+__5.__ Select the _heroShip_ child of _Hero and set its transform to
+* P:[0, 0, 0]
+* R:[-90, 0, 0]
+* S:[0.01, 0.01, 0.01]
+
+__6.__ Select __Hero_ in the Hierarchy
+> __a.__ Click the _Add Component_ button in the Inspector
+
+> __b.__ Choose _New Script_ from the pop-up menu
