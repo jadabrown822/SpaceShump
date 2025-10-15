@@ -91,3 +91,148 @@ __8.__ Set the following on the _Rigidbody_ component of _Hero:
 > __c.__ _Constraints: Freeze Position Z_ and _Freeze Rotation X, Y,_ and _Z_ (by chekcing them)
 
 __9.__ Save the Scene!
+
+
+## The Hero Update() Method
+__1.__ Open the _Hero_ C# script in VS and enter the code
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+  
+    [Header("Dynamic)]  [Range(0,4)]
+    public float    ShieldLevel = 1;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical")
+  
+      // change transfor.position based on the axis
+      Vecotr3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
+
+
+## The Hero Shield
+__1.__ Create a new Quad (_GameObject > 3D Object > Quad_)
+> __a.__ Rename the Quad to _Shield_
+>
+> __b.__ Make _Shield_ a child of __Hero_
+>
+> __c.__ Set the transform of Shield to:
+> * P:[0, 0, 0]
+> * R:[0, 0, 0]
+> * S:[8, 8, 8]
+
+__2.__ Select Shield in the Hierarchy and delete the existing Mesh Collider component by clicking the three dots to the right of the Mesh Collider name in the Inspector and choosing _Remove Component_ from the pop=up menu
+
+__3.__ Add a Sphere Collider component to _Shield_ (_Component > Physics > Sphere Collider_)
+
+__4.__ Create a new material (_Assets > Create > Material_)
+> __a.__ Name the nee Material _Mat_Shield_
+>
+> __b.__ Place it in the __Materials_ folder in the Project pane
+>
+> __c.__ Drag _Mat_Shield_ onto the _Shield_ under _Hero in the Hierarchy to assign it to the shield quad.
+
+__5.__ Select _Shield_ in the Hierarchy, Mat_Shield at the bottom of the Inspector for Shield
+> __a.__ Set the Shader to Mat_Shield to _ProtoTools > UnlitAlpha_
+>
+> __b.__ Open the disclosure triangle to shoe the rest of the Mat_Shield settings (or just click once on the name _Mat_Shield_ in the Inspector, and the settings should appear)
+
+__6.__ Below the chader selection pop-up for Mat_Shield
+> __a.__ Click _Select_ in the bottom-right corner of the texture square and select the texture named _Shields_
+>
+> __b.__ Click the color swatch next to _Main Color_ and choose bright green (RGBA:[0, 255, 0, 255]
+>
+> __c.__ Currently all five states of the shield will appear at once. To show only one at a time, modify the Tiling and Offset values:
+> * Tiling.x to _0.2_ (which only shows 20% of the full width of the texture at once)
+> * Offset.x to _0.4_ (Which shoes a single full ring of the shield)
+> * Tiling.y should remain _1.0_
+> * Offset.y should remain _0_
+
+__7.__ Create a new C# script named _Shield_ (_Assets > Create > Script_)
+> __a.__ Place the _Shield_ script into the ___Scripts_ folder in the Project pane
+
+__8.__ Drag the _Shield_ script onto _Shield_ in the Herarchy (under _Hero) to assign it as a component of the Shield GameObject
+
+__9.__ Open the _Shield_ script in VS and enter the code
+
+```cs
+// Shield.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Shield : MonoBehaviour {
+    [Header("Inscribed")]
+    public float    rotationsPerSecond = 0.1f;
+  
+    [Header(""Dynamic)]
+    public int    levelShown = 0;    // This is set between lines
+  
+    // This non-public varible will not appear in the Inspector
+    Material mat;
+  
+  
+    void Start() {
+      mat = GetComponent<Renderer>().material;
+    }
+  
+  
+    void Update() {
+      // Read the current shield level form the Hero Singleton
+      int currLEvel = Mathf.FloorToInt(Hero.S.shieldLevel);
+  
+      // If this is different from levelShown...
+      if (levelShown != currLevel) {
+        levelShown = currLevel;
+  
+        // Adjust the texture offset to show different shield level
+        mat.mainTextureOffSet = new Vector2(0.2f*levelShown, 0);
+      }
+  
+      // Rotate the shield a bit every frame in a time-based way
+      float rZ = -(rotationsPerSecond*Time.time*360) % 360f;
+      transform.rotation = Quaternion.Euler(0, 0, rZ);
+    }
+  }
+```
+
+__10.__ Save the _Shield_ script, return to Unity, and click _Play_
