@@ -76,3 +76,18 @@ __6.__ Select __Hero_ in the Hierarchy
 > __a.__ Click the _Add Component_ button in the Inspector
 
 > __b.__ Choose _New Script_ from the pop-up menu
+>
+> __c.__ name the script _Hero_, and click _Click and Add_
+>
+> __d.__ In the Project pane, move the _Hero_ script into the ___Scripts_ folder
+
+__7.__ Add a Rigidnody component to _Hero by selecting __Hero_ in the Hierarchy and then choosing _Add Component > Physics > Rigidbody_ from the _Add Component_ in the Inspector
+
+__8.__ Set the following on the _Rigidbody_ component of _Hero:
+> __a.__ _Use Gravity_ to false (unchecked)
+>
+> __b.__ _isKinematic_ to true (checked)
+>
+> __c.__ _Constraints: Freeze Position Z_ and _Freeze Rotation X, Y,_ and _Z_ (by chekcing them)
+
+__9.__ Save the Scene!
