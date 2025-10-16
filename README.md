@@ -414,3 +414,28 @@ __4.__ Now add a Rigidbody component to Enemy_0 and configure it
 __6.__ create a __Prefabs_ fodler under Assets in the Project pane
 
 __7.__ Drag _Enemy_0_ from the Hierarchy into the __Prefabs_ folder int he Project pane to create an Enemy_0 prefab
+
+
+## The Enemy C# Script
+__1.__ Create a new C# script named _Enemy_ and place it into the ___Scripts_ folder
+
+__2.__ Attach the Enemy script to the Enemy_0 prefab:
+> __a.__ Select _Enemy_0_ in the Projcet pane
+>
+> __b.__ In the Inspector for Enemy_0, click the _Add Component_ button and choose _Scripts > Enemy_ from the pop-up menu
+
+__3.__ Open the _Enemy_ scirpt in VS and enter the code
+
+```cs
+// Enemy.cs
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : Monobehaviour {
+  [Header("Inscribed)]
+  public float speed = 10f        // The movement speed is 10m/s
+  public flaot fireRate = 0.3    // Seconds/ shot (Unused)
+}
+```
