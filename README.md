@@ -159,7 +159,7 @@ __1.__ Create a new Quad (_GameObject > 3D Object > Quad_)
 > * R:[0, 0, 0]
 > * S:[8, 8, 8]
 
-__2.__ Select Shield in the Hierarchy and delete the existing Mesh Collider component by clicking the three dots to the right of the Mesh Collider name in the Inspector and choosing _Remove Component_ from the pop=up menu
+__2.__ Select Shield in the Hierarchy and delete the existing Mesh Collider component by clicking the three dots to the right of the Mesh Collider name in the Inspector and choosing _Remove Component_ from the pop-up menu
 
 __3.__ Add a Sphere Collider component to _Shield_ (_Component > Physics > Sphere Collider_)
 
@@ -236,3 +236,140 @@ __9.__ Open the _Shield_ script in VS and enter the code
 ```
 
 __10.__ Save the _Shield_ script, return to Unity, and click _Play_
+
+
+## Keeping _Hero on Screen
+__1.__ Select __Hero_ in the Hierarchy
+> __a.__ Using the _Add Component_ button in the Inspector, choose _Add Component > New Script_
+>
+> __b.__ Name the script _BoundsCheck_ and click _Create and Add_
+>
+> __c.__ In the Project pane, drag the _BoundsCheck_ script into the ___Scripts_ folder
+
+__2.__ Open the BoundsCheck script and add the code
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Keeps a GameObject on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    [Header("Dynamic")]
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      Vector3 pos = transform.position;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth) {
+        pos.x = camWidth;
+      }
+      if (pos.x < - camWidth) {
+        pos.x = -camWidth;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight) {
+        pos.y = camHeight;
+      }
+      if (pos.y < -camHeight) {
+        pos.y = -camHeihgt;
+      }
+  
+      tranform.position = pos;
+    }
+  }
+```
+
+__3.__ Save the BoundsCheck script, return to Unity, click _Play_, and try flying the ship
+
+__4.__ Open BoundsCheck in VS and enter code
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Keeps a GameObject on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    public enum eType {center, inset, outset}
+
+    [Header("Inscribed")]
+    public eType boundsType = eType.center;
+    public float radius = 1f;
+  
+    [Header("Dynamic")]
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      // Find the checkRadius that will enable center, inset, or outset
+      float checkRadius = 0;
+      if (boundsType == eType.inset) {
+        checkRadius = -radius;
+      }
+      if (boundType == eType.ouset) {
+        chekcRadius = radius;
+      }
+
+      Vector3 pos = transform.position;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth + checkRadius) {
+        pos.x = camWidth + checkRadius;
+      }
+      if (pos.x < - camWidth - checkRadius) {
+        pos.x = -camWidth - checkRadius;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight + checkRadius) {
+        pos.y = camHeight + checkRadius;
+      }
+      if (pos.y < -camHeight - checkRadius) {
+        pos.y = -camHeihgt - checkRadius;
+      }
+  
+      tranform.position = pos;
+    }
+  }
+```
+
+__5.__ Save the BoundsCheck script and return to Unity
+
+__6.__ Select the __Hero_ GameObject in the Inpsector and in the _BoundsCheck_ component:
+> __a.__ Set _BoundsType_ to _Inset_
+>
+> __b.__ Set _radius_ to _4_ (this is the radius of the _Hero ship's shield)
+
+__7.__ Click Play and fly the _Hero ship to the edges of the screen
+
+__8.__ Stop play mode and save the scene
