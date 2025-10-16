@@ -373,3 +373,44 @@ __6.__ Select the __Hero_ GameObject in the Inpsector and in the _BoundsCheck_ c
 __7.__ Click Play and fly the _Hero ship to the edges of the screen
 
 __8.__ Stop play mode and save the scene
+
+
+# Adding Some Enemies
+## Enemy Artwork
+__1.__ Create an empty GameObject named _Enemy_0_
+> __a.__ Choose _GameObject > Create Empty_ from the Untiy Menu
+>
+> __b.__ Rename the GameObject to _Enemy_0_
+>
+> __c.__ Set the Enemy_0 transform to
+> * P:[0, 20, 0]
+> * R:[0, 0, 0]
+> * S:[1.5, 1.5, 1.5]
+
+__2.__ Drag the _enemy0_ model from teh _Assets by Peter Burroughs > Models_ folder onto _Enemy_0_ in the Hierarchy, making it a child of Enemy_0
+> __a.__ Set the transform of the enemy0 child to
+> * P:[0, 0, 0]
+> * R:[90, 180, 0]
+> * S:[0.01, 0.01, 0.01]
+
+__3.__ Select _Enemy_0_ at the root level of the Hierarchy and add a Capsule Collider
+> __a.__ Double-click _Enemy_0_ in the Hierarchy to _focus_ on it in the Scene veiw
+>
+> __b.__ With _Enemy_0_ selected, click the _Add Component_ button and add a _Capsule Collider_
+>
+> __c.__ Set the Capsule Collider _Radius_ to _1.2_
+>
+> __d.__ Set the Capsule Collider _Height_ to _2.9_
+
+__4.__ Now add a Rigidbody component to Enemy_0 and configure it
+> __a.__ Select _Enemy_0_ in the Hierarchy and choose _Component > Physics > Rigidbody_ from the meneu bar to add the Rigidbody component
+>
+> __b.__ In the Rigidbody component for the enemy, set _Use Gravity_ to false
+>
+> __c.__ Set _isKinematic_ to true
+>
+> __d.__ Open the disclosure triangle for _Constraints_ and check the boxes for _Freeze Position Z_ and _Freeze Rotation X, Y,_ and _Z_
+
+__6.__ create a __Prefabs_ fodler under Assets in the Project pane
+
+__7.__ Drag _Enemy_0_ from the Hierarchy into the __Prefabs_ folder int he Project pane to create an Enemy_0 prefab
