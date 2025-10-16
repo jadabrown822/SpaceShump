@@ -288,7 +288,7 @@ __2.__ Open the BoundsCheck script and add the code
         pos.y = camHeight;
       }
       if (pos.y < -camHeight) {
-        pos.y = -camHeihgt;
+        pos.y = -camHeight;
       }
   
       tranform.position = pos;
@@ -355,7 +355,7 @@ __4.__ Open BoundsCheck in VS and enter code
         pos.y = camHeight + checkRadius;
       }
       if (pos.y < -camHeight - checkRadius) {
-        pos.y = -camHeihgt - checkRadius;
+        pos.y = -camHeight - checkRadius;
       }
   
       tranform.position = pos;
