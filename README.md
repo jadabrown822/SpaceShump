@@ -1001,3 +1001,48 @@ __9.__ Make changes to the Enemy script
     */
   }
 ```
+
+
+# Spawning Enemies at Random
+__1.__ Attach a _BoundsCheck_ script to __MainCamera_
+> __a.__ Set _keepOnScreen_ to _false_ (unchecked) in the _MainCamera BoundsCheck Inspector
+
+__2.__ Create a new C# script called _Main_
+> __a.__ Move the _Main_ script into the ___Scripts_ folder
+>
+> __b.__ Attach the _Main_ script to __MainCamera_
+>
+> __c.__ Open the _Main_ script in VS and enter the code
+
+```cs
+// Main.cs
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
+
+public class Main : MonoBehaviour {
+  static private Main S;    // A private singleton for Main
+
+  [Header("Inscribed")]
+  public GameObject[] prefabEnemies;          // Array of Enemy prefabs
+  public float enemySpawnPerSecond = 0.5f;    // # Enemies spawned/second
+  public float enemyInsetDefault = 1.5;       // Inset from the slides
+
+  private BoundsCheck bndCheck;
+
+  void Awake() {
+    S = this;
+
+    // Set bndCheck to reference the BoundsCheck component on this GameObject
+    bndCheck = GetComponent<BoundsCheck>();
+
+    // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+    Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+  }
+
+
+  public void SpawnEnemy() {}
+}
+```
