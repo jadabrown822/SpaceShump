@@ -428,14 +428,576 @@ __3.__ Open the _Enemy_ scirpt in VS and enter the code
 
 ```cs
 // Enemy.cs
+  
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Enemy : Monobehaviour {
+    [Header("Inscribed)]
+    public float speed = 10f;        // The movement speed is 10m/s
+    public float fireRate = 0.3;    // Seconds/shot (Unused)
+    public float health = 10;        // Damage needed to destroy this enemy
+    public int score = 100;          // Points earned for destroying this
+  
+    // This is a Property: A method that acts like a field
+    public Vector3 pos {
+      get {
+        return this.transform.position;
+      }
+      set {
+        this.tranform.position = value;
+      }
+    }
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class Enemy : Monobehaviour {
-  [Header("Inscribed)]
-  public float speed = 10f        // The movement speed is 10m/s
-  public flaot fireRate = 0.3    // Seconds/ shot (Unused)
-}
+    void Update() {
+      Move();
+    }
+  
+  
+    public virtual void Move() {
+      Vector3 tempPos = pos;
+      tempPos.y -= speed * Time.deltaTime;
+      pos = tempPos;
+    }
+  
+  
+    /*
+      void Start() {...}
+    */
+  }
+```
+
+__4.__ Save the script, return to Unity, and click _Play_
+
+__5.__ To attach the BoundsCheck script to the Enemy_0 prefab:
+> __a.__ Select the _Enemy_0_ prefab in the Hierarchy
+>
+> __b.__ In the Inspector, click _Add Component_ and choose _Add Component > Scripts > BoundsCheck_
+
+__6.__ To apply this change made to the Enemy_0 instance back to its prefab:
+> __a.__ Click the _Overrides_ button at the top of the Inspector for the Enemy_0 instance in the Hierarchy. A pop-up appears showingthat the BoundsCheck script is an _override_, something that is different in this instance than in the prefab. the plus on the script icon shows that the script was added to this instance
+>
+> __b.__ Click _Apply All_ to apply this (and all other overrides) back to the prefab
+>
+> __c.__ Select the _Enemy_0_ prefab in the _Prefabs folder of the Project pane to see that the BoundsCheck script is now attahced to the prefab as well
+
+__7.__ Select the _Enemy_0_ instance in the Hierarchy
+> __a.__ Set the __boundsType__ value in the BoundsCheck Inspector to _outset_
+>
+> __b.__ Set the __radius__ value in the BoundsCheck inspector to _2_
+>
+> __c.__ Click _Overrides_ at the top of the Inspector again, will see it saying that comething about the BoundsCheck script is different from the prefab
+>
+> __d.__ Click _BoundsCheck (Script)_ in this pop-up to get more info. here ir clearly shows that the radius value is the difference bewteen the two
+>
+> __e.__ In the pop-up with more information, click _Apply_, and then choose _Apply to Prefab 'Enemy_0' from the menu_
+
+__8.__ Click _Play_, and see than Enemy_0 instance stops right after it has gone off screen
+
+__9.__ To have the option to either allow Enemy_0 to go off screen or restrict it to the screen, open the BoundsCheck script in VS and make code modifications
+
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Checks whether a GameObject is on screen and can force it to stay on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    public enum eType {center, inset, outset}
+
+    [Header("Inscribed")]
+    public eType boundsType = eType.center;
+    public float radius = 1f;
+    public bool keepOnScreen = true;
+  
+    [Header("Dynamic")]
+    public bool isOnScreen = true;
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      // Find the checkRadius that will enable center, inset, or outset
+      float checkRadius = 0;
+      if (boundsType == eType.inset) {
+        checkRadius = -radius;
+      }
+      if (boundType == eType.ouset) {
+        chekcRadius = radius;
+      }
+
+      Vector3 pos = transform.position;
+      isOnScreen = true;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth + checkRadius) {
+        pos.x = camWidth + checkRadius;
+        isOnScreen = false;
+      }
+      if (pos.x < - camWidth - checkRadius) {
+        pos.x = -camWidth - checkRadius;
+        isOnScreen = false;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight + checkRadius) {
+        pos.y = camHeight + checkRadius;
+        isOnScreen = false;
+      }
+      if (pos.y < -camHeight - checkRadius) {
+        pos.y = -camHeight - checkRadius;
+        isOnScreen = false;
+      }
+  
+      if (keepOnScreen && !isOnScreen) {
+        tranform.position = pos;
+        isOnScreen = true;
+      }  
+    }
+  }
+```
+
+
+### Deleting the Enemy When It Goes Off Screen
+__1.__ Select the _Enemy_0_ prefab in the _Prefabs folder of the Project pane
+
+__2.__ Set __keepOnScreen__ to __false__ (unchecked) in the _BoundsCheck (Script)_ component Inspector
+
+__3.__ Add the code to the Enemy script to manage this destruction:
+
+
+```cs
+// Enemy.cs
+  
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [RequireComponent(typeof(BoundsCheck))]
+  
+  public class Enemy : Monobehaviour {
+    [Header("Inscribed)]
+    public float speed = 10f;        // The movement speed is 10m/s
+    public float fireRate = 0.3;    // Seconds/shot (Unused)
+    public float health = 10;        // Damage needed to destroy this enemy
+    public int score = 100;          // Points earned for destroying this
+
+    private BoundsCheck bndCheck;
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+    }
+  
+    // This is a Property: A method that acts like a field
+    public Vector3 pos {
+      get {
+        return this.transform.position;
+      }
+      set {
+        this.tranform.position = value;
+      }
+    }
+
+
+    void Update() {
+      Move();
+
+      // Check whether this Enemy has gone off the bottom of the screen
+      if (!bndCheck.isonScreen) {
+        if (pos.y < bndCheck.camHeight - bndCheck.radius) {
+          // We're off the the bottom, so destroy this GameObject
+          Destroy(gameObject);
+        }
+      }
+    }
+  
+  
+    public virtual void Move() {
+      Vector3 tempPos = pos;
+      tempPos.y -= speed * Time.deltaTime;
+      pos = tempPos;
+    }
+  
+  
+    /*
+      void Start() {...}
+    */
+  }
+```
+
+__4.__ Modify the BoundsCheck script
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Checks whether a GameObject is on screen and can force it to stay on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    [System.Flags]
+    public enum eScreenLocs {
+      onScreen = 0,    // 0000 in binary
+      offRight = 1,    // 0001 in binary
+      offLeft = 2,     // 0010 in binary
+      offUp = 4,       // 0100 in binary
+      offDown = 8      // 1000 in bindry
+    }
+
+    public enum eType {center, inset, outset}
+
+    [Header("Inscribed")]
+    public eType boundsType = eType.center;
+    public float radius = 1f;
+    public bool keepOnScreen = true;
+  
+    [Header("Dynamic")]
+    public eSceenLoc screenLocs = eScreenLocs.onScreen;
+    public bool isOnScreen = true;
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      // Find the checkRadius that will enable center, inset, or outset
+      float checkRadius = 0;
+      if (boundsType == eType.inset) {
+        checkRadius = -radius;
+      }
+      if (boundType == eType.ouset) {
+        chekcRadius = radius;
+      }
+
+      Vector3 pos = transform.position;
+      isOnScreen = true;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth + checkRadius) {
+        pos.x = camWidth + checkRadius;
+        isOnScreen = false;
+      }
+      if (pos.x < - camWidth - checkRadius) {
+        pos.x = -camWidth - checkRadius;
+        isOnScreen = false;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight + checkRadius) {
+        pos.y = camHeight + checkRadius;
+        isOnScreen = false;
+      }
+      if (pos.y < -camHeight - checkRadius) {
+        pos.y = -camHeight - checkRadius;
+        isOnScreen = false;
+      }
+  
+      if (keepOnScreen && !isOnScreen) {
+        tranform.position = pos;
+        isOnScreen = true;
+      }  
+    }
+  }
+```
+
+__5.__ Save the _BoundsCheck_ script and return to Unity
+
+__6.__ Modify the BoundsCheck script by adding code
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Checks whether a GameObject is on screen and can force it to stay on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    [System.Flags]
+    public enum eScreenLocs {
+      onScreen = 0,    // 0000 in binary
+      offRight = 1,    // 0001 in binary
+      offLeft = 2,     // 0010 in binary
+      offUp = 4,       // 0100 in binary
+      offDown = 8      // 1000 in bindry
+    }
+
+    public enum eType {center, inset, outset}
+
+    [Header("Inscribed")]
+    public eType boundsType = eType.center;
+    public float radius = 1f;
+    public bool keepOnScreen = true;
+  
+    [Header("Dynamic")]
+    public eSceenLoc screenLocs = eScreenLocs.onScreen;
+    // public bool isOnScreen = true;
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      // Find the checkRadius that will enable center, inset, or outset
+      float checkRadius = 0;
+      if (boundsType == eType.inset) {
+        checkRadius = -radius;
+      }
+      if (boundType == eType.ouset) {
+        chekcRadius = radius;
+      }
+
+      Vector3 pos = transform.position;
+      screenLocs = eScreenLocs.onScreen;
+      // isOnScreen = true;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth + checkRadius) {
+        pos.x = camWidth + checkRadius;
+        screenLocs |= eScreenLocs.offRight;
+        // isOnScreen = false;
+      }
+      if (pos.x < - camWidth - checkRadius) {
+        pos.x = -camWidth - checkRadius;
+        screenLocs |= eScreenLocs.offLeft;
+        // isOnScreen = false;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight + checkRadius) {
+        pos.y = camHeight + checkRadius;
+        screenLocs |= eScreenLocs.offUp;
+        // isOnScreen = false;
+      }
+      if (pos.y < -camHeight - checkRadius) {
+        pos.y = -camHeight - checkRadius;
+        screenLocs |= eScreenLocs.offDown;
+        // isOnScreen = false;
+      }
+  
+      if (keepOnScreen && !isOnScreen) {
+        tranform.position = pos;
+        screenLocs = eScreenLocs.onScreen;
+        // isOnScreen = true;
+      }  
+    }
+
+
+    public bool isOnScreen {
+      get {return (screenLocs == eScreenLocs.onScreen);}
+    }
+  }
+```
+
+__7.__ Save the _BoundsCheck_ script, and return to Unity, and click Play. Enemy_0 should move down the screen as it did before and then destory itself when it passes off the bottom of the screen. __Unity will continue to be in Play mode during these lettered steps__
+> __a.__ Select _Hero_ in the Hierarchy
+>
+> __b.__ In the _BoundsCheck (Script)_ component Inspector, set _keepOnScreen_ to _false_ (unchecked, so that Hero can move off screen)
+>
+> __c.__ Click in the Game pane and move _Hero_ around both on and off screen using the WASD of arrow key
+>
+> __d.__ Click the Play button again to stop play in Unity, and Hero returns to the center of the screen and _keepOnScreen_ returns to checked
+
+__8.__ Add the __LocIs()__ method code to the end of BoundsCheck
+
+```cs
+// BoundsCheck.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  /*
+    Checks whether a GameObject is on screen and can force it to stay on screen
+    Note that this ONLY workds for an orthographic Main Camera
+  */
+  
+  public class BoundsCheck : MonoBehaviour {
+    [System.Flags]
+    public enum eScreenLocs {
+      onScreen = 0,    // 0000 in binary
+      offRight = 1,    // 0001 in binary
+      offLeft = 2,     // 0010 in binary
+      offUp = 4,       // 0100 in binary
+      offDown = 8      // 1000 in bindry
+    }
+
+    public enum eType {center, inset, outset}
+
+    [Header("Inscribed")]
+    public eType boundsType = eType.center;
+    public float radius = 1f;
+    public bool keepOnScreen = true;
+  
+    [Header("Dynamic")]
+    public eSceenLoc screenLocs = eScreenLocs.onScreen;
+    // public bool isOnScreen = true;
+    public float camWidth;
+    public flaot camHeight;
+  
+  
+    void Awake() {
+      camHeight = Camera.main.orthographicSize;
+      camWidth = camHeight * Camera.main.aspect;
+    }
+  
+  
+    void LateUpdate() {
+      // Find the checkRadius that will enable center, inset, or outset
+      float checkRadius = 0;
+      if (boundsType == eType.inset) {
+        checkRadius = -radius;
+      }
+      if (boundType == eType.ouset) {
+        chekcRadius = radius;
+      }
+
+      Vector3 pos = transform.position;
+      screenLocs = eScreenLocs.onScreen;
+      // isOnScreen = true;
+  
+      // Restrict the X position to camWidth
+      if (pos.x > camWidth + checkRadius) {
+        pos.x = camWidth + checkRadius;
+        screenLocs |= eScreenLocs.offRight;
+        // isOnScreen = false;
+      }
+      if (pos.x < - camWidth - checkRadius) {
+        pos.x = -camWidth - checkRadius;
+        screenLocs |= eScreenLocs.offLeft;
+        // isOnScreen = false;
+      }
+  
+      // Restrict the Y position to camHeight
+      if (pos.y > camHeight + checkRadius) {
+        pos.y = camHeight + checkRadius;
+        screenLocs |= eScreenLocs.offUp;
+        // isOnScreen = false;
+      }
+      if (pos.y < -camHeight - checkRadius) {
+        pos.y = -camHeight - checkRadius;
+        screenLocs |= eScreenLocs.offDown;
+        // isOnScreen = false;
+      }
+  
+      if (keepOnScreen && !isOnScreen) {
+        tranform.position = pos;
+        screenLocs = eScreenLocs.onScreen;
+        // isOnScreen = true;
+      }  
+    }
+
+
+    public bool isOnScreen {
+      get {return (screenLocs == eScreenLocs.onScreen);}
+    }
+
+
+    public bool LocIs(eScreenLocs checkLoc) {
+      if (checkedLoc == eScreenLocs.onScreen) return isOnScreen;
+      return ((screenLoc & checkeLoc) == checkLoc);
+    }
+  }
+```
+
+__9.__ Make changes to the Enemy script
+
+
+```cs
+// Enemy.cs
+  
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [RequireComponent(typeof(BoundsCheck))]
+  
+  public class Enemy : Monobehaviour {
+    [Header("Inscribed)]
+    public float speed = 10f;        // The movement speed is 10m/s
+    public float fireRate = 0.3;      // Seconds/shot (Unused)
+    public float health = 10;        // Damage needed to destroy this enemy
+    public int score = 100;          // Points earned for destroying this
+
+    private BoundsCheck bndCheck;
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+    }
+  
+    // This is a Property: A method that acts like a field
+    public Vector3 pos {
+      get {
+        return this.transform.position;
+      }
+      set {
+        this.tranform.position = value;
+      }
+    }
+
+
+    void Update() {
+      Move();
+
+      // Check whether this Enemy has gone off the bottom of the screen
+      if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offDown)) {
+        Destory(gameObject);
+      }
+
+      /*
+        if (!bndCheck.isonScreen) {
+          if (pos.y < bndCheck.camHeight - bndCheck.radius) {
+            // We're off the the bottom, so destroy this GameObject
+            Destroy(gameObject);
+          }
+        }
+      */
+    }
+  
+  
+    public virtual void Move() {
+      Vector3 tempPos = pos;
+      tempPos.y -= speed * Time.deltaTime;
+      pos = tempPos;
+    }
+  
+  
+    /*
+      void Start() {...}
+    */
+  }
 ```
