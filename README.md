@@ -1121,3 +1121,147 @@ __1.__ Select __Hero_ in the Hierarchy and choose _Hero_ from the _Layer_ pop-up
 __2.__ Selec the _Enemy_0_ prefab in the _Prefabs folder and set its layer to _Enemy_. When asked, again choose _Yes, change children_
 
 __3.__ Save the scene
+
+
+# Making the Enemies Damage the Player
+__1.__ Make the hero chield a trigger:
+> __a.__ Open the disclose triangle next to __Hero_ in the Hierarchy
+>
+> __b.__ Select the _Hero child _Shield_
+>
+> __c.__ In the Inspector, set the _Sphere Collider_ of Shield to be a trigger (check the box next to _Is Trigger_)
+
+__2.__ Open the _Hero_ C# scipt in VS and add code
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+  
+    [Header("Dynamic)]  [Range(0,4)]
+    public float    ShieldLevel = 1;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical")
+  
+      // change transfor.position based on the axis
+      Vecotr3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+    }
+
+
+    void OnTriggerEnter(Collider other) {
+      Transform rootT = other.gameObeject.transform.root;
+      GameObject fo = rootT.gameObject;
+      Debug.Log("Shield trigger hit by: ") + go.gmaeObject.name;
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
+
+__3.__ Open the _Hero_ sript in VS and make code modifications
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+  
+    [Header("Dynamic)]  [Range(0,4)]
+    public float    ShieldLevel = 1;
+    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    private GameObject lastTriggerGo = null;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical")
+  
+      // change transfor.position based on the axis
+      Vecotr3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+    }
+
+
+    void OnTriggerEnter(Collider other) {
+      Transform rootT = other.gameObeject.transform.root;
+      GameObject fo = rootT.gameObject;
+      // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
+
+      // Make sure it's not the same trigger fo as last time
+      if (go == lastTriggerGo) return;
+      lastTriggerGo = go;
+
+      Enemy enemy = go.GetComponent<Enemy>();
+      if (enemy != null) {    // If the shield was triggered by an enemy
+        shieldLevel--;        // Decreases the level of the shield by 1
+        Destroy(go);          // ... and Destroy the enemy
+      }
+      else {
+        Debug.LogWarning("Shield trigger hit by non-Enemy: " + go.name);
+      }
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
