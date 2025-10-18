@@ -1536,3 +1536,20 @@ __3.__ Add __Scene_0 to the build settings:
 > __c.__ Close the Build Settings window
 
 __4.__ Save the Scene
+
+
+# Shooting (Finally)
+## ProjectileHero, the Hero's Bullet
+__1.__ Create a cube named _ProjectileHero_ in teh Hierarchy with the following transform value:
+* P:[10, 0, 0]
+* R:[0, 0, 0]
+* S:[0.25, 1, 0.25]
+
+__2.__ Set the layer of ProjectileHero to _ProjecitleHero_
+
+__3.__ Create a new material named _Mat_Projectile_:
+> __a.__ Place _Mat_Projectile_ in the _Materials folder of the Project pane
+>
+> __b.__ Give _Mat_Projectile_ the _ProtoTools > UnlitAlpha_ shader
+>
+> __c.__ Assign _Mat_Projectile_ to the _ProjectileHero_ GameObject in the Hierarchy
