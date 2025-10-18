@@ -129,7 +129,7 @@ __1.__ Open the _Hero_ C# script in VS and enter the code
     void Update() {
       // Pull in information from the Input class
       float hAxis = Input.GetAxis("Horizontal");
-      float vAxis = Input.GetAxis("Vertical")
+      float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
       Vecotr3 pos = transform.position;
@@ -1166,7 +1166,7 @@ __2.__ Open the _Hero_ C# scipt in VS and add code
     void Update() {
       // Pull in information from the Input class
       float hAxis = Input.GetAxis("Horizontal");
-      float vAxis = Input.GetAxis("Vertical")
+      float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
       Vecotr3 pos = transform.position;
@@ -1228,7 +1228,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
     void Update() {
       // Pull in information from the Input class
       float hAxis = Input.GetAxis("Horizontal");
-      float vAxis = Input.GetAxis("Vertical")
+      float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
       Vecotr3 pos = transform.position;
@@ -1306,7 +1306,7 @@ __5.__ In the Hero class change code
     void Update() {
       // Pull in information from the Input class
       float hAxis = Input.GetAxis("Horizontal");
-      float vAxis = Input.GetAxis("Vertical")
+      float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
       Vecotr3 pos = transform.position;
@@ -1476,7 +1476,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
     void Update() {
       // Pull in information from the Input class
       float hAxis = Input.GetAxis("Horizontal");
-      float vAxis = Input.GetAxis("Vertical")
+      float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
       Vecotr3 pos = transform.position;
