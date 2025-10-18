@@ -1113,3 +1113,11 @@ __3.__ Open the Physics Manager by clicking _Physics_ (not Physics 2D) on the le
 * Enemy, ProjectileHero ✔️
 
 __4.__ Close the Proect Settings window
+
+
+## Assigning the Proper Layers to GameObject
+__1.__ Select __Hero_ in the Hierarchy and choose _Hero_ from the _Layer_ pop-up menu in the Inspector. _Yes, change children_
+
+__2.__ Selec the _Enemy_0_ prefab in the _Prefabs folder and set its layer to _Enemy_. When asked, again choose _Yes, change children_
+
+__3.__ Save the scene
