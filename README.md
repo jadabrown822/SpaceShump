@@ -1017,32 +1017,79 @@ __2.__ Create a new C# script called _Main_
 ```cs
 // Main.cs
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
-
-public class Main : MonoBehaviour {
-  static private Main S;    // A private singleton for Main
-
-  [Header("Inscribed")]
-  public GameObject[] prefabEnemies;          // Array of Enemy prefabs
-  public float enemySpawnPerSecond = 0.5f;    // # Enemies spawned/second
-  public float enemyInsetDefault = 1.5;       // Inset from the slides
-
-  private BoundsCheck bndCheck;
-
-  void Awake() {
-    S = this;
-
-    // Set bndCheck to reference the BoundsCheck component on this GameObject
-    bndCheck = GetComponent<BoundsCheck>();
-
-    // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
-    Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
+  
+  public class Main : MonoBehaviour {
+    static private Main S;    // A private singleton for Main
+  
+    [Header("Inscribed")]
+    public GameObject[] prefabEnemies;          // Array of Enemy prefabs
+    public float enemySpawnPerSecond = 0.5f;    // # Enemies spawned/second
+    public float enemyInsetDefault = 1.5;       // Inset from the slides
+  
+    private BoundsCheck bndCheck;
+  
+    void Awake() {
+      S = this;
+  
+      // Set bndCheck to reference the BoundsCheck component on this GameObject
+      bndCheck = GetComponent<BoundsCheck>();
+  
+      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+    }
+  
+  
+    public void SpawnEnemy() {
+      // Pick a random Enemy prefab to instantiate
+      int ndx = Random.Range(0, prefabEnemies.Length);
+      GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
+  
+      // Posisiton the Enemy above the screen with a random x position
+      float enemyInset = enemyInsetDefault;
+      if (go.GetComponent<BoundsCheck>() != null) {
+        enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
+      }
+  
+      // Set the initial position for the spawned Enemy
+      Vector3 pos = Vector3.zero;
+      float xMin = -bndCheck.camWidth + enemyInset;
+      float xMax = bndCheck.camWidth - enemyInset;
+      pos.x = Random.Range(xMin, xMax);
+      pos.y = bndCheck.camHeight + enemyInset;
+      go.transform.position = pos;
+  
+      // Invoke SpawnEnemy() again
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+    }
+  
+    /*
+      void Start() {...}
+  
+      void Update() {...}
+    */
   }
-
-
-  public void SpawnEnemy() {}
-}
 ```
+
+__3.__ Make sure to copy any prefab overrides that were set on the instance of Enemy_0 in the Hierarchy back onto the Enemy_0 prefab
+> __a.__ Select _Enemy_0_ in the Hierarchy
+>
+> __b.__ Click _Overrides_ at the top of the Enemy_0 instance Inspector pane
+>
+> __c.__ If there are any overrides, click _Apply All_ to apply them back to the Enemy_0 prefab
+>
+> __d.__ Delete the _Enemy_0_ instance from the Hierarchy
+
+__4.__ Set up the Main sript on _MainCamera to spawn Enemy_0s:
+> __a.__Select __MainCamera_ in the Hierarchy
+>
+> __b.__ In the _Main (Script)_ component of _MainCamera, open the disclosure trangle next to __prefabEnemies__ and set the _Size_ of __prefabEnemies__ to _1_
+>
+> __c.__ Drag _Enemy_0_ from the _Prefabs folder of the Project pane into _Element 0_ of the prefabEnemies array
+>
+> __d.__ Save the scene
+
+__5.__ Play the scene. Enemy_0 spawn about once every 2 seconds, travel down to the bottom of the screne, and then disappear after it exists at the bottom of the screne
