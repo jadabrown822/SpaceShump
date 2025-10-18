@@ -1093,3 +1093,23 @@ __4.__ Set up the Main sript on _MainCamera to spawn Enemy_0s:
 > __d.__ Save the scene
 
 __5.__ Play the scene. Enemy_0 spawn about once every 2 seconds, travel down to the bottom of the screne, and then disappear after it exists at the bottom of the screne
+
+
+# Setting Tags, Layers, and Physics
+* __Hero:__ The _Hero ship should collide with enemies, enemy projections, and power-ups but should not collide with hero projectiles
+* __Enemy:__ Enemies hsould collide with _Hero and hero projectiles but not with power-ups
+* __ProjectileHero:__ Projectiles fired by _Hero should only collide with enemies
+* __ProjectileEnemy:__ Projectiles fired by enemies should only collide with _Hero
+* __PowerUp:__ Power_ups hsould only collide with _Hero
+
+__1.__ Open the _Tags & Layers_ manager in the Project Settings window by selecting _Edit > Project Settings..._ from the Unity menu and then clicking _Tags and Layers_ on the left side. Tags and physics layers are different from each other but are set in th same window
+
+__2.__ OPen th edisclosure triangle next to _Layers_. Builtin Layers 0-2, 4, and 5 are reserved by Unity.
+
+__3.__ Open the Physics Manager by clicking _Physics_ (not Physics 2D) on the left side of the Project Setting window, and set the _Layer Collision Matrix_
+* Hero, PowerUp ✔️
+* Hero, ProjectileEnemy ✔️
+* Hero, Enemy ✔️
+* Enemy, ProjectileHero ✔️
+
+__4.__ Close the Proect Settings window
