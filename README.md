@@ -1811,3 +1811,37 @@ __1.__ Open the _Enemy_ C# script and make changes
     */
   }
 ```
+
+
+# Enemy to Enemy_0
+__1.__ Create an Enemy_0 script and attach it to the Enemy_0 prefab:
+> __a.__ Create a new C# script named _Enemy_0_ in the ___Scripts_ folder
+>
+> __b.__ Drag this _Enemy_0_ script onto the _Enemy_0_ GameObject prefab in teh __Prefabs_ folder
+>
+> __c.__ Select the _Enemy_0_ GameObject prefab in the __Prefabs_ folder and confirm that the _Enemy_0 (Script)_ component was attached (it eill be at the bottom of the Inspector)
+
+__2.__ Remove the existing _Enemy (Script)_ component from the _Enemy_0_ prefab
+> __a.__ Select the _Enemy_0_ GameObject prefab in the __Prefabs_ folder
+>
+> __b.__ In the Inspector, click the three vertical dots in the top-right corner of the _Enemy (Script)_ component and choose _Remove Component_
+
+__3.__ Open the _Enemy_0_ script in VS and make changes
+
+```cs
+// Enemy_0.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_0 : Enemy {    // Enemy_0 extends the Enemy class
+    /*
+      void Start() {...}
+
+      void Update() {...}
+    */
+  }
+```
+
+__4.__ Save the _Enemy_0_ script, return to Unity, and click _Play_. Enemy_0 GameObjects should still act the same
