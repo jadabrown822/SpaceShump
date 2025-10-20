@@ -1553,3 +1553,33 @@ __3.__ Create a new material named _Mat_Projectile_:
 > __b.__ Give _Mat_Projectile_ the _ProtoTools > UnlitAlpha_ shader
 >
 > __c.__ Assign _Mat_Projectile_ to the _ProjectileHero_ GameObject in the Hierarchy
+
+__4.__ Select _ProjectileHero_ in the Hierarchy and add a _Ridigbody_ component with these settings:
+> __a.__ _Use Gravity_ to _false_ (unchecked)
+>
+> __b.__ _isKinematic_ to _false_ (unchecked)
+>
+> __c.__ _Constraints_: _Freeze Position Z_ and _Freeze Rotation X, Y_ and _Z_ (by checking them)
+
+__5.__On the PorjectileHero GameObject's Box Collider component, set _Size.Z_ to _10_. This ensures that the projectile is able to hit anything that is slighty off of the XY (i.e. Z = 0) plane
+
+__6.__ Create a new C# script named _ProjectileHero_
+> __a.__ Move the _ProjectileHero_ script into the ___Scripts_ folder
+>
+> __b.__ Attach the _ProjectileHero_ script to teh _ProjectileHero_ GameObject
+
+__7.__ Save the Scene
+
+__8.__ Attach a _BoundsCheck_ script component to _ProjectileHero_
+> __a.__ Set __keepOnScrene__ to _false_ (unchecked)
+>
+> __b.__ Set __boundsType__ to _outset_
+>
+> __c.__ Set __radius__ to _1_
+
+__9.__ Make ProjectileHero into a prefab:
+> __a.__Drag _ProjectileHero_ from the HIerarchy into the __Prefabs_ folder in the Project pane
+>
+> __b.__ Delete the remaining _ProjectileHero_ instance from the Hierarchy
+
+__10.__ Save the scene
