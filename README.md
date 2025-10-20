@@ -1845,3 +1845,27 @@ __3.__ Open the _Enemy_0_ script in VS and make changes
 ```
 
 __4.__ Save the _Enemy_0_ script, return to Unity, and click _Play_. Enemy_0 GameObjects should still act the same
+
+
+# Programming Other Enemies
+__1.__ Inside the _Assets by Peter Burroughs > Other Prefabs folder_ are four Enemy_prefabs
+> __a.__ Move the _Enemy_1, Enemy_2, Enemy_3,_ and _Enemy_4_ prefabs into the __Prefabs_ folder of the Project pane
+
+__2.__ Create four new C# scripts named _Enemy_1, Enemy_2, Enemy_3,_ and _Enemy_4_
+
+__3.__ Place these scripts into the ___Scripts_ folder in the Project pane
+
+__4.__ Assign each of these four scripts to their respective _Enemy_#_ prefab in the Project pane
+
+__5.__ Select each _Enemy_#_ prefab in the __Prefabs_ folder of the Project pane and set its Layer to _Enemy_. Always choose "Yes, change children" when asked
+
+
+## Enemy_1
+__1.__ Open the Enemy_1 script in VS and enter code
+
+```cs
+// Enemy_1.cs
+
+  using System.Collections;
+  
+```
