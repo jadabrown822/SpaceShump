@@ -1583,3 +1583,114 @@ __9.__ Make ProjectileHero into a prefab:
 > __b.__ Delete the remaining _ProjectileHero_ instance from the Hierarchy
 
 __10.__ Save the scene
+
+
+## Giving _Hero the Ability to Shoot
+__1.__ Open the _Hero_ C# script and add code
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+    public GameObject    projectilePrefab;
+    public float    projectileSpeed = 40;
+  
+    [Header("Dynamic)]    [Range(0,4)]    [SerialField]
+    private float _shieldLevel = 1;
+    // public float    ShieldLevel = 1;
+    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    private GameObject lastTriggerGo = null;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical");
+  
+      // change transfor.position based on the axis
+      Vecotr3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+
+      // Allow the ship to fire
+      if(Input.GetKeyDown(KeyCode.Space)) {
+        TempFire();
+      }
+    }
+
+
+    void TempFire() {
+      GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+      projGO.transform.position = transform.position;
+      Rigidbody rigidB = projGO.GetComponent<RigidBody>();
+      rigidB.velocity = Vector3.up * projectileSpeed;
+    }
+
+
+    void OnTriggerEnter(Collider other) {
+      Transform rootT = other.gameObeject.transform.root;
+      GameObject fo = rootT.gameObject;
+      // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
+
+      // Make sure it's not the same trigger fo as last time
+      if (go == lastTriggerGo) return;
+      lastTriggerGo = go;
+
+      Enemy enemy = go.GetComponent<Enemy>();
+      if (enemy != null) {    // If the shield was triggered by an enemy
+        shieldLevel--;        // Decreases the level of the shield by 1
+        Destroy(go);          // ... and Destroy the enemy
+      }
+      else {
+        Debug.LogWarning("Shield trigger hit by non-Enemy: " + go.name);
+      }
+    }
+
+
+    public float shieldLevel {
+      get {return (_shieldLevel);}
+      private set {
+        _shieldLevel = Mathf.Min(value, 4);
+
+        // If the shield is going to be set to less than zero
+        if (value < 0) {
+          Destroy(this.gameObject);    // Destroy the Hero
+          Main.HERO_DIED();
+        }
+      }
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
+
+__2.__ In Unity, select __Hero_ in the Hierarchy and assign _ProjectileHero_ from the Project pane to the _projectilePrefab_ of the Hero script
+
+__3.__ Save and click _Play_
