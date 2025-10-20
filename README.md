@@ -1694,3 +1694,39 @@ __1.__ Open the _Hero_ C# script and add code
 __2.__ In Unity, select __Hero_ in the Hierarchy and assign _ProjectileHero_ from the Project pane to the _projectilePrefab_ of the Hero script
 
 __3.__ Save and click _Play_
+
+
+## Scripting the ProjectHero
+__1.__ Open the _projectileHero_ C# script and add code
+
+```cs
+// ProjectileHero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  [RequireComponent(typeof(BoundsCheck))]
+
+  public class ProjectileHero : MonoBehaviour {
+    private BoundsCheck    bndCheck;
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+    }
+
+
+    void Update() {
+      if(bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
+        Destroy(gameObject);
+      }
+    }
+
+
+    /*
+      void Start() {...}
+    /*
+  }
+```
+
+__2.__ Save both this script and scene
