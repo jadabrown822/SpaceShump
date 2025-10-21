@@ -2807,3 +2807,126 @@ __1.__ Open the Weapon script and enter the code
 
   }
 ```
+
+
+### Modifying Main to Use WeaponDefinition and eWeaponType
+__1.__ Open the _Main_ C# script in VS and add code
+
+```cs
+// Main.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
+  
+  public class Main : MonoBehaviour {
+    static private Main S;    // A private singleton for Main
+  
+    [Header("Inscribed")]
+    public bool spawnEnemies = true;
+    public GameObject[] prefabEnemies;          // Array of Enemy prefabs
+    public float enemySpawnPerSecond = 0.5f;    // # Enemies spawned/second
+    public float enemyInsetDefault = 1.5;       // Inset from the sides
+    public float gameRestartDelay = 2;
+    public WeaponDefinition[] weaponDefinitions;
+  
+    private BoundsCheck bndCheck;
+  
+    void Awake() {
+      S = this;
+  
+      // Set bndCheck to reference the BoundsCheck component on this GameObject
+      bndCheck = GetComponent<BoundsCheck>();
+  
+      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+    }
+  
+  
+    public void SpawnEnemy() {
+      // If spawnEnemies is false, skip to the next invoke of SpawEnemy()
+      if (!spawnEnemies) {
+        Invoke(nameof(SpawnEnemy), 1f / enemySpawnPerSecond);
+        return;
+      }
+
+      // Pick a random Enemy prefab to instantiate
+      int ndx = Random.Range(0, prefabEnemies.Length);
+      GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
+  
+      // Posisiton the Enemy above the screen with a random x position
+      float enemyInset = enemyInsetDefault;
+      if (go.GetComponent<BoundsCheck>() != null) {
+        enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
+      }
+  
+      // Set the initial position for the spawned Enemy
+      Vector3 pos = Vector3.zero;
+      float xMin = -bndCheck.camWidth + enemyInset;
+      float xMax = bndCheck.camWidth - enemyInset;
+      pos.x = Random.Range(xMin, xMax);
+      pos.y = bndCheck.camHeight + enemyInset;
+      go.transform.position = pos;
+  
+      // Invoke SpawnEnemy() again
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+    }
+
+
+    void DelayRestart() {
+      // Invoke the Restart() method in gameRestartDelay seconds
+      Invoke(nameof(Restart), gameRestartDelay);
+    }
+
+
+    void Restart() {
+      SceneManager.LoadScene("__Scene_0");
+    }
+
+
+    static public void HERO_DIED() {
+      S.DelayedRestart();
+    }
+  
+    /*
+      void Start() {...}
+  
+      void Update() {...}
+    */
+  }
+```
+
+__2__ Save the _Main_ script and return to Unity
+
+__3.__ Select __MainCamera_ in the Hierarchy
+
+__4.__ Click the _disclosure triangle_ next to weaponDefinitions in the Inspector and set the _Size_ of the array to _3_
+
+__5.__ Enter settings for the three __WeaponDefinitions__
+* Element 0
+  * __Type:__ Blaster
+  * __Letter:__ B
+  * __Power Up Color:__ White
+  * __Weapon Model Prefab:__ weapon_Blaster
+  * __Projectile Prefab:__ ProjectileHero
+  * __Projectile Color:__ White
+  * __Damage On Hit:__ 1
+  * __Delay Between Shots:__ 0.2
+
+* Element 1
+  * __Type:__ Spread
+  * __Letter:__ S
+  * __Power Up Color:__ Cyan
+  * __Weapon Model Prefab:__ weaponSpreadShot
+  * __Projectile Prefab:__ ProjectileHero
+  * __Projectile Color:__ Cyan
+  * __Damage On Hit:__ 1
+  * __Delay Between Shots:__ 0.4
+
+* Element 2
+  * __Type:__ Shield
+  * __Letter:__ O
+  * __Power Up Color:__ Green
+
+__6.__ Save Scene
