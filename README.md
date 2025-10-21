@@ -2333,3 +2333,111 @@ __4.__ Add 4 additional points
 __5.__ Close the curve Editor window, will be a smaller version of the curve just made
 
 __6.__ Click _Play_ in Unity, Enemy_2 ship now roll as they change direction
+
+
+### Improving the Enmey_2 AnimationCurve Even More
+__1.__ Open the _Enemy_2_ C# script in VS and make changes
+
+```cs
+// Enemy_2.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_2 : Enemy {
+    [Header("Enemy_2 Inscribed Fields")]
+    public float    lifeTime = 10;
+
+    // Enemy_2 uses a Sine wave to modify a 2-point linear interpolation
+    [Tooltip("Determines how much the Sine wave will ease the interpolation")]
+    public float    sinEccentricity = 0.6f;
+    public AnimationCurve    rotCurve;
+
+    [Header("Enemy_2 Private Fields")]
+    [SerializeField] private float    birthTime;    // Interpolation start time
+    [SerializeField] private Vector3    p0, p1;      // Lerp_points
+
+    private Quaternion    baseRotation;
+
+
+    void Start() {
+      // Pick any point on the left side of the screen
+      p0 = Vector3.zero;
+      p0.x = -bndCheck.camWidth - bndCheck.radius;
+      p0.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+      // Pick any point on the right side of the screen
+      p1 = Vector3.zero
+      p1.x = bndCheck.camWidth + bndCheck.radius;
+      p1.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+      // Possibly swap sides
+      if (Random.value > 0.5f) {
+        // Set the .x of each point to its negative will move it to the other side of the screen
+        p0.x *= -1;
+        p1.x *= -1;
+      }
+
+      // Set the birthTime to the current time
+      birthTime = Time.time;
+
+      // Set up the initial ship rotation
+      transform.position = p0;
+      transform.LookAt(p1, Vector3.back);
+      baseRotation = transform.rotation;
+    }
+
+
+    public override void Move() {
+      // Linear interpolations work based on a u value between 0 & 1
+      float u = (Time.time - birthTime) / lifeTime;
+
+      // if u > 1, then it has been longer than lifeTime since brithTime
+      if (u > 1) {
+        // This Enemy_2 has finished its life
+        Destroy(this.gameObject);
+        return;
+      }
+
+      // Use the AnimationCurve to set the rotation about Y
+      float shipRot = rotCurve.Evaluate(u) * 360;
+      /*
+        if (p0.x > p1.x) {
+          shipRot = -shipRot;
+        }
+
+        transform.rotation = Quaternion.Euler(0, shipRot, 0);
+      */
+
+      transform.rotation = baseRotation * Quaternion.Euler(-shipRot, 0, 0);
+
+      // Adjust u by adding a U curve based on a Sine wave
+      u = u + sinEccentricity*(Mathf.Sin(u*Mathf.PI*2));
+
+      // Interpolate the two linear interpolation points
+      pos = (1 - u) * p0 + u * p1;
+
+      // Note that Enemy_2 doe NOT call the base.Move() method
+    }
+
+
+    /*
+      void Update() {...}
+    */
+  }
+```
+
+__2.__ Save the _Enemy_2_ script and return to Unity
+
+__3.__ Double-click the _Enemy_2_ prefab in teh __Prefabs_ folder of the Project pane to open it in the Prefab Editor view
+
+__4.__ In the Prefab Editor Hierarchy for Enemy_2, click the _disclosure triangle_ next to Enemy_2 to see its child _enemy2_ (the original model for this ship)
+
+__5.__ Select this _enemy2_ model
+
+__6.__ Set the _rotation_ of the enemry2 transform to [0, 0, 0]
+
+__7.__ Click the _Scenes_ button at the top of the Scene pane to exit Prefab Editor mode
+
+__8.__ Save the _Scene_ and click _Play_ in Unity
