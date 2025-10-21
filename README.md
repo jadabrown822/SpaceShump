@@ -1697,7 +1697,7 @@ __3.__ Save and click _Play_
 
 
 ## Scripting the ProjectHero
-__1.__ Open the _projectileHero_ C# script and add code
+__1.__ Open the _ProjectileHero_ C# script and add code
 
 ```cs
 // ProjectileHero.cs
@@ -3140,5 +3140,74 @@ __2.__ Add code to the end of the Main C# script
   
       void Update() {...}
     */
+  }
+```
+
+
+### Modifying the ProjectileHero Class to Use WeaponDefinitions
+__1.__ Open the _ProjectileHero_ class in VS
+
+__2.__ Match code for the ProjectHero class to match code
+
+```cs
+// ProjectileHero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  [RequireComponent(typeof(BoundsCheck))]
+
+  public class ProjectileHero : MonoBehaviour {
+    private BoundsCheck    bndCheck;
+    private Renderer        rend;
+
+    [Header("Dynamic")]
+    public Rigidbody        rigid;
+    [SeralizeField]
+    private eWeaponType     _type;
+
+    // This public property masks the private field _type
+    public eWeaponType      type {
+        get {return(_type);}
+        get {SetType(value);}
+    }
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+      rend = GetComponent<Renderer>();
+      rigid = GetComponent<RigidBody>();
+    }
+
+
+    void Update() {
+      if(bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
+        Destroy(gameObject);
+      }
+    }
+
+
+    /*
+        Set the _type private field and colors this projectile to match the 
+            WeaponDefinition
+        <param name = "eType">The eWeaponType to use</param>
+    */
+    public void SetType(eWeaponType eType) {
+        _type = eType;
+        WeaponDefinition def = Main.GET_WEAPON_DEFINITION(_type);
+        rend.material.color = def.projectileColor;
+    }
+
+
+    // Allows Weapon to easily set the velocity of this ProjectileHero
+    public Vector3 vel {
+        get {return rigid.velocity;}
+        get {rigid.velocity = value;}
+    }
+
+
+    /*
+      void Start() {...}
+    /*
   }
 ```
