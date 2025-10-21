@@ -387,7 +387,7 @@ __1.__ Create an empty GameObject named _Enemy_0_
 > * R:[0, 0, 0]
 > * S:[1.5, 1.5, 1.5]
 
-__2.__ Drag the _enemy0_ model from teh _Assets by Peter Burroughs > Models_ folder onto _Enemy_0_ in the Hierarchy, making it a child of Enemy_0
+__2.__ Drag the _enemy0_ model from the _Assets by Peter Burroughs > Models_ folder onto _Enemy_0_ in the Hierarchy, making it a child of Enemy_0
 > __a.__ Set the transform of the enemy0 child to
 > * P:[0, 0, 0]
 > * R:[90, 180, 0]
@@ -1180,7 +1180,7 @@ __2.__ Open the _Hero_ C# scipt in VS and add code
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       Debug.Log("Shield trigger hit by: ") + go.gmaeObject.name;
     }
@@ -1242,7 +1242,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
 
@@ -1320,7 +1320,7 @@ __5.__ In the Hero class change code
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
 
@@ -1490,7 +1490,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
 
@@ -1540,7 +1540,7 @@ __4.__ Save the Scene
 
 # Shooting (Finally)
 ## ProjectileHero, the Hero's Bullet
-__1.__ Create a cube named _ProjectileHero_ in teh Hierarchy with the following transform value:
+__1.__ Create a cube named _ProjectileHero_ in the Hierarchy with the following transform value:
 * P:[10, 0, 0]
 * R:[0, 0, 0]
 * S:[0.25, 1, 0.25]
@@ -1566,7 +1566,7 @@ __5.__On the PorjectileHero GameObject's Box Collider component, set _Size.Z_ to
 __6.__ Create a new C# script named _ProjectileHero_
 > __a.__ Move the _ProjectileHero_ script into the ___Scripts_ folder
 >
-> __b.__ Attach the _ProjectileHero_ script to teh _ProjectileHero_ GameObject
+> __b.__ Attach the _ProjectileHero_ script to the _ProjectileHero_ GameObject
 
 __7.__ Save the Scene
 
@@ -1578,7 +1578,7 @@ __8.__ Attach a _BoundsCheck_ script component to _ProjectileHero_
 > __c.__ Set __radius__ to _1_
 
 __9.__ Make ProjectileHero into a prefab:
-> __a.__Drag _ProjectileHero_ from the HIerarchy into the __Prefabs_ folder in the Project pane
+> __a.__Drag _ProjectileHero_ from the Hierarchy into the __Prefabs_ folder in the Project pane
 >
 > __b.__ Delete the remaining _ProjectileHero_ instance from the Hierarchy
 
@@ -1653,7 +1653,7 @@ __1.__ Open the _Hero_ C# script and add code
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
 
@@ -1817,7 +1817,7 @@ __1.__ Open the _Enemy_ C# script and make changes
 __1.__ Create an Enemy_0 script and attach it to the Enemy_0 prefab:
 > __a.__ Create a new C# script named _Enemy_0_ in the ___Scripts_ folder
 >
-> __b.__ Drag this _Enemy_0_ script onto the _Enemy_0_ GameObject prefab in teh __Prefabs_ folder
+> __b.__ Drag this _Enemy_0_ script onto the _Enemy_0_ GameObject prefab in the __Prefabs_ folder
 >
 > __c.__ Select the _Enemy_0_ GameObject prefab in the __Prefabs_ folder and confirm that the _Enemy_0 (Script)_ component was attached (it eill be at the bottom of the Inspector)
 
@@ -2430,7 +2430,7 @@ __1.__ Open the _Enemy_2_ C# script in VS and make changes
 
 __2.__ Save the _Enemy_2_ script and return to Unity
 
-__3.__ Double-click the _Enemy_2_ prefab in teh __Prefabs_ folder of the Project pane to open it in the Prefab Editor view
+__3.__ Double-click the _Enemy_2_ prefab in the __Prefabs_ folder of the Project pane to open it in the Prefab Editor view
 
 __4.__ In the Prefab Editor Hierarchy for Enemy_2, click the _disclosure triangle_ next to Enemy_2 to see its child _enemy2_ (the original model for this ship)
 
@@ -2705,7 +2705,7 @@ __8.__ Select the _Enemy_3_ prefab in the Project pane, and then in the _Enemy_3
 
 # Shooting Revisited
 ## The eWeaponType Enum
-__1.__ Right-click on the ___Scripts_ folder in teh Project pane and choose _Create > C# Script_. This creates _NewBehaviourScript_ in the __Scripts folder
+__1.__ Right-click on the ___Scripts_ folder in the Project pane and choose _Create > C# Script_. This creates _NewBehaviourScript_ in the __Scripts folder
 
 __2.__ Rename NewBehaviourScript to _Weapon_
 
@@ -3301,7 +3301,7 @@ __2.__ Add the following code to the _Hero_ class
 
 
     void OnTriggerEnter(Collider other) {
-      Transform rootT = other.gameObeject.transform.root;
+      Transform rootT = other.gameObject.transform.root;
       GameObject fo = rootT.gameObject;
       // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
 
@@ -3342,3 +3342,27 @@ __2.__ Add the following code to the _Hero_ class
 __3.__ Please _Save All_ in VS and then return to Unity
 
 __4.__ Click _Play_ in Unity and try firing
+
+
+## Createing a Weapon GameObject to Fire Projectiles
+__1.__ In the Hierarchy, create an empty GameObject, name it _Weapon_, and giv it the following transforms and empty child named _ShotPoint_.
+* Weapon (Empty)
+    * P:[0, 0, 0]
+    * R:[0, 0, 0]
+    * S:[1, 1, 1]
+* ShotPoint (Empty)
+    * P:[0, 0, 1]
+    * R:[0, 0, 0]
+    * S:[1, 1, 1]
+
+__2.__ Attach the _Weapon_ C# script to the Weapon GameObject in the Hierarchy
+
+__3.__ Drag the _Weapon_ GameObject into the __Prefabs_ folder in the Project pane to make it a prefab
+
+__4.__ Delete the remaining _Weapon_ instance in the Hierarchy
+
+__5.__ Drag the _Weapon_ prefab from the __Prefabs_ folder onto __Hero > heroShip > hardpoint_0_ in the Hierarchy, making it a child of hardpoint_0
+
+__6.__ Double-click that the Weapon _position_ in the Inspector is _[0, 0, 0]_ and that its scale is _[1, 1, 1]_. This should place the Weapon o the nose of the _Hero ship
+
+__7.__ Save the scene
