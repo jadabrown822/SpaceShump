@@ -2701,3 +2701,40 @@ __7.__ Add code to _Enemy_3_ script
 ```
 
 __8.__ Select the _Enemy_3_ prefab in the Project pane, and then in the _Enemy_3 (Script)_ Inspector, uncheck __drawDebugInfo__
+
+
+# Shooting Revisited
+## The eWeaponType Enum
+__1.__ Right-click on the ___Scripts_ folder in teh Project pane and choose _Create > C# Script_. This creates _NewBehaviourScript_ in the __Scripts folder
+
+__2.__ Rename NewBehaviourScript to _Weapon_
+
+__3.__ Open the _Weapon_ script in VS and enter the code
+
+```cs
+// Weapon.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  /*
+    This is an enum of the various possible weapon types
+    It also includes a "shield" type to allow a chield PowerUp
+    Items marked [NI] below are Not Implemented
+  */
+
+  public enum eWeaponType {
+    none,        // The default / no weapon
+    blaster,    // A simple blaster
+    spread,      // Multiple shots simultaneously
+    phaser,      // [NI] Shots that move in waves
+    missile,    // [NI] Homin missiles
+    laser,      // [NI] Damage over time
+    shield      // Raise shieldLevel
+  }
+
+  public class Weapon : MonoBehaviour {
+
+  }
+```
