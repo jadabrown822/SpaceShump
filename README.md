@@ -2496,3 +2496,208 @@ __2.__ Open the _Utiles_ script in VS and enter code
 ```
 
 __3.__ Save the _Utils_ script in VS and return to Unity
+
+
+### Implementing a 3-Point Bezier Curve in the Enemy_3 Script
+__1.__ Select the _Enemy_3_ prefab in the __Prefabs_ folder of the Project pane
+
+__2.__ In the Enemy_3 prefab _BoundsCheck_ Inspector
+* __boundsType__ = _outset_
+* __radius__ = _3_
+* __keepOnScreen__ = _false_
+
+__3.__ Open _Enemy_3_ script and enter the code
+
+```cs
+// Enemy_3.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_3 : Enemy {
+    [Header("Enemy_3 Inscribed Fields")]
+    public float    lifeTime = 5;
+    public Vector2 midpointYRange = new Vector2(1.5f, 3);
+    [Tooltip("If true, the Bezier points & path are drawn in the Scene pane")]
+    public bool drawDebugInfo = true;
+
+    [Header("Enemy_3 Private Fields")]
+    [SeralizeField]
+    private Vector3[] points;    // The three points for the Bezier curve
+    [SerializeField]
+    private float    birthTime;
+
+    // Again, Starts works well because it is not used in the Enemy superclass
+    void Start() {
+      points = new Vector3[3];    // Initialize points
+
+      // The start process has already been set by Main.SpawnEnemy()
+      points[0] = pos;
+
+      // Set xMin and xMax the same way that Main.SpawnEnemy() does
+      float xMin = -bndCheck.camWidth + bndCheck.radius;
+      float xMax = bndCheck.camWidth - bndCheck.radius;
+
+      // Pick a random middle position in the bottom half of the screen
+      points[1] = Vector3.zero
+      points[1].x = Random.Range(xMin, xMax);
+      float midYMult = Random.Range(midpointYRange[0], midpointYRange[1]);
+      points[1].y = -bndCheck.camHeight * midYMult;
+
+      // Pick a random final position above the top of the screen
+      points[2] = Vector3.zero;
+      points[2].y = pos.y;
+      points[2].x = Random.Range(xMin, xMax);
+
+      // Seet the birthTime to current time
+      birthTime = Time.time;
+
+      if (drawDebugInfor) {
+        DrawDebug();
+      } 
+    }
+
+
+    public override void Move() {
+      // Bezier curves work based on a u value between 0 & 1
+      float u = (Time.time - birthTime) / lifeTime;
+
+      if (u > 1) {
+        // This Enemy_3 has finished its life
+        Destroy(this.gameObject);
+        return;
+      }
+
+      transform.rotation = Quaternion.Euler(u * 180, 0, 0);
+
+      // Interpolate the three Bezier curve points
+      pos = Utils.Bezier(u points);
+
+      // Enemy_3 does not call base.Move()
+    }
+
+
+    void DrawDebug() {
+      // Draw the three points
+      Debug.DrawLine(points[0], points[1], Color.cyan, lifeTime);
+      Debug.DrawLine(points[1], points[2], Color.yellow, lifeTime);
+
+      // Draw the Bezier Curve
+      float numSections = 20;
+      Vector3 prevPoint = points[0];
+      Color    col;
+      Vector3    pt;
+      for (int i = 1; i < numSections; i++) {
+        float u = i / numSections;
+        pt = Utils.Bezier(u, points);
+        col = Color.Lerp(Color.cyan, Color.yellow, u);
+        Debug.DrawLine(prevPoint, pt, col, lifeTime);
+        prevPoint = pt;
+      }
+    }
+  }
+```
+
+__4.__ Save the _Enemy_3_ script in VS and return to Unity
+
+__5.__ Select __MainCamera_ in the Hierarchy and set _Element_0_ of __prefabEnemies__ to the Enemy_3 prefab and save the scene
+
+__6.__ Click _Play_ to see the movement of these new enemies
+
+__7.__ Add code to _Enemy_3_ script
+
+
+```cs
+// Enemy_3.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_3 : Enemy {
+    [Header("Enemy_3 Inscribed Fields")]
+    public float    lifeTime = 5;
+    public Vector2 midpointYRange = new Vector2(1.5f, 3);
+    [Tooltip("If true, the Bezier points & path are drawn in the Scene pane")]
+    public bool drawDebugInfo = true;
+
+    [Header("Enemy_3 Private Fields")]
+    [SeralizeField]
+    private Vector3[] points;    // The three points for the Bezier curve
+    [SerializeField]
+    private float    birthTime;
+
+    // Again, Starts works well because it is not used in the Enemy superclass
+    void Start() {
+      points = new Vector3[3];    // Initialize points
+
+      // The start process has already been set by Main.SpawnEnemy()
+      points[0] = pos;
+
+      // Set xMin and xMax the same way that Main.SpawnEnemy() does
+      float xMin = -bndCheck.camWidth + bndCheck.radius;
+      float xMax = bndCheck.camWidth - bndCheck.radius;
+
+      // Pick a random middle position in the bottom half of the screen
+      points[1] = Vector3.zero
+      points[1].x = Random.Range(xMin, xMax);
+      float midYMult = Random.Range(midpointYRange[0], midpointYRange[1]);
+      points[1].y = -bndCheck.camHeight * midYMult;
+
+      // Pick a random final position above the top of the screen
+      points[2] = Vector3.zero;
+      points[2].y = pos.y;
+      points[2].x = Random.Range(xMin, xMax);
+
+      // Seet the birthTime to current time
+      birthTime = Time.time;
+
+      if (drawDebugInfor) {
+        DrawDebug();
+      } 
+    }
+
+
+    public override void Move() {
+      // Bezier curves work based on a u value between 0 & 1
+      float u = (Time.time - birthTime) / lifeTime;
+
+      if (u > 1) {
+        // This Enemy_3 has finished its life
+        Destroy(this.gameObject);
+        return;
+      }
+
+      transform.rotation = Quaternion.Euler(u * 180, 0, 0);
+
+      // Interpolate the three Bezier curve points
+      u = u - 0.1f * Mathf.Sin(u * Mathf.PI * 2)
+      pos = Utils.Bezier(u points);
+
+      // Enemy_3 does not call base.Move()
+    }
+
+
+    void DrawDebug() {
+      // Draw the three points
+      Debug.DrawLine(points[0], points[1], Color.cyan, lifeTime);
+      Debug.DrawLine(points[1], points[2], Color.yellow, lifeTime);
+
+      // Draw the Bezier Curve
+      float numSections = 20;
+      Vector3 prevPoint = points[0];
+      Color    col;
+      Vector3    pt;
+      for (int i = 1; i < numSections; i++) {
+        float u = i / numSections;
+        pt = Utils.Bezier(u, points);
+        col = Color.Lerp(Color.cyan, Color.yellow, u);
+        Debug.DrawLine(prevPoint, pt, col, lifeTime);
+        prevPoint = pt;
+      }
+    }
+  }
+```
+
+__8.__ Select the _Enemy_3_ prefab in the Project pane, and then in the _Enemy_3 (Script)_ Inspector, uncheck __drawDebugInfo__
