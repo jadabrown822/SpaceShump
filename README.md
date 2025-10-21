@@ -1867,5 +1867,280 @@ __1.__ Open the Enemy_1 script in VS and enter code
 // Enemy_1.cs
 
   using System.Collections;
-  
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_1 : Enemy {    // Enemy_1 also extends the Enemy class
+    [Header("Enemy_1 Inscribed Fields")]
+    [Tooltip("# of seconds for a fulle sine wave")]
+    public float    waveFrequency = 2;
+    [Tooltip("Sine wave width in meters")]
+    public float    waveWidth = 4;
+    [Tooltip("Amount the ship will roll left and right with the sine wave")]
+    public float waveRotY = 45;
+
+    private float    x0;    // The initial x value of pos
+    private float    birthTime;
+
+    void Start() {
+      //  Set x0 to the intitial x position of Enemy_1
+      x0 = pos.x
+
+      birthTime = Time.time;
+    }
+
+    // Override the Move function on Enemy
+    public override void Move() {
+      /*
+        Because pos is a property, can't directly set pos.x
+        so get the pos as an editabel Vector3
+      */
+      Vector3 tempPos = pos;
+
+      // theta adjust based on time
+      float age = Time.time - birthTime;
+      float theta = Mathf.PI * 2 * age / waveFrequency;
+      float sin = Mathf.Sine(theta);
+      tempPos.z = z0 + waveWidth * sin;
+      pos = tempPos;
+
+      // rotate a bit about y
+      Vector3 rot = new Vector3(0, sin *waveRotY, 0);
+      this.transform.rotation = Quaternion.Euler(rot);
+
+      // base.Move() still handles the movement down in y
+      base.Move();
+
+      // print(bndCheck.isOnScreen);
+    }
+
+    /*
+      void Update() {...}
+    */
+  }
 ```
+
+__3.__ Back in Unity, select __MainCamera_ in the Hierarchy and in the _Main (Script)_ component change _Element_0_ of __prefabEnemies__ form Enemy_0 to Enemy_1. Allows to test with Enemy_1 instead of Enemy
+
+__4.__ Click _Play_
+
+__5.__ Stop playback in Unity
+
+__6.__ Select the _Enemy_1_ prefab in the Project pane, and in the Inspector for the Enemy_1 _BoundsCheck_ component:
+> __a.__ Set __boundsType__ to _outset_
+>
+> __b.__ Set __radius__ tp _2.5_
+>
+> __c.__ Set __keepOnScreen__ to _false_ (unchecked)
+
+__7.__ Attach a BoundsCheck (Script) component to the other Enemy_# prefabs
+> __a.__ With Enemy_1 prefab still selected, in the Inspector for Enemy_1, click the three vertical dots in the top-right corner of the _BoundsCheck (Script)_ component and choose _Copy Component_
+>
+> __b.__ Select the _Enemy_2_ prefab in the __Prefabs_ folder of the Project pane
+>
+> __c.__ Hold the _Shift_ key on the keyboard and click the _Enemy_4_ prefab. This selects all three prefabs that will change
+>
+> __d.__ In the Inspector for _3 Prefab Assets_, click the three vertical dots in the top-right corner of the _Transform_ component and choose _Paste Component as New_
+
+
+### When is BoundsCheck bndCheck Being _private_ a Problem?
+__1.__ Open the Enemy_1 script and uncommet the __print()__ line
+
+```cs
+// Enemy_1.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_1 : Enemy {    // Enemy_1 also extends the Enemy class
+    [Header("Enemy_1 Inscribed Fields")]
+    [Tooltip("# of seconds for a fulle sine wave")]
+    public float    waveFrequency = 2;
+    [Tooltip("Sine wave width in meters")]
+    public float    waveWidth = 4;
+    [Tooltip("Amount the ship will roll left and right with the sine wave")]
+    public float waveRotY = 45;
+
+    private float    x0;    // The initial x value of pos
+    private float    birthTime;
+
+    void Start() {
+      //  Set x0 to the intitial x position of Enemy_1
+      x0 = pos.x
+
+      birthTime = Time.time;
+    }
+
+    // Override the Move function on Enemy
+    public override void Move() {
+      /*
+        Because pos is a property, can't directly set pos.x
+        so get the pos as an editabel Vector3
+      */
+      Vector3 tempPos = pos;
+
+      // theta adjust based on time
+      float age = Time.time - birthTime;
+      float theta = Mathf.PI * 2 * age / waveFrequency;
+      float sin = Mathf.Sine(theta);
+      tempPos.z = z0 + waveWidth * sin;
+      pos = tempPos;
+
+      // rotate a bit about y
+      Vector3 rot = new Vector3(0, sin *waveRotY, 0);
+      this.transform.rotation = Quaternion.Euler(rot);
+
+      // base.Move() still handles the movement down in y
+      base.Move();
+
+      print(bndCheck.isOnScreen);
+    }
+
+    /*
+      void Update() {...}
+    */
+  }
+```
+
+__2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___protected___
+
+```cs
+// Enemy.cs
+  
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [RequireComponent(typeof(BoundsCheck))]
+  
+  public class Enemy : Monobehaviour {
+    [Header("Inscribed)]
+    public float speed = 10f;        // The movement speed is 10m/s
+    public float fireRate = 0.3;      // Seconds/shot (Unused)
+    public float health = 10;        // Damage needed to destroy this enemy
+    public int score = 100;          // Points earned for destroying this
+
+    protected BoundsCheck bndCheck;    // Change bndCheck from private to protected
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+    }
+  
+    // This is a Property: A method that acts like a field
+    public Vector3 pos {
+      get {
+        return this.transform.position;
+      }
+      set {
+        this.tranform.position = value;
+      }
+    }
+
+
+    void Update() {
+      Move();
+
+      // Check whether this Enemy has gone off the bottom of the screen
+      if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offDown)) {
+        Destory(gameObject);
+      }
+
+      /*
+        if (!bndCheck.isonScreen) {
+          if (pos.y < bndCheck.camHeight - bndCheck.radius) {
+            // We're off the the bottom, so destroy this GameObject
+            Destroy(gameObject);
+          }
+        }
+      */
+    }
+  
+  
+    public virtual void Move() {
+      Vector3 tempPos = pos;
+      tempPos.y -= speed * Time.deltaTime;
+      pos = tempPos;
+    }
+
+
+    void OnCollisionEnter(Collision coll) {
+      GameObject otherGO = coll.gameObject;
+      if(otherGO.GetComponent<ProjectileHero>() != null) {
+        Destroy(otherGO);      // Destroy the Projectile
+        Destroy(gameObject);    // Destroy this Enemy GameObject
+      }
+      else {
+        Debug.Log("Enemy hit by non-ProjectileHero: " + otherGO.name);
+      }
+    }
+  
+  
+    /*
+      void Start() {...}
+    */
+  }
+```
+
+__3.__ Switch back to Unity and click _Play_
+
+__4.__ Return to Enemy_1 script in VS and re-comment out the __print()__ line to stop all these messages
+
+```cs
+// Enemy_1.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_1 : Enemy {    // Enemy_1 also extends the Enemy class
+    [Header("Enemy_1 Inscribed Fields")]
+    [Tooltip("# of seconds for a fulle sine wave")]
+    public float    waveFrequency = 2;
+    [Tooltip("Sine wave width in meters")]
+    public float    waveWidth = 4;
+    [Tooltip("Amount the ship will roll left and right with the sine wave")]
+    public float waveRotY = 45;
+
+    private float    x0;    // The initial x value of pos
+    private float    birthTime;
+
+    void Start() {
+      //  Set x0 to the intitial x position of Enemy_1
+      x0 = pos.x
+
+      birthTime = Time.time;
+    }
+
+    // Override the Move function on Enemy
+    public override void Move() {
+      /*
+        Because pos is a property, can't directly set pos.x
+        so get the pos as an editabel Vector3
+      */
+      Vector3 tempPos = pos;
+
+      // theta adjust based on time
+      float age = Time.time - birthTime;
+      float theta = Mathf.PI * 2 * age / waveFrequency;
+      float sin = Mathf.Sine(theta);
+      tempPos.z = z0 + waveWidth * sin;
+      pos = tempPos;
+
+      // rotate a bit about y
+      Vector3 rot = new Vector3(0, sin *waveRotY, 0);
+      this.transform.rotation = Quaternion.Euler(rot);
+
+      // base.Move() still handles the movement down in y
+      base.Move();
+
+      // print(bndCheck.isOnScreen);
+    }
+
+    /*
+      void Update() {...}
+    */
+  }
+```
+
+__5.__ Save the _Enemy_1_ script
