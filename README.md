@@ -60,7 +60,7 @@ __1.__ Open the disclosure triangles for the _Assets > Assets by Peter Burroughs
 
 __2.__ Drag _heroShip_ from the Project pane to the Hierarchy
 
-__3.__ Create an empty GameObject and name it __Hero (GameObject > Create Empty)_. If it is not there already, rester its tranform to
+__3.__ Create an empty GameObject and name it __Hero (GameObject > Create Empty)_. If it is not there already, rester its transform to
 * P:[0, 0, 0]
 * R:[0, 0, 0]
 * S:[1, 1, 1]
@@ -131,7 +131,7 @@ __1.__ Open the _Hero_ C# script in VS and enter the code
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -291,7 +291,7 @@ __2.__ Open the BoundsCheck script and add the code
         pos.y = -camHeight;
       }
   
-      tranform.position = pos;
+      transform.position = pos;
     }
   }
 ```
@@ -358,7 +358,7 @@ __4.__ Open BoundsCheck in VS and enter code
         pos.y = -camHeight - checkRadius;
       }
   
-      tranform.position = pos;
+      transform.position = pos;
     }
   }
 ```
@@ -446,7 +446,7 @@ __3.__ Open the _Enemy_ scirpt in VS and enter the code
         return this.transform.position;
       }
       set {
-        this.tranform.position = value;
+        this.transform.position = value;
       }
     }
 
@@ -488,7 +488,7 @@ __7.__ Select the _Enemy_0_ instance in the Hierarchy
 >
 > __b.__ Set the __radius__ value in the BoundsCheck inspector to _2_
 >
-> __c.__ Click _Overrides_ at the top of the Inspector again, will see it saying that comething about the BoundsCheck script is different from the prefab
+> __c.__ Click _Overrides_ at the top of the Inspector again, will see it saying that something about the BoundsCheck script is different from the prefab
 >
 > __d.__ Click _BoundsCheck (Script)_ in this pop-up to get more info. here ir clearly shows that the radius value is the difference bewteen the two
 >
@@ -565,7 +565,7 @@ __9.__ To have the option to either allow Enemy_0 to go off screen or restrict i
       }
   
       if (keepOnScreen && !isOnScreen) {
-        tranform.position = pos;
+        transform.position = pos;
         isOnScreen = true;
       }  
     }
@@ -609,7 +609,7 @@ __3.__ Add the code to the Enemy script to manage this destruction:
         return this.transform.position;
       }
       set {
-        this.tranform.position = value;
+        this.transform.position = value;
       }
     }
 
@@ -718,7 +718,7 @@ __4.__ Modify the BoundsCheck script
       }
   
       if (keepOnScreen && !isOnScreen) {
-        tranform.position = pos;
+        transform.position = pos;
         isOnScreen = true;
       }  
     }
@@ -810,7 +810,7 @@ __6.__ Modify the BoundsCheck script by adding code
       }
   
       if (keepOnScreen && !isOnScreen) {
-        tranform.position = pos;
+        transform.position = pos;
         screenLocs = eScreenLocs.onScreen;
         // isOnScreen = true;
       }  
@@ -915,7 +915,7 @@ __8.__ Add the __LocIs()__ method code to the end of BoundsCheck
       }
   
       if (keepOnScreen && !isOnScreen) {
-        tranform.position = pos;
+        transform.position = pos;
         screenLocs = eScreenLocs.onScreen;
         // isOnScreen = true;
       }  
@@ -965,7 +965,7 @@ __9.__ Make changes to the Enemy script
         return this.transform.position;
       }
       set {
-        this.tranform.position = value;
+        this.transform.position = value;
       }
     }
 
@@ -1048,7 +1048,7 @@ __2.__ Create a new C# script called _Main_
       int ndx = Random.Range(0, prefabEnemies.Length);
       GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
   
-      // Posisiton the Enemy above the screen with a random x position
+      // position the Enemy above the screen with a random x position
       float enemyInset = enemyInsetDefault;
       if (go.GetComponent<BoundsCheck>() != null) {
         enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -1168,7 +1168,7 @@ __2.__ Open the _Hero_ C# scipt in VS and add code
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -1230,7 +1230,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -1308,7 +1308,7 @@ __5.__ In the Hero class change code
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -1396,7 +1396,7 @@ __1.__ Add code to Main script
       int ndx = Random.Range(0, prefabEnemies.Length);
       GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
   
-      // Posisiton the Enemy above the screen with a random x position
+      // position the Enemy above the screen with a random x position
       float enemyInset = enemyInsetDefault;
       if (go.GetComponent<BoundsCheck>() != null) {
         enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -1478,7 +1478,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -1628,7 +1628,7 @@ __1.__ Open the _Hero_ C# script and add code
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -1696,7 +1696,7 @@ __2.__ In Unity, select __Hero_ in the Hierarchy and assign _ProjectileHero_ fro
 __3.__ Save and click _Play_
 
 
-## Scripting the ProjectHero
+## Scripting the ProjectileHero
 __1.__ Open the _ProjectileHero_ C# script and add code
 
 ```cs
@@ -1763,7 +1763,7 @@ __1.__ Open the _Enemy_ C# script and make changes
         return this.transform.position;
       }
       set {
-        this.tranform.position = value;
+        this.transform.position = value;
       }
     }
 
@@ -2033,7 +2033,7 @@ __2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___pr
         return this.transform.position;
       }
       set {
-        this.tranform.position = value;
+        this.transform.position = value;
       }
     }
 
@@ -2172,7 +2172,7 @@ __3.__ Open the _Enemy_2_ C# script in VS and enter the code
     public float    sinEccentricity = 0.6f;
 
     [Header("Enemy_2 Private Fields")]
-    [SerializedField] private float    birthTime;    // Interpolation start time
+    [SerializeField] private float    birthTime;    // Interpolation start time
     [SerializeField] private Vector3    p0, p1;      // Lerp_points
 
 
@@ -2253,7 +2253,7 @@ __1.__ Open the _Enemy_2_ C# script in VS and make changes
     public AnimationCurve    rotCurve;
 
     [Header("Enemy_2 Private Fields")]
-    [SerializedField] private float    birthTime;    // Interpolation start time
+    [SerializeField] private float    birthTime;    // Interpolation start time
     [SerializeField] private Vector3    p0, p1;      // Lerp_points
 
 
@@ -2855,7 +2855,7 @@ __1.__ Open the _Main_ C# script in VS and add code
       int ndx = Random.Range(0, prefabEnemies.Length);
       GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
   
-      // Posisiton the Enemy above the screen with a random x position
+      // position the Enemy above the screen with a random x position
       float enemyInset = enemyInsetDefault;
       if (go.GetComponent<BoundsCheck>() != null) {
         enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -2984,7 +2984,7 @@ __1.__ Open the _Main_ script in VS and enter the code
       int ndx = Random.Range(0, prefabEnemies.Length);
       GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
   
-      // Posisiton the Enemy above the screen with a random x position
+      // position the Enemy above the screen with a random x position
       float enemyInset = enemyInsetDefault;
       if (go.GetComponent<BoundsCheck>() != null) {
         enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -3077,7 +3077,7 @@ __2.__ Add code to the end of the Main C# script
       int ndx = Random.Range(0, prefabEnemies.Length);
       GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
   
-      // Posisiton the Enemy above the screen with a random x position
+      // position the Enemy above the screen with a random x position
       float enemyInset = enemyInsetDefault;
       if (go.GetComponent<BoundsCheck>() != null) {
         enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -3147,7 +3147,7 @@ __2.__ Add code to the end of the Main C# script
 ### Modifying the ProjectileHero Class to Use WeaponDefinitions
 __1.__ Open the _ProjectileHero_ class in VS
 
-__2.__ Match code for the ProjectHero class to match code
+__2.__ Match code for the ProjectileHero class to match code
 
 ```cs
 // ProjectileHero.cs
@@ -3264,7 +3264,7 @@ __2.__ Add the following code to the _Hero_ class
       float hAxis = Input.GetAxis("Horizontal");
       float vAxis = Input.GetAxis("Vertical");
   
-      // change transfor.position based on the axis
+      // change transform.position based on the axis
       Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
@@ -3366,3 +3366,313 @@ __5.__ Drag the _Weapon_ prefab from the __Prefabs_ folder onto __Hero > heroShi
 __6.__ Double-click that the Weapon _position_ in the Inspector is _[0, 0, 0]_ and that its scale is _[1, 1, 1]_. This should place the Weapon o the nose of the _Hero ship
 
 __7.__ Save the scene
+
+
+### Adding Fireing to the Weapon C# Script
+__1.__ Start by disabling the __fireEvent__ use of the __TempFire()__ method in Hero. Open the Hero C# script in VS and copy code
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+    public GameObject    projectilePrefab;
+    public float    projectileSpeed = 40;
+  
+    [Header("Dynamic)]    [Range(0,4)]    [SerialField]
+    private float _shieldLevel = 1;
+    // public float    ShieldLevel = 1;
+    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    private GameObject lastTriggerGo = null;
+    // Declare a new delegate type WeaponFireDelegate
+    public delegate void WeaponFireDelegate();
+    // Create a WeaponFireDelegate event named fireEvent
+    public even WeaponFireDelegate fireEvent;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+
+      // fireEvent += TempFire;
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical");
+  
+      // change transform.position based on the axis
+      Vector3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+
+      /*
+          // Allow the ship to fire
+          if(Input.GetKeyDown(KeyCode.Space)) {
+            TempFire();
+          }
+      */
+
+      // Use the fireEvent to fire Weapons when the Spacebar is pressed
+      if (Input.GetAxis("Jump") == 1 && fireEvent != null) {
+            fireEvent();
+      }
+    }
+
+    /*
+        void TempFire() {
+          GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+          projGO.transform.position = transform.position;
+          Rigidbody rigidB = projGO.GetComponent<RigidBody>();
+          // rigidB.velocity = Vector3.up * projectileSpeed;
+
+          ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
+          proj.type = eWeaponType.blaster;
+          float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
+          rigidB.velocity = Vector3.up * tSpeed;
+        }
+    */
+
+
+    void OnTriggerEnter(Collider other) {
+      Transform rootT = other.gameObject.transform.root;
+      GameObject fo = rootT.gameObject;
+      // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
+
+      // Make sure it's not the same trigger fo as last time
+      if (go == lastTriggerGo) return;
+      lastTriggerGo = go;
+
+      Enemy enemy = go.GetComponent<Enemy>();
+      if (enemy != null) {    // If the shield was triggered by an enemy
+        shieldLevel--;        // Decreases the level of the shield by 1
+        Destroy(go);          // ... and Destroy the enemy
+      }
+      else {
+        Debug.LogWarning("Shield trigger hit by non-Enemy: " + go.name);
+      }
+    }
+
+
+    public float shieldLevel {
+      get {return (_shieldLevel);}
+      private set {
+        _shieldLevel = Mathf.Min(value, 4);
+
+        // If the shield is going to be set to less than zero
+        if (value < 0) {
+          Destroy(this.gameObject);    // Destroy the Hero
+          Main.HERO_DIED();
+        }
+      }
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
+
+__2.__ Open the _Weapon_ C# script in VS add the following code
+
+```cs
+// Weapon.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  /*
+    This is an enum of the various possible weapon types
+    It also includes a "shield" type to allow a chield PowerUp
+    Items marked [NI] below are Not Implemented
+  */
+
+  public enum eWeaponType {
+    none,        // The default / no weapon
+    blaster,    // A simple blaster
+    spread,      // Multiple shots simultaneously
+    phaser,      // [NI] Shots that move in waves
+    missile,    // [NI] Homin missiles
+    laser,      // [NI] Damage over time
+    shield      // Raise shieldLevel
+  }
+
+  /*
+    The WeaponDefinition class allow to set the properties
+      of a specific weapon in the Inspector. The main class has
+      an array of WeaponDefinitions that make this possible
+  */
+  [System.Serializable]
+  public class WeaponDefinition {
+    public eWeaponType    type = eWeaponType.none;
+
+    [Tooltip("Letter to show on the PowerUp Cube")]
+    public string    letter;
+
+    [Tooltip("Color of PowerUp Cube")]
+    public Color    powerUpColor = Color.white;
+
+    [Tooltip("Prefab of Weapon model that is attached to the Player Ship")]
+    public GameObject    weaponModelPrefab;
+
+    [Tooltip("Prefab of the Projectile that is fired")]
+    public GameObject    projectilePrefab;
+
+    [Tooltip("Color of the Projectile that is fired")]
+    public Color    projectileColor = Color.white;
+
+    [Tooltip("Damage caused when a single Projectile hits an Enemy")]
+    public float    damageOnHit = 0;
+
+    [Tooltip("Damage caused per second by a Laser [Not Implemented]")]
+    public float    damagePerSec = 0;
+
+    [Tooltip("Seconds to delay between shots")]
+    public float     delayBetweenShots = 0;
+
+    [Tooltip("Velocity of individual Projectiles")]
+    public float    velocity = 50;
+  }
+
+  public class Weapon : MonoBehaviour {
+    static public Transform     PROJECTILE_ANCHOR;
+
+    [Header("Dynamic")]
+    [SerializeField]
+    [Tooltip("Setting this manually while playing does not work properly")]
+    private eWeaponType     _type = eWeaponType.none;
+    public WeaponDefinition     def;
+    public float        nextShotTime;       // Time the Weapon will fire next
+
+    private GameObject      weaponModel;
+    private Transform       shotPointTrans;
+
+
+    void Start() {
+        // Set up PROJECTILE_ANCHOR if it has not already been done
+        if (PROJECTILE_ANCHOR == null) {
+            GameObject go = new GameObject("_ProjectileAnchor");
+            PROJECTILE_ANCHOR = go.transform;
+        }
+
+        shotPointTrans = transform.GetChild(0);
+
+        // Call SetType() for the default _type set in the Inspector
+        SetType(_type);
+
+        // Find the fireEvent of a Hero Component in the parent hierarchy
+        Hero hero = GetComponentInParent<Hero>();
+        if (hero != null) {
+            hero.fireEvent += Fire;
+        }
+    }
+
+
+    public void SetType(eWeaponType wt) {
+        _type = wt;
+        if (type == eWeaponType.none) {
+            this.gameObject.SetActive(false);
+            return;
+        }
+        else {
+            this.gameObject.SetActive(true);
+        }
+
+        // Get the WeaponDefinition for this type from Main
+        def = Main.GET_WEAPON_DEFINITION(_type);
+
+        // Destroy any old model and then attach a model for this weapon
+        if (weaponModel != null) {
+            Destory(weaponModel);
+        }
+        weaponModel = Instantiate<GameObject>(def.weaponModelPrefab, transform);
+        weaponModel.transform.localPosition = Vector3.zero;
+        weaponModel.transform.localScale = Vector3.one;
+
+        nextShotTime = 0;       // Can fire immediately after _type is set
+    }
+
+
+    private void Fire() {
+        // If this.gameObject is inactive, return
+        if (!gameObject.activeInHierarchy) {
+            return;
+        }
+        // If its hasn't been enough time between shots, return
+        if (Time.time < nextShotTime) {
+            return;
+        }
+
+        ProjectileHero      p;
+        Vector3     vel = Vector3.up * def.velocity;
+
+        switch(type) {
+            case eWeaponType.blaster:
+                p = MakeProjectile();
+                p.vel = vel;
+                break;
+
+            case eWeaponType.spread:
+                p = MakeProjectile();
+                p.vel = vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(10, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                break;
+        }
+    }
+
+
+    private ProjectileHero MakeProjectile() {
+        GameObject go;
+        go = Instantiate<GameObject>(def.projectilePrefab.PROJECTILE_ANCHOR);
+        ProjectileHero p = go.GetComponent<ProjectileHero>();
+
+        Vector3 pos = shotPointTrans.position;
+        pos.z = 0;
+        p.transform.position = pos;
+
+        p.type = type;
+        nextShotTime = Time.time + def.delayedBetweenShots;
+        return(p);
+    }
+  }
+```
+
+__3.__ Save the _Weapon_ script in VS and return to Unity
+
+__4.__ Select the _Weapon_ attached to __Hero > heroShip > hardpoint_0_ in the Hierarchy and set the __type__ of its _Weapon (Script)_ component to _Blaster_
+
+__5.__ Click _Play_
+
+__6.__ Stop Unity. Select the _Weapon_ in the Hierarchy again, and this time set the __type__ of its _Weapon (Script)_ component to _Spread_
+
+__7.__ Click _Play_. Now a different weapon model should appear
+
+__8.__ Stop Unity. Select the _Weapon_ in the Hierarchy one last time, and this time set the __type__ of its _Weapon (Scripts)_ component back to _Blaster_
+
+__9.__ Save the Scene
