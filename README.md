@@ -2144,3 +2144,90 @@ __4.__ Return to Enemy_1 script in VS and re-comment out the __print()__ line to
 ```
 
 __5.__ Save the _Enemy_1_ script
+
+
+## Enemy_2
+__1.__ Select the _Enemy_2_ prefab in the __Prefabs_ folder of the Project pane
+
+__2.__ In the Enemy_2 prefab BoundsCheck Inspector
+* __boundsType__ = _outset_
+* __radius__ = _3_
+* __keepOnScreen__ = _false_
+
+__3.__ Open the _Enemy_2_ C# script in VS and enter the code
+
+```cs
+// Enemy_2.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  public class Enemy_2 : Enemy {
+    [Header("Enemy_2 Inscribed Fields")]
+    public float    lifeTime = 10;
+
+    // Enemy_2 uses a Sine wave to modify a 2-point linear interpolation
+    [Tooltip("Determines how much the Sine wave will ease the interpolation")]
+    public float    sinEccentricity = 0.6f;
+
+    [Header("Enemy_2 Private Fields")]
+    [SerializedField] private float    birthTime;    // Interpolation start time
+    [SerializeField] private Vector3    p0, p1;      // Lerp_points
+
+
+    void Start() {
+      // Pick any point on the left side of the screen
+      p0 = Vector3.zero;
+      p0.x = -bndCheck.camWidth - bndCheck.radius;
+      p0.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+      // Pick any point on the right side of the screen
+      p1 = Vector3.zero
+      p1.x = bndCheck.camWidth + bndCheck.radius;
+      p1.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+      // Possibly swap sides
+      if (Random.value > 0.5f) {
+        // Set the .x of each point to its negative will move it to the other side of the screen
+        p0.x *= -1;
+        p1.x *= -1;
+      }
+
+      // Set the birthTime to the current time
+      birthTime = Time.time;
+    }
+
+
+    public override void Move() {
+      // Linear interpolations work based on a u value between 0 & 1
+      float u = (Time.time - birthTime) / lifeTime;
+
+      // if u > 1, then it has been longer than lifeTime since brithTime
+      if (u > 1) {
+        // This Enemy_2 has finished its life
+        Destroy(this.gameObject);
+        return;
+      }
+
+      // Adjust u by adding a U curve based on a Sine wave
+      u = u + sinEccentricity*(Mathf.Sin(u*Mathf.PI*2));
+
+      // Interpolate the two linear interpolation points
+      pos = (1 - u) * p0 + u * p1;
+
+      // Note that Enemy_2 doe NOT call the base.Move() method
+    }
+
+
+    /*
+      void Update() {...}
+    */
+  }
+```
+
+__4.__ In the _MainCamera _Main (Script)_ Inspector, swap the Enemy_2 prefab into the _Enemy_0_ slot of __Main.prefabEnemies__ and click _Play_
+
+__5.__ While in playm mode adjust the easing curve __sinEccentricity__ value on the _Enemy_2_ prefab to see how it effects the motion
+
+__6.__ Click _Play_ again to stop playback
