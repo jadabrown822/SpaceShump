@@ -2738,3 +2738,72 @@ __3.__ Open the _Weapon_ script in VS and enter the code
 
   }
 ```
+
+
+## The Serializable WeaponDefinition Class
+__1.__ Open the Weapon script and enter the code
+
+```cs
+// Weapon.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  /*
+    This is an enum of the various possible weapon types
+    It also includes a "shield" type to allow a chield PowerUp
+    Items marked [NI] below are Not Implemented
+  */
+
+  public enum eWeaponType {
+    none,        // The default / no weapon
+    blaster,    // A simple blaster
+    spread,      // Multiple shots simultaneously
+    phaser,      // [NI] Shots that move in waves
+    missile,    // [NI] Homin missiles
+    laser,      // [NI] Damage over time
+    shield      // Raise shieldLevel
+  }
+
+  /*
+    The WeaponDefinition class allow to set the properties
+      of a specific weapon in the Inspector. The main class has
+      an array of WeaponDefinitions that make this possible
+  */
+  [System.Serializable]
+  public class WeaponDefinition {
+    public eWeaponType    type = eWeaponType.none;
+
+    [Tooltip("Letter to show on the PowerUp Cube")]
+    public string    letter;
+
+    [Tooltip("Color of PowerUp Cube")]
+    public Color    powerUpColor = Color.white;
+
+    [Tooltip("Prefab of Weapon model that is attached to the Player Ship")]
+    public GameObject    weaponModelPrefab;
+
+    [Tooltip("Prefab of the Projectile that is fired")]
+    public GameObject    projectilePrefab;
+
+    [Tooltip("Color of the Projectile that is fired")]
+    public Color    projectileColor = Color.white;
+
+    [Tooltip("Damage caused when a single Projectile hits an Enemy")]
+    public float    damageOnHit = 0;
+
+    [Tooltip("Damage caused per second by a Laser [Not Implemented]")]
+    public float    damagePerSec = 0;
+
+    [Tooltip("Seconds to delay between shots")]
+    public float     delayBetweenShots = 0;
+
+    [Tooltip("Velocity of individual Projectiles")]
+    public float    velocity = 50;
+  }
+
+  public class Weapon : MonoBehaviour {
+
+  }
+```
