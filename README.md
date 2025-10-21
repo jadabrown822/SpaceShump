@@ -132,7 +132,7 @@ __1.__ Open the _Hero_ C# script in VS and enter the code
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -263,7 +263,7 @@ __2.__ Open the BoundsCheck script and add the code
   public class BoundsCheck : MonoBehaviour {
     [Header("Dynamic")]
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -321,7 +321,7 @@ __4.__ Open BoundsCheck in VS and enter code
   
     [Header("Dynamic")]
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -522,7 +522,7 @@ __9.__ To have the option to either allow Enemy_0 to go off screen or restrict i
     [Header("Dynamic")]
     public bool isOnScreen = true;
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -675,7 +675,7 @@ __4.__ Modify the BoundsCheck script
     public eSceenLoc screenLocs = eScreenLocs.onScreen;
     public bool isOnScreen = true;
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -762,7 +762,7 @@ __6.__ Modify the BoundsCheck script by adding code
     public eSceenLoc screenLocs = eScreenLocs.onScreen;
     // public bool isOnScreen = true;
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -867,7 +867,7 @@ __8.__ Add the __LocIs()__ method code to the end of BoundsCheck
     public eSceenLoc screenLocs = eScreenLocs.onScreen;
     // public bool isOnScreen = true;
     public float camWidth;
-    public flaot camHeight;
+    public float camHeight;
   
   
     void Awake() {
@@ -1169,7 +1169,7 @@ __2.__ Open the _Hero_ C# scipt in VS and add code
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -1231,7 +1231,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -1309,7 +1309,7 @@ __5.__ In the Hero class change code
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -1479,7 +1479,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -1629,7 +1629,7 @@ __1.__ Open the _Hero_ C# script and add code
       float vAxis = Input.GetAxis("Vertical");
   
       // change transfor.position based on the axis
-      Vecotr3 pos = transform.position;
+      Vector3 pos = transform.position;
       pos.x += hAxis * speed * Time.deltaTime;
       pos.y += vAxis * speed * Time.deltaTime;
       transform.position = pos;
@@ -3211,3 +3211,134 @@ __2.__ Match code for the ProjectHero class to match code
     /*
   }
 ```
+
+
+## Using a Delegate Event to Fire
+__1.__ Delegates are like nicknames for one or more functions that can be called with a single call to a delegate
+
+__2.__ Add the following code to the _Hero_ class
+
+```cs
+// Hero.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  
+  public class Hero: MonoBehaviour {
+    static public Hero    S {get; private set;}    // Singleton property
+  
+    [Header("Inscribed")]
+    // These fields control the movement of the ship
+    public float    speed = 30;
+    public float    rollMult = -45;
+    public float    pitchMult = 30;
+    public GameObject    projectilePrefab;
+    public float    projectileSpeed = 40;
+  
+    [Header("Dynamic)]    [Range(0,4)]    [SerialField]
+    private float _shieldLevel = 1;
+    // public float    ShieldLevel = 1;
+    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    private GameObject lastTriggerGo = null;
+    // Declare a new delegate type WeaponFireDelegate
+    public delegate void WeaponFireDelegate();
+    // Create a WeaponFireDelegate event named fireEvent
+    public even WeaponFireDelegate fireEvent;
+  
+  
+    void Awake() {
+      if (S == null) {
+        S = this;    // Set the Singleton onlly if it's null
+      }
+      else {
+        Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
+      }
+
+      fireEvent += TempFire;
+    }
+  
+  
+    void Update() {
+      // Pull in information from the Input class
+      float hAxis = Input.GetAxis("Horizontal");
+      float vAxis = Input.GetAxis("Vertical");
+  
+      // change transfor.position based on the axis
+      Vector3 pos = transform.position;
+      pos.x += hAxis * speed * Time.deltaTime;
+      pos.y += vAxis * speed * Time.deltaTime;
+      transform.position = pos;
+  
+      // Rotate the ship to make it feel more dynamic
+      transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
+
+      /*
+          // Allow the ship to fire
+          if(Input.GetKeyDown(KeyCode.Space)) {
+            TempFire();
+          }
+      */
+
+      // Use the fireEvent to fire Weapons when the Spacebar is pressed
+      if (Input.GetAxis("Jump") == 1 && fireEvent != null) {
+            fireEvent();
+      }
+    }
+
+
+    void TempFire() {
+      GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+      projGO.transform.position = transform.position;
+      Rigidbody rigidB = projGO.GetComponent<RigidBody>();
+      // rigidB.velocity = Vector3.up * projectileSpeed;
+
+      ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
+      proj.type = eWeaponType.blaster;
+      float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
+      rigidB.velocity = Vector3.up * tSpeed;
+    }
+
+
+    void OnTriggerEnter(Collider other) {
+      Transform rootT = other.gameObeject.transform.root;
+      GameObject fo = rootT.gameObject;
+      // Debug.Log("Shield trigger hit by: ") +go.gmaeObject.name;
+
+      // Make sure it's not the same trigger fo as last time
+      if (go == lastTriggerGo) return;
+      lastTriggerGo = go;
+
+      Enemy enemy = go.GetComponent<Enemy>();
+      if (enemy != null) {    // If the shield was triggered by an enemy
+        shieldLevel--;        // Decreases the level of the shield by 1
+        Destroy(go);          // ... and Destroy the enemy
+      }
+      else {
+        Debug.LogWarning("Shield trigger hit by non-Enemy: " + go.name);
+      }
+    }
+
+
+    public float shieldLevel {
+      get {return (_shieldLevel);}
+      private set {
+        _shieldLevel = Mathf.Min(value, 4);
+
+        // If the shield is going to be set to less than zero
+        if (value < 0) {
+          Destroy(this.gameObject);    // Destroy the Hero
+          Main.HERO_DIED();
+        }
+      }
+    }
+  
+    /*
+      void Start() {...}
+    */
+}
+```
+
+__3.__ Please _Save All_ in VS and then return to Unity
+
+__4.__ Click _Play_ in Unity and try firing
