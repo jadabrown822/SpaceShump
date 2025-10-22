@@ -1638,7 +1638,7 @@ __1.__ Open the _Hero_ C# script and add code
       transform.rotation = Quaternion.Euler(vAxis*pitchMult,hAxis*rullMult,0);
 
       // Allow the ship to fire
-      if(Input.GetKeyDown(KeyCode.Space)) {
+      if (Input.GetKeyDown(KeyCode.Space)) {
         TempFire();
       }
     }
@@ -1717,7 +1717,7 @@ __1.__ Open the _ProjectileHero_ C# script and add code
 
 
     void Update() {
-      if(bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
+      if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
         Destroy(gameObject);
       }
     }
@@ -1796,7 +1796,7 @@ __1.__ Open the _Enemy_ C# script and make changes
 
     void OnCollisionEnter(Collision coll) {
       GameObject otherGO = coll.gameObject;
-      if(otherGO.GetComponent<ProjectileHero>() != null) {
+      if (otherGO.GetComponent<ProjectileHero>() != null) {
         Destroy(otherGO);      // Destroy the Projectile
         Destroy(gameObject);    // Destroy this Enemy GameObject
       }
@@ -2066,7 +2066,7 @@ __2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___pr
 
     void OnCollisionEnter(Collision coll) {
       GameObject otherGO = coll.gameObject;
-      if(otherGO.GetComponent<ProjectileHero>() != null) {
+      if (otherGO.GetComponent<ProjectileHero>() != null) {
         Destroy(otherGO);      // Destroy the Projectile
         Destroy(gameObject);    // Destroy this Enemy GameObject
       }
@@ -3181,7 +3181,7 @@ __2.__ Match code for the ProjectileHero class to match code
 
 
     void Update() {
-      if(bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
+      if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp)) {
         Destroy(gameObject);
       }
     }
@@ -3275,7 +3275,7 @@ __2.__ Add the following code to the _Hero_ class
 
       /*
           // Allow the ship to fire
-          if(Input.GetKeyDown(KeyCode.Space)) {
+          if (Input.GetKeyDown(KeyCode.Space)) {
             TempFire();
           }
       */
@@ -3428,7 +3428,7 @@ __1.__ Start by disabling the __fireEvent__ use of the __TempFire()__ method in 
 
       /*
           // Allow the ship to fire
-          if(Input.GetKeyDown(KeyCode.Space)) {
+          if (Input.GetKeyDown(KeyCode.Space)) {
             TempFire();
           }
       */
@@ -3744,7 +3744,7 @@ __2.__ Replace the old __OnCollissionEnter()__ method with code
     /*
         void OnCollisionEnter(Collision coll) {
           GameObject otherGO = coll.gameObject;
-          if(otherGO.GetComponent<ProjectileHero>() != null) {
+          if (otherGO.GetComponent<ProjectileHero>() != null) {
             Destroy(otherGO);      // Destroy the Projectile
             Destroy(gameObject);    // Destroy this Enemy GameObject
           }
@@ -3847,7 +3847,7 @@ __1.__ Open the _Utils_ script in VS and enter code
       Renderer[] rends = go.GetComponentsInChildren<Renderer>();
 
       Materials[] mats = new Material[rends.Length];
-      for (int i=0; i < rends.Length; i++) {
+      for (int i = 0; i < rends.Length; i++) {
         mats[i] = rends[i].material;
       }
 
@@ -3861,3 +3861,100 @@ __1.__ Open the _Utils_ script in VS and enter code
     */
   }
 ```
+
+
+## Using GetAllMeterials to Make the Enemy Blink Red
+__1.__ Create a new C# script named _BlinkColorOnHit_ and place it in the __Scripts folder
+
+__2.__ Open the _BlinkColorOnHit_ script in VS and enter the code
+
+```cs
+// BlinkColorOnHit.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [DisallowMultipleComponent]
+
+  public class BlinkColorOnHit : MonoBehaviour {
+    private static float blinkDuration = 0.1;    // # seconds to show damage
+    private static Color blinkColor = Color.red;
+
+    [Header("Dynamic")]
+    public bool    showingColor = false;
+    public float    blinkCompleteTime;    // Time to stop showing the color
+
+    private Material[]    materials;    // All the Materials of this & its children
+    private Color[]    originalColors;
+    private BoundsCheck    bndCheck;
+
+
+    void Awake() {
+      bndCheck = GetComponentInParent<BoundsCheck>();
+
+      // Get materials and colors for this GameObject and its children
+      materials = Utils.GetAllaterials(gameObject);
+      originalColors = new Color(materials.Length);
+      for (int i = 0; i < materials.Length; i++) {
+        originalColors[i] = materials[i].color;
+      }
+    }
+
+
+    /*
+      void Start() {...}
+    */
+
+
+    void Update() {
+      if (showingColor && Time.time > blinkCompleteTime) {RevertColors();}
+    }
+
+
+    void OnCollisionEnter(Collision coll) {
+      // Check for collisions with ProjecitleHero
+      ProjectileHero p = coll.gameObject.GetComponent<ProjectileHero>();
+
+      if (p != null) {
+        if (bndCheck != null && !bndCheck.isOnScreen) {
+          return;    // Don't show damage if this is off screen
+        }
+
+        SetColors();
+      }
+    }
+
+
+    /*
+      Sets the Albedo color (i.e., the main color) of all materials in the
+        materials array to blinkColor, set showingColor to true, and sets the
+        time that the colrs should be reverted
+    */
+    void SetColors() {
+      foreach (Material m in materials) {
+        m.color = blinkColor;
+      }
+
+      showingColor = true;
+      blinkCompleteTime = Time.time + blinkDuration;
+    }
+
+
+    /*
+      Reverts all material in the material array back to their original color
+        and sets showingColor to false
+    */
+    void RevertColors() {
+      for (int i = 0; i < materials.Length; i++) {
+        materials[i].color = originalColors[i];
+      }
+
+      showingColor = false;
+    }
+  }
+```
+
+__3.__ _Save All_ scripts in VS and return to Unity
+
+__4.__ Select __MainCamera_ in the Hierarchy and ensure that the Enemy_0 prefabis assigned to _Emenet_0_ of the __prefabEnemeies__ array of the _Main (Script)_ component
