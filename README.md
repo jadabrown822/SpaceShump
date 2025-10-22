@@ -4003,7 +4003,7 @@ __3.__ Set the _TextMesh_ component properties of PowerUp:
 
 __4.__ Add a _Rigidbody_ component to _PowerUp_ (_Component > Physics > Rigidbody_) and set it to
 * __Angular Drag:__ 0
-* __Use Gravity:__ :white_square:
+* __Use Gravity:__ :white_large_square:
 * __Freeze Position Z:__ :heavy_check_mark:
 
 __5.__ Set both _Physics Layer_ of PowerUp to _PowerUp_
