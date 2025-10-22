@@ -433,7 +433,7 @@ __3.__ Open the _Enemy_ script in VS and enter the code
   using System.Collections.Generic;
   using UnityEngine;
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;    // Seconds/shot (Unused)
@@ -590,7 +590,7 @@ __3.__ Add the code to the Enemy script to manage this destruction:
 
   [RequireComponent(typeof(BoundsCheck))]
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;    // Seconds/shot (Unused)
@@ -946,7 +946,7 @@ __9.__ Make changes to the Enemy script
 
   [RequireComponent(typeof(BoundsCheck))]
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
@@ -1211,7 +1211,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
   
     [Header("Dynamic)]  [Range(0,4)]
     public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
   
@@ -1289,7 +1289,7 @@ __5.__ In the Hero class change code
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
     // public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
   
@@ -1459,7 +1459,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
     // public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
   
@@ -1609,7 +1609,7 @@ __1.__ Open the _Hero_ C# script and add code
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
     // public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
   
@@ -1744,7 +1744,7 @@ __1.__ Open the _Enemy_ C# script and make changes
 
   [RequireComponent(typeof(BoundsCheck))]
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
@@ -2014,7 +2014,7 @@ __2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___pr
 
   [RequireComponent(typeof(BoundsCheck))]
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
@@ -2452,7 +2452,7 @@ __2.__ Open the _Utiles_ script in VS and enter code
 ```cs
 // Utils.cs
 
-  using SystemCollections;
+  using System.Collections;
   using System.Collections.Generic;
   using UntiyEngine;
 
@@ -3239,7 +3239,7 @@ __2.__ Add the following code to the _Hero_ class
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
     // public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
     // Declare a new delegate type WeaponFireDelegate
     public delegate void WeaponFireDelegate();
@@ -3392,7 +3392,7 @@ __1.__ Start by disabling the __fireEvent__ use of the __TempFire()__ method in 
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
     // public float    shieldLevel = 1;
-    [Tooltip("This field holds a refernece tothe last triggering GameObject")]
+    [Tooltip("This field holds a reference tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
     // Declare a new delegate type WeaponFireDelegate
     public delegate void WeaponFireDelegate();
@@ -3692,7 +3692,7 @@ __2.__ Replace the old __OnCollissionEnter()__ method with code
 
   [RequireComponent(typeof(BoundsCheck))]
   
-  public class Enemy : Monobehaviour {
+  public class Enemy : MonoBehaviour {
     [Header("Inscribed)]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
@@ -3799,7 +3799,7 @@ __1.__ Open the _Utils_ script in VS and enter code
 ```cs
 // Utils.cs
 
-  using SystemCollections;
+  using System.Collections;
   using System.Collections.Generic;
   using UntiyEngine;
 
@@ -4032,3 +4032,68 @@ __8.__ Create a custom material for the PowerUp cube, as follows:
 > __f.__ Set the _Main Color_ of Mat_PowerUp to cyan (RGBA:[0, 255, 255, 255])
 
 __9.__ Save the scene
+
+
+## PowerUp Code
+__1.__ Select the _PowerUp_ GameObject in the Hierarchy
+> __a.__ Attach a _BoundsCheck (Script)_ component to the _PowerUp_ GameObject
+>
+> __b.__ Set the BoundsCheck __boundsType__ = _Inset_, __radius__ = _1_, and __keepOnScreen__ = _true_. These values will keep the PowerUp on screen as long as it exists
+
+__2.__ Create a new C# script named _PowerUp_ in the ___Scripts_ folder
+
+__3.__ Attached the _PowerUp_ script to the _PowerUp_ GameObject in the Hierarchy
+
+__4.__ Open the _PowerUp_ script in VS and enter the code
+
+```cs
+// PowerUp.cs
+
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    [RequireComponent(typeof(BoundsCheck))]
+
+    public class PowerUp : MonoBehaviour {
+        [Header("Inscribed")]
+        // This is an unusual but handy use of Vector2s
+        [Tooltip("x holds a min value and y a max value for a Random.Range() call")]
+        public Vector2      rotMinMax = new Vector2(15, 90);
+        [Tooltip("x holds a min value and y a max value for a Random.Range() call")]
+        public Vector2      driftMinMax = new Vector2(.25f, 2);
+        public float        lifeTime = 10;      // PoerUp will exist for # seconds
+        public float        fadeTime = 4;       // Then it fades over # seconds
+
+        [Header("Dynamic")]
+        public eWeaponType      type;               // The type of the PowerUp
+        public GameObject       cube;               // Reference to the PowerCube child
+        public TextMesh         letter;             // Reference to the TextMesh
+        public Vector3          rotPerSecond;       // Euler rotation speed for PowerCube
+        public float            birthTime;          // The Time.time this was instantiated
+
+        private Rigidbody       rigid;
+        private BoundsCheck     bndCheck;
+        private Material        cubeMat;
+
+
+        void Awake() {
+            // Find the Cube reference (there's only a single child)
+            cube = transform.GetChild(0).gameObject;
+
+            // Find the TextMesh and other components
+            letter = GetComponent<TextMesh>();
+            rigid = GetComponent<RigidBody>();
+            bndCheck = GetComponent<BoundsCheck>();
+            cubeMat = cube.GetComponent<Renderer>().material;
+
+            // Set a random velocity
+            Vector3 vel = Random.onUnitSphere;       // Get Random XYZ velocity
+            vel.z = 0;      // Flatten the vel to the XY plane
+            vel.Normalize();        // Normalizing a Vecotr set its length to 1m
+
+            vel *= Random.Range(driftMinMax.x, driftMinMax.y);
+            rigid.velocity = vel;
+        }
+    }
+```
