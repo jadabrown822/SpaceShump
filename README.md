@@ -113,7 +113,7 @@ __1.__ Open the _Hero_ C# script in VS and enter the code
     public float    pitchMult = 30;
   
     [Header("Dynamic)]  [Range(0,4)]
-    public float    ShieldLevel = 1;
+    public float    shieldLevel = 1;
   
   
     void Awake() {
@@ -1150,7 +1150,7 @@ __2.__ Open the _Hero_ C# Script in VS and add code
     public float    pitchMult = 30;
   
     [Header("Dynamic)]  [Range(0,4)]
-    public float    ShieldLevel = 1;
+    public float    shieldLevel = 1;
   
   
     void Awake() {
@@ -1210,7 +1210,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
     public float    pitchMult = 30;
   
     [Header("Dynamic)]  [Range(0,4)]
-    public float    ShieldLevel = 1;
+    public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
@@ -1288,7 +1288,7 @@ __5.__ In the Hero class change code
   
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
-    // public float    ShieldLevel = 1;
+    // public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
@@ -1458,7 +1458,7 @@ __2.__ Add the called to __Main.HERO_DIED()__ to the Hero script
   
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
-    // public float    ShieldLevel = 1;
+    // public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
@@ -1554,7 +1554,7 @@ __3.__ Create a new material named _Mat_Projectile_:
 >
 > __c.__ Assign _Mat_Projectile_ to the _ProjectileHero_ GameObject in the Hierarchy
 
-__4.__ Select _ProjectileHero_ in the Hierarchy and add a _Ridigbody_ component with these settings:
+__4.__ Select _ProjectileHero_ in the Hierarchy and add a _Rigidbody_ component with these settings:
 > __a.__ _Use Gravity_ to _false_ (unchecked)
 >
 > __b.__ _isKinematic_ to _false_ (unchecked)
@@ -1608,7 +1608,7 @@ __1.__ Open the _Hero_ C# script and add code
   
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
-    // public float    ShieldLevel = 1;
+    // public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
   
@@ -3238,7 +3238,7 @@ __2.__ Add the following code to the _Hero_ class
   
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
-    // public float    ShieldLevel = 1;
+    // public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
     // Declare a new delegate type WeaponFireDelegate
@@ -3344,7 +3344,7 @@ __3.__ Please _Save All_ in VS and then return to Unity
 __4.__ Click _Play_ in Unity and try firing
 
 
-## Createing a Weapon GameObject to Fire Projectiles
+## Creating a Weapon GameObject to Fire Projectiles
 __1.__ In the Hierarchy, create an empty GameObject, name it _Weapon_, and giv it the following transforms and empty child named _ShotPoint_.
 * Weapon (Empty)
     * P:[0, 0, 0]
@@ -3391,7 +3391,7 @@ __1.__ Start by disabling the __fireEvent__ use of the __TempFire()__ method in 
   
     [Header("Dynamic)]    [Range(0,4)]    [SerialField]
     private float _shieldLevel = 1;
-    // public float    ShieldLevel = 1;
+    // public float    shieldLevel = 1;
     [Tooltip("This field holds a refernece tothe last triggering GameObject")]
     private GameObject lastTriggerGo = null;
     // Declare a new delegate type WeaponFireDelegate
@@ -3975,3 +3975,60 @@ __9.__ It's time to apply the __BlinkColorOnHit__ script to all Enemy_# prefabs:
 > __c.__ From the main Unity menu, choose _Component > Scripts > Blink Color On Hit_
 
 __10.__ Save the project
+
+
+# Adding PowerUps and Boosting Weapons
+* __blaster [B]:__ If the player weapon type is not blaster, this switches to blaster and resets the ship to have only a single gun. If the player weapon type is already blaster, it increases the number of guns
+* __spread [S]:__ If the player weapon type is not spread, this switched to spread and resets the ship to have only a single gun. If the player weapon type is already spread, it increases the number of guns
+* __shield [O]:__ This increases the player's shieldLevel by 1
+
+
+## Artword for the PowerUp GameObject
+__1.__ Create a new 3D Text (_GameObject > 3D Object > 3D Text_ from the menu bar; it's at the very bottom of the 3D Object options)
+
+__2.__ Rename the _NewText_ GameObject to _PowerUp_ and give it the following settings:
+* P:[10, 0, 0]
+* R:[0, 0, 0]
+* S:[1, 1, 1]
+
+__3.__ Set the _TextMesh_ component properties of PowerUp:
+* P:[10, 0, 0]
+* __Text:__ M
+* __Offset Z:__ -2
+* __Character Size:__ 0.5
+* __Anchor:__ Middle center
+* __Alignment:__ Center
+* __Font Size:__ 38
+* __Font Style:__ Bold
+
+__4.__ Add a _Rigidbody_ component to _PowerUp_ (_Component > Physics > Rigidbody_) and set it to
+* __Angular Drag:__ 0
+* __Use Gravity:__ :white_square:
+* __Freeze Position Z:__ :heavy_check_mark:
+
+__5.__ Set both _Physics Layer_ of PowerUp to _PowerUp_
+
+__6.__ Create a new _Cube_ that is a child of _PowerUp_
+> __a.__ Rename the _Cube_ to _PowerCube_
+
+> __b.__ Assign _PowerCube_ the following settings:
+> * P:[0, 0, 0]
+> * R:[0, 0, 0]
+> * S:[2, 2, 2]
+
+__7.__ Srt the _Physics Layer_ of _PowerCube_ to _PowerUp_
+
+__8.__ Create a custom material for the PowerUp cube, as follows:
+> __a.__ Create a new Material named _Mat_PowerUp_ inside the _Materials folder
+>
+> __b.__ Drag the _Mat_PowerUp_ Material onto _PowerCube_ (the child of PowerUp)
+>
+> __c.__ Select _PowerCube_
+>
+> __d.__ Set the _Shader_ of _Mat_PowerUp_ to _ProtoTools > UnlitAlpha_
+>
+> __e.__ Click the _Select_ button at the bottom right of the texture box for Mat_PowerUp and choose the texture named _PowerUp_ from the Assets tab
+>
+> __f.__ Set the _Main Color_ of Mat_PowerUp to cyan (RGBA:[0, 255, 255, 255])
+
+__9.__ Save the scene
