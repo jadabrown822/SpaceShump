@@ -3790,3 +3790,7 @@ __3.__ Save the _Enemy_ script and return to Unity
 __4.__ Select __MainCamera_ in the Hierarchy and set _Element_0_ of the __prefabEnemies__ array of the _Main (Script)_ component to the Enemy_0 prefab
 
 __5.__ Save scene and click _Play_ in Unity
+
+
+# Showing Enemy Damage
+## Adding GetAllMaterials to the Utils Script
