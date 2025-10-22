@@ -420,7 +420,7 @@ __7.__ Drag _Enemy_0_ from the Hierarchy into the __Prefabs_ folder int he Proje
 __1.__ Create a new C# script named _Enemy_ and place it into the ___Scripts_ folder
 
 __2.__ Attach the Enemy script to the Enemy_0 prefab:
-> __a.__ Select _Enemy_0_ in the Projcet pane
+> __a.__ Select _Enemy_0_ in the Project pane
 >
 > __b.__ In the Inspector for Enemy_0, click the _Add Component_ button and choose _Scripts > Enemy_ from the pop-up menu
 
@@ -3957,4 +3957,21 @@ __2.__ Open the _BlinkColorOnHit_ script in VS and enter the code
 
 __3.__ _Save All_ scripts in VS and return to Unity
 
-__4.__ Select __MainCamera_ in the Hierarchy and ensure that the Enemy_0 prefabis assigned to _Emenet_0_ of the __prefabEnemeies__ array of the _Main (Script)_ component
+__4.__ Select __MainCamera_ in the Hierarchy and ensure that the Enemy_0 prefabs assigned to _Emenet_0_ of the __prefabEnemies__ array of the _Main (Script)_ component
+
+__5.__ Click the name _Enemy_0_ in the _Element_0_ position of the __prefabEnemies__ array of the _Main (Script)_ component. This highlights the Enemy_0 prefab in the Project pane
+
+__6.__ Select _Enemy_0_ in the _Prefabs folder of the Project pane
+
+__7.__ Add the _BlinkColorOnHit_ script to the Enemy_0 prefab by choosing _Component > Scripts> Blink Color On Hit_ from the main Unity menu, and confirm that it was added in the Inspector
+
+__8.__ Click _Play_ in Unity to test the game
+
+__9.__ It's time to apply the __BlinkColorOnHit__ script to all Enemy_# prefabs:
+> __a.__ Select _Enemy_0_ in the _Prefabs folder of the Project pane
+>
+> __b.__ Hold Shift and click _Enemy_4_ in the _Prefabs folder. This selects all five Enemy_# prefabs
+>
+> __c.__ From the main Unity menu, choose _Component > Scripts > Blink Color On Hit_
+
+__10.__ Save the project
