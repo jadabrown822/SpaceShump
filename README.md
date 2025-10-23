@@ -217,7 +217,7 @@ __9.__ Open the _Shield_ script in VS and enter the code
   
   
     void Update() {
-      // Read the current shield level form the Hero Singleton
+      // Read the current shield level from the Hero Singleton
       int currLEvel = Mathf.FloorToInt(Hero.S.shieldLevel);
   
       // If this is different from levelShown...
@@ -1561,7 +1561,7 @@ __4.__ Select _ProjectileHero_ in the Hierarchy and add a _Rigidbody_ component 
 >
 > __c.__ _Constraints_: _Freeze Position Z_ and _Freeze Rotation X, Y_ and _Z_ (by checking them)
 
-__5.__On the PorjectileHero GameObject's Box Collider component, set _Size.Z_ to _10_. This ensures that the projectile is able to hit anything that is slighty off of the XY (i.e. Z = 0) plane
+__5.__On the ProjectileHero GameObject's Box Collider component, set _Size.Z_ to _10_. This ensures that the projectile is able to hit anything that is slighty off of the XY (i.e. Z = 0) plane
 
 __6.__ Create a new C# script named _ProjectileHero_
 > __a.__ Move the _ProjectileHero_ script into the ___Scripts_ folder
@@ -1732,7 +1732,7 @@ __1.__ Open the _ProjectileHero_ C# script and add code
 __2.__ Save both this script and scene
 
 
-## Allowing Porjectiles to Destroy Enemies
+## Allowing Projectiles to Destroy Enemies
 __1.__ Open the _Enemy_ C# script and make changes
 
 ```cs
@@ -1920,7 +1920,7 @@ __1.__ Open the Enemy_1 script in VS and enter code
   }
 ```
 
-__3.__ Back in Unity, select __MainCamera_ in the Hierarchy and in the _Main (Script)_ component change _Element_0_ of __prefabEnemies__ form Enemy_0 to Enemy_1. Allows to test with Enemy_1 instead of Enemy
+__3.__ Back in Unity, select __MainCamera_ in the Hierarchy and in the _Main (Script)_ component change _Element_0_ of __prefabEnemies__ from Enemy_0 to Enemy_1. Allows to test with Enemy_1 instead of Enemy
 
 __4.__ Click _Play_
 
@@ -5236,7 +5236,7 @@ __2.__ Open the _EnemyShield_ script in VS and enter the code
   [DisallowMultipleComponent]
   [RequireComponent(typeof(BlinkColorOnHit))]
 
-  public class EnemyShield: MonoBehavior {
+  public class EnemyShield: MonoBehaviour {
     [Header("Inscribed")]
     public float health = 10;
 
@@ -5433,7 +5433,7 @@ __1.__ Open the _Enemy_4_ script in VS
 
     [RequireComponent(typeof(EnemyShield))]
 
-    pubic class Enemy_4 : Enemy {
+    public class Enemy_4 : Enemy {
         private EnemyShield[]       allShields;
         private EnemyShield     thisShield;
 
@@ -5532,7 +5532,7 @@ __1.__ Open the _Enemy_4_ script and input code
 
     [RequireComponent(typeof(EnemyShield))]
 
-    pubic class Enemy_4 : Enemy {
+    public class Enemy_4 : Enemy {
         [Header("Enemy_4 Inscribed Fields")]
         public float        duration = 4;       // Duration of interpolation movement
 
@@ -5665,6 +5665,135 @@ __5.__ After done testing
 
 
 # Tuning Settings for the Game Entites
-* _MainCamera
+* ___MainCamera__
     * __Prefab Enemies:__ 16
         * __Element 0-5:__ Enemy_0
+        * __Element 6-8:__ Enemy_1
+        * __Element 9-11:__ Enemy_2
+        * __Element 12-14:__ Enemy_3
+        * __Element 15:__ Enemy_4
+
+* __Enemy_0__
+    * __powerUpDropChance:__ _0.25_
+    * __boundsType:__ _outset_
+    * __radius:__ _2_
+
+* __Enemy_1__
+    * __powerUpDropChance:__ _0.5_
+    * __boundsType:__ _outset_
+    * __radius:__ _2.5_
+
+* __Enemy_2__
+    * __powerUpDropChance:__ _0.75_
+    * __boundsType:__ _outset_
+    * __radius:__ _3_
+
+* __Enemy_3__
+    * __powerUpDropChance:__ _0.75_
+    * __boundsType:__ _outset_
+    * __radius:__ _3_
+
+* __Enemy_4__
+    * __powerUpDropChance:__ _1_
+    * __boundsType:__ _Inset_
+    * __radius:__ _8_
+
+Save the scene
+
+
+# Adding a Scrolling Starfield Background
+__1.__ Cerate a quad in the Hierarchy (_GameObject > 3D Object > Quad_). Name it _StarfieldBG_
+* P:[0, 0, 10]
+* R:[0, 0, 0]
+* S:[80, 80, 0]
+
+__2.__ Create a new material named _Mat_Starfield_ in the _Materials folder of the Project pane
+> __a.__ Set the _Shader_ of Mat_Starfield to _ProtoTools > UnlitAlpha_
+>
+> __b.__ Set the _texture_ of Mat_Starfield to the _Space_ Texture2D that is in the _Materials folder
+
+__3.__ Drag _Mat_Starfield_ onto StarfieldBG, and should see a starfield behind _Hero ship
+
+__4.__ Select _Mat_Starfield_ in the Project pane and duplicate it
+> __a.__ Name the new material _Mat_Starfield_Transparent_
+> 
+> __b.__ Select _Space_Transparent_ (in the _Materials folder) as the texture for this new material
+
+__5.__ Select _StarfieldBG_ in th Hierarchy and duplicate it
+> __a.__ Name the duplicate _StarfieldFG_0_
+> 
+> __b.__ Drag the _Mat_Starfield_Transparent_ material onto _StarfieldFG_0_
+>
+> __c.__ Set the _StarfieldFG_0 transform_ to:
+> * P:[0, 0, 5]
+> * R:[0, 0, 0]
+> * S:[160, 160, 1]
+
+__6.__ Duplicate _StarfieldFG_0_ and name the duplicate _StarfieldFG_1_
+
+__7.__ Create a new C# script named _Parallax_ in the ___Scripts_ folder and enter the code
+
+```cs
+// Parallax.cs
+
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class Prallax : MonoBehaviour {
+        [Header("Inscribed")]
+        public Transform        playerTrans;        // The player ship
+        public Transform[]        panels;     // The scrolling foregrounds
+        [Tooltip("Speed at which the panels move in Y")]
+        public float        scrollSpeed = -30;
+        [Tooltip("Controls how much panels react to player movement (Default 0.25)")]
+        public float        motionMult = 0.25f;
+
+        private float panelHit;     // Height of eachPanel
+        private float depth;        // Depth of panels (that is, pos.z)
+
+
+        void Start() {
+            panelHit = panels[0].localScale.y;
+            depth = panels[0].position.z;
+
+            // Set initial positions of panels
+            panels[0].position = new Vector3(0,0,depth);
+            panels[1].position = new Vector3(0,panelHit,depth);
+        }
+
+
+        void Update() {
+            float tY, tX=0;
+            tY = Time.time * scrollSpeed % panelHit + (panelHit *0.5f);
+
+            if (playerTrans != null) {
+                tX = -playerTrans.transform.position.x * motionMult;
+                // tY += -poi.transform.position.y * motionMult;
+            }
+
+            // Position panels[0]
+            panels[0].position = new Vector3(tX, tY, depth);
+            // Position panels[1] where needed to make a continuous starfield
+            if (tY >= 0) {
+                panels[1].position = new Vector3(tX, tY -panelHit, depth);
+            }
+            else {
+                panels[1].position = new Vector3(tX, tY +panelHit, depth);
+            }
+        } 
+    }
+```
+
+__8.__ Save the _Parallax_ script and return to Unity
+
+__9.__ Attach the _Parallax_ script to _MainCamera. After it is attached:
+> __a.__ Select __MainCamera_ in the Hierarchy and find the _Parallax (Script)_ component in the Inspector
+>
+> __b.__ Drag __Hero_ from the Hierarchy into the __playerTrans__ field
+>
+> __c.__ Add _StarfieldFG_0_ and _StarfieldFG_1_ to the __panels__ array
+
+__10.__ Click _Play_
+
+__11.__ Save the scene
