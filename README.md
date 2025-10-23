@@ -5202,3 +5202,221 @@ __5.__ __powerUpFrequency__ chould already be set in the Inspector
 __6.__ Select the _PowerUp_ instance in the Hierarchy and delete it
 
 __7.__ Save the Scene
+
+
+# Enemy_4 -- A More Complex Enemy
+## Enemy_4 Prefab Modifications
+__1.__ Double-click the _Enemy_4_ prefab in the __Prefabs_ folder of the Project pane to open the Prefab Editor
+
+__2.__ Open all the _disclosure triangles_ in the Enemy_4 prefab Hierarchy
+
+__3.__ Try dragging _enemy4_shield_Front_ up onto the top-level _Enemy_4_ GameObject, error will pop up
+
+__4.__ Right-click on the _enemy4_ instance in the Hierarchy and choose _Prefab > Unpack_ from the menu. Doing so makes the enemy4 no longer and instance of the enemy4 model in the Project pane but instead part of the Enemy_4 prefab
+
+__5.__ Now that there are no more nested prefabs, try dragging _enemy4_shield_Front_ up onto the top-level _Enemy_4_ GameObject again, and this time it will work
+
+__6.__ Drag the _enemy4_shield_Left_ and _enemy4_shield_Right_ GameObjects onto _enemy4_shield_Front_
+
+__7.__ Select _enemy4_shield_Front_, __Left_, and __Right_ and make sure that each one has a Mesh collider component with Convex checked
+
+
+## Creating the EnemyShield Script
+__1.__ Create a new C# script named _EnemyShield_ and place it in the __Scripts folder
+
+__2.__ Open the _EnemyShield_ script in VS and enter the code
+
+```cs
+// EnemieShield.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [DisallowMultipleComponent]
+  [RequireComponent(typeof(BlinkColorOnHit))]
+
+  public class EnemyShield: MonoBehavior {
+    [Header("Inscribed")]
+    public float health = 10;
+
+    private List<EnemyShield> protectors = new List<EnemieShield>();
+    private BlinkColorOnHit     blinker;
+
+
+    void Start() {
+      blinker = GetComponent<BlinkColorOnHit>();
+      blinker.ignoreOnCollisionEnter = true;    // This will not yet compile
+
+      if (transform.parent == null) {return;}
+      EnemyShield shieldParent = transform.parent.Getcomponent<EnemyShield>();
+      if (shiedlParent != null) {
+        shieldParent.AddProtector(this);
+      }
+    }
+
+
+    /*
+      Called by another Enemyshield to join the protectors of this EnemyShield
+      <param name="shieldChild"> The EnemyShield that will protect this </param>
+    */
+    public void AddProtector (EnemyShield shieldShild) {
+      protectors.Add(shieldChild);
+    }
+
+
+    /*
+      Shortcut for gameObject.activeInHierarchy and gameObject.SetActive()
+    */
+    public bool isActive {
+      get {return gameObject.ActiveInHierarchy;}
+      private set {gameObject.SetActive(value)}
+    }
+
+
+    /*
+      Called by Enemy_4.OnCollisionEnter() & parent's EnemyShields.TakeDamage()
+        to distribute damage to EnemyShield protectors
+      <param name="dmg">The amount of damage to be handled</param>
+      <returns>Any damage not handled by this shield</returns>
+    */
+    public float TakeDamage(float dmg) {
+      // Can we pass damage to a protector EnemyShield?
+      foreach (EnemyShield es in protectors) {
+        if (es.isActive) {
+          dmg = es.TakeDamage(dmg);
+          // If all damage was handled, return 0 damage
+          if (dmg == 0) {return 0;}
+        }
+      }
+
+      /*
+        If the code gets here, then this EnemyShield will blink & take Damage
+        Make the blinker blink
+      */
+      blinker.SetColors();    // This will appear underlined in red for now
+  
+      health -= dmg;
+      if (health <= 0) {
+        // Deactivate this EnemyShield GameObject
+        isActive = false;
+  
+        // Return any damage that was not absorbed by this EnemyShield
+        return -health;
+      }
+  
+      return 0;
+    }
+  }
+```
+
+__2.__ Open the __BlinkColorOnHit__ script in VS and add lines
+
+```cs
+// BlinkColorOnHit.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [DisallowMultipleComponent]
+
+  public class BlinkColorOnHit : MonoBehaviour {
+    private static float blinkDuration = 0.1;    // # seconds to show damage
+    private static Color blinkColor = Color.red;
+
+    [Header("Dynamic")]
+    public bool    showingColor = false;
+    public float    blinkCompleteTime;    // Time to stop showing the color
+    public bool    ignorOnCollisionEnter = false;
+
+    private Material[]    materials;    // All the Materials of this & its children
+    private Color[]    originalColors;
+    private BoundsCheck    bndCheck;
+
+
+    void Awake() {
+      bndCheck = GetComponentInParent<BoundsCheck>();
+
+      // Get materials and colors for this GameObject and its children
+      materials = Utils.GetAllaterials(gameObject);
+      originalColors = new Color(materials.Length);
+      for (int i = 0; i < materials.Length; i++) {
+        originalColors[i] = materials[i].color;
+      }
+    }
+
+
+    /*
+      void Start() {...}
+    */
+
+
+    void Update() {
+      if (showingColor && Time.time > blinkCompleteTime) {RevertColors();}
+    }
+
+
+    void OnCollisionEnter(Collision coll) {
+      if (ignoreOnCollisionEnter) {return;}
+
+      // Check for collisions with ProjecitleHero
+      ProjectileHero p = coll.gameObject.GetComponent<ProjectileHero>();
+
+      if (p != null) {
+        if (bndCheck != null && !bndCheck.isOnScreen) {
+          return;    // Don't show damage if this is off screen
+        }
+
+        SetColors();
+      }
+    }
+
+
+    /*
+      Sets the Albedo color (i.e., the main color) of all materials in the
+        materials array to blinkColor, set showingColor to true, and sets the
+        time that the colrs should be reverted
+    */
+    public void SetColors() {
+      foreach (Material m in materials) {
+        m.color = blinkColor;
+      }
+
+      showingColor = true;
+      blinkCompleteTime = Time.time + blinkDuration;
+    }
+
+
+    /*
+      Reverts all material in the material array back to their original color
+        and sets showingColor to false
+    */
+    void RevertColors() {
+      for (int i = 0; i < materials.Length; i++) {
+        materials[i].color = originalColors[i];
+      }
+
+      showingColor = false;
+    }
+  }
+```
+
+__3.__ _Save All_ scripts in VS and return to Unity
+
+__4.__ Attach an EnemyShield script to Enemy_4 as well as each of its shield children
+> __a.__ Double-click _Enemy_4_ in the __Prefabs_ folder of the Project pane to enter the Enemy_4 Prefab Editor
+>
+> __b.__ Select the _Enemy_4_ root GameObject of the Enemy_4 prefab in the Hierarchy pane
+>
+> __c.__ Hold Ctrl and click _enemy4_shield_Front_ in the _Enemy_4_ Hierarchy. This adds it to the selection
+>
+> __d.__ Hold Ctrl and click _enemy4_shield_Left_
+>
+> __e.__ Hold Ctrl and click _enemy4_shield_Right_. Four GameObjects should be selected
+>
+> __f.__ From the main Unity menu, choose _Component > Scripts > EnemyShield_. This adds both EnemyShield and BlinkColorOnHit component to all four GameObjects
+
+__5.__ Click the __<__ to teh left of the _Enemy_4_ title at the top of the Hierarchy pane to return to the Scene Hierarchy
+
+__6.__ Save the scene and project (_File > Save Project_)
