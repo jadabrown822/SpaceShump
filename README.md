@@ -5181,3 +5181,24 @@ __2.__ To give Enemies the __powerUpDropChance__ field and make them call __Main
     */
   }
 ```
+
+__3.__ _Save All_ in VS and return to Unity
+
+__4.__ Select __MainCamera_ in the Hierarchy and assign the _PowerUp_ prefab from the _Prefabs folder in the Project pane to the __prefabPowerUp__ field of the _Main (Script)_ component of _MainCamera (it appears in the Inspector just above __weaponDefinitions__)
+
+__5.__ __powerUpFrequency__ chould already be set in the Inspector
+* __Element 0:__ Enemy_0
+* __Enemy Spawn Per Second:__ 0.5
+* __Enemy Insert Default:__ 1.5
+* __Game Restart Delay__ 2
+* __Prefab Power Up:__ PowerUp
+* __Weapon Definitions:__ 3
+* __Power Up Frequency:__ 4
+  * __Element 0:__ Blaster
+  * __Element 1:__ Blaster
+  * __Element 2:__ Spread
+  * __Element 3:__ Shield
+
+__6.__ Select the _PowerUp_ instance in the Hierarchy and delete it
+
+__7.__ Save the Scene
