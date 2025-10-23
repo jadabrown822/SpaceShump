@@ -1038,7 +1038,7 @@ __2.__ Create a new C# script called _Main_
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
     }
   
@@ -1386,7 +1386,7 @@ __1.__ Add code to Main script
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
     }
   
@@ -2839,7 +2839,7 @@ __1.__ Open the _Main_ C# script in VS and add code
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
     }
   
@@ -2962,7 +2962,7 @@ __1.__ Open the _Main_ script in VS and enter the code
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
 
       // A generic Dictionary with eWeaponType as the key
@@ -3055,7 +3055,7 @@ __2.__ Add code to the end of the Main C# script
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
 
       // A generic Dictionary with eWeaponType as the key
@@ -4958,7 +4958,7 @@ __1.__ Start by making the __Main__ class able to instantiate new PowerUps. Add 
       // Set bndCheck to reference the BoundsCheck component on this GameObject
       bndCheck = GetComponent<BoundsCheck>();
   
-      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      // Invoke SpawnEnemy() once (in 2 seconds, based on default values)
       Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
 
       // A generic Dictionary with eWeaponType as the key
@@ -5056,7 +5056,7 @@ __1.__ Start by making the __Main__ class able to instantiate new PowerUps. Add 
         // Set it to the proper WeaponType
         pUp.SetType(pUpType);
 
-        // Set it to the posisition of the destroyed ship
+        // Set it to the position of the destroyed ship
         pUp.transform.position = e.transform.position;
       }
     }
@@ -5519,3 +5519,146 @@ __4.__ Set the _Transform_ of the Enemy_4 instance in the Hierarchy to:
 __5.__ Another thing that will make testing easier is disabling the spawning of other enemies. Select __MainCamera_ in the Hierarchy, and in the _Main (Script)_ Inspector uncheck __spawnEnemies__
 
 __6.__ Click _Play_
+
+
+## Movement of Enemy_4
+__1.__ Open the _Enemy_4_ script and input code
+
+```cs
+// Enemy_4.cs
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    [RequireComponent(typeof(EnemyShield))]
+
+    pubic class Enemy_4 : Enemy {
+        [Header("Enemy_4 Inscribed Fields")]
+        public float        duration = 4;       // Duration of interpolation movement
+
+        private EnemyShield[]       allShields;
+        private EnemyShield     thisShield;
+        private Vector3     p0, p1;     // The two points to interpolate
+        private float       timeStart;      // Birth Time for this Enemy_4
+
+
+        void Start() {
+            allShields = GetComponentsInChildren<EnemyShield>();
+            thisShield = GetComponent<EnemyShield>();
+
+            // Initially set p0 & p1 to the current position (from Main.SpawnEnemy())
+            p0 = p1 = pos;
+            InitMovement();
+        }
+
+
+        void InitMovement() {
+            p0 = p1;        // Set p0 to the old p1
+            // Assign a new on-screen location to p1
+            float widMinRad = bndCheck.camWidth - bndCheck.radius;
+            float hgtMinRad = bndCheck.camHeight - bndCheck.radius;
+            p1.x = Random.Range(-widMinRad,  widMinRad);
+            p1.y = Random.Range(-hgtMinRad, hgtMinRad);
+
+            // Make sure that is moves to a different quadrant of the screen
+            if (p0.x * p1.x > 0 && p0.y * p1.y > 0) {
+                if (Mathf.Abs(p0.x) > Mathf.Abs(p0.y)) {
+                    p1.x *= -1;
+                }
+                else {
+                    p1.y *= -1
+                }
+            }
+
+            // Reset the time
+            timeStart = Time.time;
+        }
+
+
+        public override void Move() {
+            // This completely overrides Enemy.Move() with a linear interpolation
+            float u = (Time.time -timeStart) / duration;
+
+            if (u >= 1) {
+                InitMovement();
+                u = 0;
+            }
+
+            u = u - 0.15f * Mathf.Sin(U * 2 * Mathf.PI);        // Easing: Sine -0.15
+            pos = (1 - u)*p0 + u*p1;        // Simple linear interpolation
+        }
+
+
+        /*
+            Enemy_4 Collisions are handled differently from other Enemy subclasses
+                to enable protection by EnemyShields
+            <param name="coll"></param>
+        */
+        void OnCollisionEnter(Collision coll) {
+            GameObject otherGO = coll.gameObject;
+
+            // Make sure this was hit by a ProjectileHero
+            ProjectileHero p = otherGO.GetComponent<ProjectileHero>();
+            if (p != null) {
+                // Destroy the ProjecitleHero regarless of bndCheck.isOnScreen
+                Destroy(otherGO);
+
+                // Only damage this Enemy if it's on screen
+                if (bndCheck.isOnScreen) {
+                    // Find the GameObject of this Enemy_4 that was actually hit
+                    GameObject hitGO = coll.contacts[0].thisCollider.gameObject;
+                    if (hitGO == otherGO) {
+                        hitGO = coll.contacts[0].otherCollider.gameObject;
+                    }
+
+                    // Get the damage amount from the Main WEAP_DICT
+                    float dmg = Main.GET_WEAPON_DEFINITION(p.type).damageOnHit;
+
+                    // Find the EnemyShield that was hit (if there was one)
+                    bool shieldFound = false;
+                    foreach (EnemyShield es in allShields) {
+                        if (es.gameObject == hitGO) {
+                            es.TakeDamage(dmg);
+                            shieldFound = true;
+                        }
+                    }
+                    if (!shieldFound) {thisShield.TakeDamage(dmg);}
+
+                    // If thisShield is still active, then it has not been destroyed
+                    if (thisShield.isActive) {return;}
+
+                    // This ship was destroyed so tell Main about it
+                    if (!calledShipDestroyed) {
+                        Main.SHIP_DESTROYED(this);
+                        calledShipDestroyed = true;
+                    }
+
+                    // Destroy this Enemy_4
+                    Destroy(gameObject);
+                }
+            }
+            else {
+                Debug.Log("Enemy_4 hit by non-ProjecitleHero: " + otherGO.name);
+            }
+        }
+    }
+```
+
+__2.__ _Save All_ scripts in VS and return to Unity
+
+__3.__ Select the _Enemy_4_ prefab in the __Prefabs_ folder of the Project pane
+> __a.__ In the _BoundsCheck (Script)_ component:
+> * Set __boundsType__ = _Inset_
+> * Set __radius__ = _8_
+> * Set __keepOnScreen__ = __false__
+>
+> __b.__ In the _Enemy_4 (Script)_ component, set __health__ = _0_
+
+__4.__ Click _Play_, and Enemy_4 will move across the screen
+
+__5.__ After done testing
+> __a.__ Delete the _Enemy_4_ instance from the Hierarchy and save the scene
+>
+> __b.__ Select __MainCamera_, and in the _Main (Script)_ Inspector, check __spawnEnemies__
+>
+> __c.__ Save the scene
