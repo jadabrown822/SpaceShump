@@ -5420,3 +5420,12 @@ __4.__ Attach an EnemyShield script to Enemy_4 as well as each of its shield chi
 __5.__ Click the __<__ to teh left of the _Enemy_4_ title at the top of the Hierarchy pane to return to the Scene Hierarchy
 
 __6.__ Save the scene and project (_File > Save Project_)
+
+
+## Coding Enemy_4 to Use EnemyShield
+__1.__ Open the _Enemy_4_ script in VS
+
+```cs
+// Enemy_4.cs
+
+```
