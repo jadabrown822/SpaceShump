@@ -5662,3 +5662,9 @@ __5.__ After done testing
 > __b.__ Select __MainCamera_, and in the _Main (Script)_ Inspector, check __spawnEnemies__
 >
 > __c.__ Save the scene
+
+
+# Tuning Settings for the Game Entites
+* _MainCamera
+    * __Prefab Enemies:__ 16
+        * __Element 0-5:__ Enemy_0
