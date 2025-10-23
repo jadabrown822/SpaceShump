@@ -618,7 +618,7 @@ __3.__ Add the code to the Enemy script to manage this destruction:
       Move();
 
       // Check whether this Enemy has gone off the bottom of the screen
-      if (!bndCheck.isonScreen) {
+      if (!bndCheck.isOnScreen) {
         if (pos.y < bndCheck.camHeight - bndCheck.radius) {
           // We're off the the bottom, so destroy this GameObject
           Destroy(gameObject);
@@ -979,7 +979,7 @@ __9.__ Make changes to the Enemy script
       }
 
       /*
-        if (!bndCheck.isonScreen) {
+        if (!bndCheck.isOnScreen) {
           if (pos.y < bndCheck.camHeight - bndCheck.radius) {
             // We're off the the bottom, so destroy this GameObject
             Destroy(gameObject);
@@ -1266,7 +1266,7 @@ __3.__ Open the _Hero_ sript in VS and make code modifications
 }
 ```
 
-__4.__ Play the Scene and try running into some ships. The shild will loop back around ro full strength after completely drained
+__4.__ Play the Scene and try running into some ships. The child will loop back around ro full strength after completely drained
 
 __5.__ In the Hero class change code
 
@@ -1777,7 +1777,7 @@ __1.__ Open the _Enemy_ C# script and make changes
       }
 
       /*
-        if (!bndCheck.isonScreen) {
+        if (!bndCheck.isOnScreen) {
           if (pos.y < bndCheck.camHeight - bndCheck.radius) {
             // We're off the the bottom, so destroy this GameObject
             Destroy(gameObject);
@@ -2047,7 +2047,7 @@ __2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___pr
       }
 
       /*
-        if (!bndCheck.isonScreen) {
+        if (!bndCheck.isOnScreen) {
           if (pos.y < bndCheck.camHeight - bndCheck.radius) {
             // We're off the the bottom, so destroy this GameObject
             Destroy(gameObject);
@@ -2436,7 +2436,7 @@ __4.__ In the Prefab Editor Hierarchy for Enemy_2, click the _disclosure triangl
 
 __5.__ Select this _enemy2_ model
 
-__6.__ Set the _rotation_ of the enemry2 transform to [0, 0, 0]
+__6.__ Set the _rotation_ of the enemy2 transform to [0, 0, 0]
 
 __7.__ Click the _Scenes_ button at the top of the Scene pane to exit Prefab Editor mode
 
@@ -3368,7 +3368,7 @@ __6.__ Double-click that the Weapon _position_ in the Inspector is _[0, 0, 0]_ a
 __7.__ Save the scene
 
 
-### Adding Fireing to the Weapon C# Script
+### Adding Firing to the Weapon C# Script
 __1.__ Start by disabling the __fireEvent__ use of the __TempFire()__ method in Hero. Open the Hero C# script in VS and copy code
 
 ```cs
@@ -3725,7 +3725,7 @@ __2.__ Replace the old __OnCollissionEnter()__ method with code
       }
 
       /*
-        if (!bndCheck.isonScreen) {
+        if (!bndCheck.isOnScreen) {
           if (pos.y < bndCheck.camHeight - bndCheck.radius) {
             // We're off the the bottom, so destroy this GameObject
             Destroy(gameObject);
@@ -4173,7 +4173,7 @@ __4.__ Open the _PowerUp_ script in VS and enter the code
 
 __5.__ Click _Play_, the PowerUp in the Hierarchy will be drifting and rotating
 
-__6.__ Drag the _PowerUp_ GameOBject from the Hierarchy into the __Prefabs_ folder in the Project pane to make it into a prefab
+__6.__ Drag the _PowerUp_ GameObject from the Hierarchy into the __Prefabs_ folder in the Project pane to make it into a prefab
 
 __7.__ Save the scene
 
@@ -4704,7 +4704,7 @@ __2.__ Also in Hero script fill the __switch__ block of the __AbsorbPowerUp()__ 
 }
 ```
 
-__3.__ Save all scripts in VS and retun to Unity
+__3.__ Save all scripts in VS and return to Unity
 
 __4.__ To test whether PowerUps are now absorbed successfully, select th ePowerUP in the Hierarchy, and inside the _PowerUp (Script)_ component of the Inspector, set the _type_ to _Blaster_
 
@@ -5043,7 +5043,7 @@ __1.__ Start by making the __Main__ class able to instantiate new PowerUps. Add 
         a PowerUp in place of a destroyed ship
       <param name="e">The Enemy that was destroyed</param>
     */
-    static public void SHIP_DESTROY(Enemy e) {
+    static public void SHIP_DESTROYED(Enemy e) {
       // Potentially generate a PowerUp
       if (Random.value <= e.powerUpDropChance) {    // Underlined red for now
         // Choose a PowerUp from the possibilities in powerUpFrequency
@@ -5116,7 +5116,7 @@ __2.__ To give Enemies the __powerUpDropChance__ field and make them call __Main
       }
 
       /*
-        if (!bndCheck.isonScreen) {
+        if (!bndCheck.isOnScreen) {
           if (pos.y < bndCheck.camHeight - bndCheck.radius) {
             // We're off the the bottom, so destroy this GameObject
             Destroy(gameObject);
@@ -5227,7 +5227,7 @@ __1.__ Create a new C# script named _EnemyShield_ and place it in the __Scripts 
 __2.__ Open the _EnemyShield_ script in VS and enter the code
 
 ```cs
-// EnemieShield.cs
+// EnemyShield.cs
 
   using System.Collections;
   using System.Collections.Generic;
@@ -5240,7 +5240,7 @@ __2.__ Open the _EnemyShield_ script in VS and enter the code
     [Header("Inscribed")]
     public float health = 10;
 
-    private List<EnemyShield> protectors = new List<EnemieShield>();
+    private List<EnemyShield> protectors = new List<EnemyShield>();
     private BlinkColorOnHit     blinker;
 
 
@@ -5249,7 +5249,7 @@ __2.__ Open the _EnemyShield_ script in VS and enter the code
       blinker.ignoreOnCollisionEnter = true;    // This will not yet compile
 
       if (transform.parent == null) {return;}
-      EnemyShield shieldParent = transform.parent.Getcomponent<EnemyShield>();
+      EnemyShield shieldParent = transform.parent.GetComponent<EnemyShield>();
       if (shiedlParent != null) {
         shieldParent.AddProtector(this);
       }
@@ -5257,10 +5257,10 @@ __2.__ Open the _EnemyShield_ script in VS and enter the code
 
 
     /*
-      Called by another Enemyshield to join the protectors of this EnemyShield
+      Called by another EnemyShield to join the protectors of this EnemyShield
       <param name="shieldChild"> The EnemyShield that will protect this </param>
     */
-    public void AddProtector (EnemyShield shieldShild) {
+    public void AddProtector (EnemyShield shieldChild) {
       protectors.Add(shieldChild);
     }
 
@@ -5427,5 +5427,95 @@ __1.__ Open the _Enemy_4_ script in VS
 
 ```cs
 // Enemy_4.cs
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
 
+    [RequireComponent(typeof(EnemyShield))]
+
+    pubic class Enemy_4 : Enemy {
+        private EnemyShield[]       allShields;
+        private EnemyShield     thisShield;
+
+
+        void Start() {
+            allShields = GetComponentsInChildren<EnemyShield>();
+            thisShield = GetComponent<EnemyShield>();
+        }
+
+
+        public override void Move() {
+            /*
+                Will add much more here shortly. For now, it's easier to test it if
+                    Enemy_4 doesn't move
+            */
+        }
+
+
+        /*
+            Enemy_4 Collisions are handled differently from other Enemy subclasses
+                to enable protection by EnemyShields
+            <param name="coll"></param>
+        */
+        void OnCollisionEnter(Collision coll) {
+            GameObject otherGO = coll.gameObject;
+
+            // Make sure this was hit by a ProjectileHero
+            ProjectileHero p = otherGO.GetComponent<ProjectileHero>();
+            if (p != null) {
+                // Destroy the ProjecitleHero regarless of bndCheck.isOnScreen
+                Destroy(otherGO);
+
+                // Only damage this Enemy if it's on screen
+                if (bndCheck.isOnScreen) {
+                    // Find the GameObject of this Enemy_4 that was actually hit
+                    GameObject hitGO = coll.contacts[0].thisCollider.gameObject;
+                    if (hitGO == otherGO) {
+                        hitGO = coll.contacts[0].otherCollider.gameObject;
+                    }
+
+                    // Get the damage amount from the Main WEAP_DICT
+                    float dmg = Main.GET_WEAPON_DEFINITION(p.type).damageOnHit;
+
+                    // Find the EnemyShield that was hit (if there was one)
+                    bool shieldFound = false;
+                    foreach (EnemyShield es in allShields) {
+                        if (es.gameObject == hitGO) {
+                            es.TakeDamage(dmg);
+                            shieldFound = true;
+                        }
+                    }
+                    if (!shieldFound) {thisShield.TakeDamage(dmg);}
+
+                    // If thisShield is still active, then it has not been destroyed
+                    if (thisShield.isActive) {return;}
+
+                    // This ship was destroyed so tell Main about it
+                    if (!calledShipDestroyed) {
+                        Main.SHIP_DESTROYED(this);
+                        calledShipDestroyed = true;
+                    }
+
+                    // Destroy this Enemy_4
+                    Destroy(gameObject);
+                }
+            }
+            else {
+                Debug.Log("Enemy_4 hit by non-ProjecitleHero: " + otherGO.name);
+            }
+        }
+    }
 ```
+
+__2.__ _Save All_ scripts in VS and return to Unity 
+
+__3.__ Drag _Enemy_4_ from the __Prefabs_ fodler to the Scene Hierarchy to create an instance in the scene
+
+__4.__ Set the _Transform_ of the Enemy_4 instance in the Hierarchy to:
+* P:[3, 20, 0]
+* R:[0, 0, 0]
+* S:[2, 2, 2]
+
+__5.__ Another thing that will make testing easier is disabling the spawning of other enemies. Select __MainCamera_ in the Hierarchy, and in the _Main (Script)_ Inspector uncheck __spawnEnemies__
+
+__6.__ Click _Play_
