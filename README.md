@@ -4320,3 +4320,35 @@ __1.__ Make changes to the _Hero_ C# script
 ```
 
 __2.__ Save the _Hero_ script, return to Unity, and click _Play_
+
+
+### Expanding Weapon Options
+__1.__ Open the _disclosure triangle_ next to the GameObject __Hero_ in the Hierarchy
+
+__2.__ Keep opening disclosure triangles until there are all the five hardpoint_# children of themodel heroShip. The hardpoint_0 child already has a Weapon child under it, but the other four hardpoint_# chldren need one added
+
+__3.__ Drag a _Weapon_ from the __Prefabs_ folder of the Project pane onto _each of the four other hardpoint_# children_
+
+__4.__ Double-check that all Weapon instances under the hardpoint_# children have the transform of:
+* P:[0, 0, 0]
+* R:[0, 0, 0]
+* S:[1, 1, 1]
+
+__5.__ Select __Hero_ and in the _Hero (Script)_ component Inspector, open the disclosure triangle for the _weapons_ field
+
+__6.__ Set the _Size_ of __weapons__ to _5_ and assign the Weapons to the five shots as follows:
+> __a.__ Drag the ___Weapon under hardpoint_0___ into ___Element_0___ of the weapons array
+>
+> __b.__ Drag the ___Weapon under hardpoint_1___ into ___Element_1___ of the weapons array
+>
+> __c.__ Drag the ___Weapon under hardpoint_2___ into ___Element_2___ of the weapons array
+>
+> __d.__ Drag the ___Weapon under hardpoint_3___ into ___Element_3___ of the weapons array
+>
+> __e.__ Drag the ___Weapon under hardpoint_4___ into ___Element_4___ of the weapons array
+
+__7.__ Select the _Weapon under hardpoint_0_ in the Hierarchy, and near the top of the Inspector, click the _Overrides_ button and choose _Revert All_
+
+__8.__ To get a feel for how powerful the player can get, select the _Weapon_ prefab in the _Prefabs folder and set the _type_ field of the _Weapon (Scirpt)_ component to _Spread_. Click _Play_
+
+__9.__ Save the scene
