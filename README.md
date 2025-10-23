@@ -434,7 +434,7 @@ __3.__ Open the _Enemy_ script in VS and enter the code
   using UnityEngine;
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;    // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -591,7 +591,7 @@ __3.__ Add the code to the Enemy script to manage this destruction:
   [RequireComponent(typeof(BoundsCheck))]
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;    // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -947,7 +947,7 @@ __9.__ Make changes to the Enemy script
   [RequireComponent(typeof(BoundsCheck))]
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -1745,7 +1745,7 @@ __1.__ Open the _Enemy_ C# script and make changes
   [RequireComponent(typeof(BoundsCheck))]
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -2015,7 +2015,7 @@ __2.__ Open the Enemy script and change __bndCheck__ from ___private___ to ___pr
   [RequireComponent(typeof(BoundsCheck))]
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -3693,7 +3693,7 @@ __2.__ Replace the old __OnCollissionEnter()__ method with code
   [RequireComponent(typeof(BoundsCheck))]
   
   public class Enemy : MonoBehaviour {
-    [Header("Inscribed)]
+    [Header("Inscribed")]
     public float speed = 10f;        // The movement speed is 10m/s
     public float fireRate = 0.3;      // Seconds/shot (Unused)
     public float health = 10;        // Damage needed to destroy this enemy
@@ -4922,3 +4922,262 @@ __4.__ From the main Unity menu, choose _Edit > Project Settings..._
 > __d.__ Click the _Apply_ button to set this as the Script Execuion Order and then close the Project Settings window
 
 __5.__ Stop play. Then select the _Weapon_ prefab in the _Prefabs folder and reset the _type_ field of the _Weapon (Script)_ component back to _none_
+
+
+# Making Enemies Drop PowerUps
+__1.__ Start by making the __Main__ class able to instantiate new PowerUps. Add code to the Main script
+
+```cs
+// Main.cs
+
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
+  
+  public class Main : MonoBehaviour {
+    static private Main S;    // A private singleton for Main
+  
+    [Header("Inscribed")]
+    public bool spawnEnemies = true;
+    public GameObject[] prefabEnemies;          // Array of Enemy prefabs
+    public float enemySpawnPerSecond = 0.5f;    // # Enemies spawned/second
+    public float enemyInsetDefault = 1.5;       // Inset from the sides
+    public float gameRestartDelay = 2;
+    public GameObject    prefabPowerUp;
+    public WeaponDefinition[] weaponDefinitions;
+    public eWeaponType[]    powerUpFrequency = new eWeaponType[] {
+                                eWeaponType.blaster, eWeaponType.blaster,
+                                eWeaponType.spread, eWeaponType.shield};
+  
+    private BoundsCheck bndCheck;
+  
+    void Awake() {
+      S = this;
+  
+      // Set bndCheck to reference the BoundsCheck component on this GameObject
+      bndCheck = GetComponent<BoundsCheck>();
+  
+      // Invoke SpawnEnemey() once (in 2 seconds, based on default values)
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+
+      // A generic Dictionary with eWeaponType as the key
+      WEAP_DICT = new Dictionary<eWeaponType, WeaponDefinition>();
+      foreach (WeaponDefinition def in weaponDefinitions) {
+        WEAP_DICT[def.type] = def;
+      }
+    }
+  
+  
+    public void SpawnEnemy() {
+      // If spawnEnemies is false, skip to the next invoke of SpawEnemy()
+      if (!spawnEnemies) {
+        Invoke(nameof(SpawnEnemy), 1f / enemySpawnPerSecond);
+        return;
+      }
+
+      // Pick a random Enemy prefab to instantiate
+      int ndx = Random.Range(0, prefabEnemies.Length);
+      GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
+  
+      // position the Enemy above the screen with a random x position
+      float enemyInset = enemyInsetDefault;
+      if (go.GetComponent<BoundsCheck>() != null) {
+        enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
+      }
+  
+      // Set the initial position for the spawned Enemy
+      Vector3 pos = Vector3.zero;
+      float xMin = -bndCheck.camWidth + enemyInset;
+      float xMax = bndCheck.camWidth - enemyInset;
+      pos.x = Random.Range(xMin, xMax);
+      pos.y = bndCheck.camHeight + enemyInset;
+      go.transform.position = pos;
+  
+      // Invoke SpawnEnemy() again
+      Invoke(nameof(SpawnEnemy), 1f/enemySpawnPerSecond);
+    }
+
+
+    void DelayRestart() {
+      // Invoke the Restart() method in gameRestartDelay seconds
+      Invoke(nameof(Restart), gameRestartDelay);
+    }
+
+
+    void Restart() {
+      SceneManager.LoadScene("__Scene_0");
+    }
+
+
+    static public void HERO_DIED() {
+      S.DelayedRestart();
+    }
+
+
+    /*
+        Static functino that gets a WeaponDefinition from the WEAP_DICT static
+            protected field of the Main class
+
+        <returns>The WeaponDefinition, of it there is no WeaponDefinition with
+            the eWeaponType passes in, returns a new WeaponDefinition with a
+            eWeaponType of eWeaponType.none</returns>
+
+        <param name = "wt">The eWeaponType of the desored WeaponDefinition</param>
+    */
+    static public WeaponDefinition GET_WEAPON_DEFINITION(eWeaponType wt) {
+        if (WEAP_DICT.ContainKey(wt)) {
+            return(WEAP_DICT);
+        }
+
+        /*
+            If no entry of the correct type exists to WEAP_DICT, return a new
+                WeaponDefinition with a type of eWeaponType.none (the default value)
+        */
+        return(new WeaponDefinition());
+    }
+
+
+    /*
+      Called by an Enemy ship whenever it is destroyed. It sometimes creates
+        a PowerUp in place of a destroyed ship
+      <param name="e">The Enemy that was destroyed</param>
+    */
+    static public void SHIP_DESTROY(Enemy e) {
+      // Potentially generate a PowerUp
+      if (Random.value <= e.powerUpDropChance) {    // Underlined red for now
+        // Choose a PowerUp from the possibilities in powerUpFrequency
+        int ndx = Random.Range(0, S.powerUpFrequency.Length);
+        eWeaponType pUpType = S.powerUpFrequency[ndx];
+
+        // Spawn a PwerUp
+        GameObject go = Instantiate<GameObject>(S.prefabPowerUp);
+        PowerUp pUp = go.GetComponent<PowerUp>();
+        // Set it to the proper WeaponType
+        pUp.SetType(pUpType);
+
+        // Set it to the posisition of the destroyed ship
+        pUp.transform.position = e.transform.position;
+      }
+    }
+
+  
+    /*
+      void Start() {...}
+  
+      void Update() {...}
+    */
+  }
+```
+
+__2.__ To give Enemies the __powerUpDropChance__ field and make them call __Main.SHIP_DESTROYED()__, add code to the __Enemy__ script
+
+```cs
+// Enemy.cs
+  
+  using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+
+  [RequireComponent(typeof(BoundsCheck))]
+  
+  public class Enemy : MonoBehaviour {
+    [Header("Inscribed")]
+    public float speed = 10f;        // The movement speed is 10m/
+    public float fireRate = 0.3;      // Seconds/shot (Unused)
+    public float health = 10;        // Damage needed to destroy this enemy
+    public int score = 100;          // Points earned for destroying this
+    public float powerUpDropChance = 1f;    // Chance to drop a PowerUp
+
+    protected bool    calledShipDestroyed = false;
+    protected BoundsCheck bndCheck;    // Change bndCheck from private to protected
+
+    void Awake() {
+      bndCheck = GetComponent<BoundsCheck>();
+    }
+  
+    // This is a Property: A method that acts like a field
+    public Vector3 pos {
+      get {
+        return this.transform.position;
+      }
+      set {
+        this.transform.position = value;
+      }
+    }
+
+
+    void Update() {
+      Move();
+
+      // Check whether this Enemy has gone off the bottom of the screen
+      if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offDown)) {
+        Destroy(gameObject);
+      }
+
+      /*
+        if (!bndCheck.isonScreen) {
+          if (pos.y < bndCheck.camHeight - bndCheck.radius) {
+            // We're off the the bottom, so destroy this GameObject
+            Destroy(gameObject);
+          }
+        }
+      */
+    }
+  
+  
+    public virtual void Move() {
+      Vector3 tempPos = pos;
+      tempPos.y -= speed * Time.deltaTime;
+      pos = tempPos;
+    }
+
+    /*
+        void OnCollisionEnter(Collision coll) {
+          GameObject otherGO = coll.gameObject;
+          if (otherGO.GetComponent<ProjectileHero>() != null) {
+            Destroy(otherGO);      // Destroy the Projectile
+            Destroy(gameObject);    // Destroy this Enemy GameObject
+          }
+          else {
+            Debug.Log("Enemy hit by non-ProjectileHero: " + otherGO.name);
+          }
+        }
+    */
+    void OnCollisionEnter(Collision coll) {
+        GameObject otherGO = coll.gameObject;
+
+        // Check the collisions with ProjectileHero
+        ProjectileHero p = otherGO.GetComponent<ProjectileHero>();
+        if (p != null) {
+            // Only damage this Enemy if it's on screen
+            if (bndCheck.isOnScreen) {
+                // Get the damage amount from the Main WEAP_DICT
+                health -= Main.GET_WEAPON_DEFINITION(p.type).damageOnHit;
+
+                if (health <= 0) {
+                  // Tell Main that this ship was destroyed
+                  if (!calledShipDestroyed) {
+                    calledShipDestroyed = true;
+                    Main.SHIP_DESTROYED(this);
+                  }
+
+                    // Destroy the Enemy
+                    Destroy(this.gameObject);
+                }
+            }
+
+            // Destroy the ProjectileHero regardless
+            Destroy(otherGO);
+        }
+        else {
+            print("Enemy hit by non-ProjectileHero: " + otherGO.name);
+        }
+    }
+  
+  
+    /*
+      void Start() {...}
+    */
+  }
+```
