@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
-    static public Hero S { get; private set; }
+    static public Hero S { get; private set; }      // Singleton property
 
     [Header("Inscribed")]
     // These fields control the movement of the ship
@@ -43,6 +43,6 @@ public class Hero : MonoBehaviour
         transform.position = pos;
 
         // Rotate the ship to make it feel more dynamic
-        transform.rotation = Quaternion.Euler(vAxis*pitchMult, hAxis*rollMult, 0);
+        transform.rotation = Quaternion.Euler(vAxis * pitchMult, hAxis * rollMult, 0);
     }
 }
