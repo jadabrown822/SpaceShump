@@ -45,4 +45,9 @@ public class Hero : MonoBehaviour
         // Rotate the ship to make it feel more dynamic
         transform.rotation = Quaternion.Euler(vAxis * pitchMult, hAxis * rollMult, 0);
     }
+
+
+    /*
+        void Start() {...} 
+    */
 }
