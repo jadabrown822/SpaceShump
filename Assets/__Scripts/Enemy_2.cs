@@ -2,17 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_2 : MonoBehaviour
+public class Enemy_2 : Enemy
 {
+    [Header("Enemy_2 Inscribed Fields")]
+    public float lifeTime = 10;
+
+    // Enemy_2 uses a Sine wave to modify a 2-point linear interpolation
+    [Tooltip("Determines how much the Sine will ease the interpolation")]
+    public float sinEccentricity = 0.6f;
+
+    [Header("Enemy_2 Private Fields")]
+    [SerializeField] private float birthTime;       // Interpolation start time
+    [SerializeField] private Vector3 p0, p1;        // Lerp_points
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Pick any point on the left side of the screen
+        p0 = Vector3.zero;
+        p0.x = -bndCheck.camWidth - bndCheck.radius;
+        p0.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+        // Possibly swap sides
+        if (Random.value > 0.5f)
+        {
+            // set the .x of each point to its negative will void move it to the other side of the screen
+            p0.x *= -1;
+            p1.x *= -1;
+        }
+
+        // Set the birthTime to the current time
+        birthTime = Time.time;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public override void Move()
     {
-        
+        // Linear interpolations work based on a u value between 0 & 1
+        float u = (Time.time - birthTime) / lifeTime;
+
+        // if u > 1, then it has been longer than lifeTime since birthTime
+        if (u > 1)
+        {
+            // This Enemy_2 has finished its life
+            Destroy(this.gameObject);
+            return;
+        }
+
+        // Adjust u by adding a U curve based on a Sine wave
+        u = u + sinEccentricity * (Mathf.Sin(u * Mathf.PI * 2));
+
+        // Interpolation the two linear interpolation points
+        pos = (1 - u) * p0 + u * p1;
+
+        // Note the Enemy_2 does NOT call the base.Move() method
     }
+
+
+    /*
+        // Update is called once per frame
+        void Update()
+        {
+        
+        }
+    */
 }
