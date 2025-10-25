@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoundsCheck))]
+
 public class Enemy : MonoBehaviour
 {
     [Header("Inscribed")]
@@ -62,6 +64,21 @@ public class Enemy : MonoBehaviour
         Vector3 tempPos = pos;
         tempPos.y -= speed * Time.deltaTime;
         pos = tempPos;
+    }
+
+
+    private void OnCollisionEnter(Collision coll)
+    {
+        GameObject otherGO = coll.gameObject;
+        if (otherGO.GetComponent<ProjectileHero>() != null)
+        {
+            Destroy(otherGO);       // Destroy the Projectile
+            Destroy(gameObject);        // Destroy this Enemy GameObject
+        }
+        else
+        {
+            Debug.Log("Enemy hit by non-ProjectileHero: " + otherGO.name);
+        }
     }
 
 
