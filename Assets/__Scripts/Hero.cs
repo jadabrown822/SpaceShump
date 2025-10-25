@@ -12,9 +12,7 @@ public class Hero : MonoBehaviour
     public float rollMult = -45;
     public float pitchMult = 30;
 
-    [Header("Dynamic")]
-    [Range(0, 4)]
-    [SerializeField]
+    [Header("Dynamic")]     [Range(0, 4)]       [SerializeField]
     private float _shieldLevel = 1;
     // public float shieldLevel = 1;
     [Tooltip("This filed holds a reference to the last triggering GameObject")]
@@ -86,6 +84,7 @@ public class Hero : MonoBehaviour
             if (value < 0)
             {
                 Destroy(this.gameObject);       // Destroy the Hero
+                Main.HERO_DIED();
             }
         }
     }
