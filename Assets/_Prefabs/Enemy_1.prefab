@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsType: 2
-  radius: 2
+  radius: 2.5
   keepOnScreen: 0
   screenLocs: 0
   camWidth: 0
@@ -96,6 +96,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780a79ac7963474d946de220679f930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  fireRate: 0.3
+  health: 10
+  score: 100
+  waveFrequency: 2
+  waveWidth: 4
+  waveRotY: 45
 --- !u!1001 &737283681668598514
 PrefabInstance:
   m_ObjectHideFlags: 0
