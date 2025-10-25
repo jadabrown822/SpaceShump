@@ -10,6 +10,7 @@ public class Enemy_2 : Enemy
     // Enemy_2 uses a Sine wave to modify a 2-point linear interpolation
     [Tooltip("Determines how much the Sine will ease the interpolation")]
     public float sinEccentricity = 0.6f;
+    public AnimationCurve rotCurve;
 
     [Header("Enemy_2 Private Fields")]
     [SerializeField] private float birthTime;       // Interpolation start time
@@ -23,6 +24,11 @@ public class Enemy_2 : Enemy
         p0 = Vector3.zero;
         p0.x = -bndCheck.camWidth - bndCheck.radius;
         p0.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
+
+        // Pick any point on the right side of the screen
+        p1 = Vector3.zero;
+        p1.x = bndCheck.camWidth + bndCheck.radius;
+        p1.y = Random.Range(-bndCheck.camHeight, bndCheck.camHeight);
 
         // Possibly swap sides
         if (Random.value > 0.5f)
@@ -49,6 +55,14 @@ public class Enemy_2 : Enemy
             Destroy(this.gameObject);
             return;
         }
+
+        // Use the AnimationCurve to set the rotation about Y
+        float shipRot = rotCurve.Evaluate(u) * 360;
+        if (p0.x > p1.x)
+        {
+            shipRot = -shipRot;
+        }
+        transform.rotation = Quaternion.Euler(0, shipRot, 0);
 
         // Adjust u by adding a U curve based on a Sine wave
         u = u + sinEccentricity * (Mathf.Sin(u * Mathf.PI * 2));
