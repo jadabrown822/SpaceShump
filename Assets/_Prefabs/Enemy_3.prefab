@@ -78,6 +78,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b472a17a2395d9c4f8bf08796ebe074e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  fireRate: 0.3
+  health: 10
+  score: 100
+  lifeTime: 5
+  midpointYRange: {x: 1.5, y: 3}
+  drawDebugInfo: 0
+  points: []
+  birthTime: 0
 --- !u!114 &7289337592736036149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsType: 2
-  radius: 2.5
+  radius: 3
   keepOnScreen: 0
   screenLocs: 0
   camWidth: 0

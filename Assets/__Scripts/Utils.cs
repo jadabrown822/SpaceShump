@@ -21,7 +21,7 @@ public class Utils : MonoBehaviour
         int r = points.Length - 1;
         for (int c = 0; c < points.Length; c++)
         {
-            vArr[r, c] = vList[c];
+            vArr[r, c] = points[c];
         }
 
         // Iterate over all remaining rows and interpolate points at eac one
@@ -29,7 +29,7 @@ public class Utils : MonoBehaviour
         {
             for (int c = 0; c <= r; c++)
             {
-                vArr[r, c] = Vector3.LerpUnclamped(vArr[r + 1, c], vArr[r + 1, c + 1, u]);
+                vArr[r, c] = Vector3.LerpUnclamped(vArr[r + 1, c], vArr[r + 1, c + 1], u);
             }
         }
 
