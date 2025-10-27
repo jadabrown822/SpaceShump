@@ -72,6 +72,7 @@ public class Enemy_2 : Enemy
             }
             transform.rotation = Quaternion.Euler(0, shipRot, 0);
         */
+
         transform.rotation = baseRotation * Quaternion.Euler(-shipRot, 0, 0);
     
         // Adjust u by adding a U curve based on a Sine wave
