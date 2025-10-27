@@ -36,7 +36,7 @@ public class Hero : MonoBehaviour
             Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
         }
 
-        fireEvent += TempFire;
+        // fireEvent += TempFire;
     }
 
 
@@ -72,18 +72,20 @@ public class Hero : MonoBehaviour
     }
 
 
-    void TempFire()
-    {
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
-        projGO.transform.position = transform.position;
-        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
-        // rigidB.velocity = Vector3.up * projectileSpeed;
+    /*
+        void TempFire()
+        {
+            GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+            projGO.transform.position = transform.position;
+            Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+            // rigidB.velocity = Vector3.up * projectileSpeed;
 
-        ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
-        proj.type = eWeaponType.blaster;
-        float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
-        rigidB.velocity = Vector3.up * tSpeed;
-    }
+            ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
+            proj.type = eWeaponType.blaster;
+            float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
+            rigidB.velocity = Vector3.up * tSpeed;
+        }
+    */
 
 
     private void OnTriggerEnter(Collider other)
@@ -98,7 +100,7 @@ public class Hero : MonoBehaviour
 
         Enemy enemy = go.GetComponent<Enemy>();
         if (enemy != null)
-        {                       // If teh shield was triggered by an enemy
+        {                       // If the shield was triggered by an enemy
             shieldLevel--;      // Decreases the level of the shield by 1
             Destroy(go);        // ... and Destroy the enemy
         }

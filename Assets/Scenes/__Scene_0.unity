@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6431815054291536009, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
+      propertyPath: _type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7729917626555139856, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
       propertyPath: m_Name
       value: Weapon
@@ -518,7 +522,7 @@ MonoBehaviour:
     powerUpColor: {r: 0, g: 1, b: 0, a: 0}
     weaponModelPrefab: {fileID: 0}
     projectilePrefab: {fileID: 0}
-    projectileColor: {r: 0, g: 0, b: 0, a: 0}
+    projectileColor: {r: 1, g: 1, b: 1, a: 0}
     damageOnHit: 0
     damagePerSec: 0
     delayBetweenShots: 0
