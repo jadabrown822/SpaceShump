@@ -19,6 +19,10 @@ public class Hero : MonoBehaviour
     // public float shieldLevel = 1;
     [Tooltip("This filed holds a reference to the last triggering GameObject")]
     private GameObject lastTriggerGo = null;
+    // Declare a new delegate type WeaponFireDelegate
+    public delegate void WeaponFireDelegate();
+    // Create a WeaponFireDelegate event name fireEvent
+    public event WeaponFireDelegate fireEvent;
 
 
     void Awake()
@@ -31,6 +35,8 @@ public class Hero : MonoBehaviour
         {
             Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
         }
+
+        fireEvent += TempFire;
     }
 
 
@@ -50,10 +56,18 @@ public class Hero : MonoBehaviour
         // Rotate the ship to make it feel more dynamic
         transform.rotation = Quaternion.Euler(vAxis * pitchMult, hAxis * rollMult, 0);
 
-        // Allow the ship to fire
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*
+            // Allow the ship to fire
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                TempFire();
+            }
+        */
+
+        // Use the fireEvent to fire Weapons when the Spacebar is pressed
+        if (Input.GetAxis("Jump") == 1 && fireEvent != null)
         {
-            TempFire();
+            fireEvent();
         }
     }
 
@@ -63,7 +77,12 @@ public class Hero : MonoBehaviour
         GameObject projGO = Instantiate<GameObject>(projectilePrefab);
         projGO.transform.position = transform.position;
         Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
-        rigidB.velocity = Vector3.up * projectileSpeed;
+        // rigidB.velocity = Vector3.up * projectileSpeed;
+
+        ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
+        proj.type = eWeaponType.blaster;
+        float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
+        rigidB.velocity = Vector3.up * tSpeed;
     }
 
 
@@ -79,7 +98,7 @@ public class Hero : MonoBehaviour
 
         Enemy enemy = go.GetComponent<Enemy>();
         if (enemy != null)
-        {       // If teh shield was triggered by an enemy
+        {                       // If teh shield was triggered by an enemy
             shieldLevel--;      // Decreases the level of the shield by 1
             Destroy(go);        // ... and Destroy the enemy
         }
