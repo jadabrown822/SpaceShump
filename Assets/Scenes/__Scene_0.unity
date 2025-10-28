@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: _type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6431815054291536009, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
+      propertyPath: nextShotTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7729917626555139856, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
       propertyPath: m_Name
       value: Weapon
