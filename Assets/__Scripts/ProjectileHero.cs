@@ -11,7 +11,8 @@ public class ProjectileHero : MonoBehaviour
 
     [Header("Dynamic")]
     public Rigidbody rigid;
-    [SerializeField] private eWeaponType _type;
+    [SerializeField]
+    private eWeaponType _type;
 
     // Thispublic property masks the private field _type
     public eWeaponType type
