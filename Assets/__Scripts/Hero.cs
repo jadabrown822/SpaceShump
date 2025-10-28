@@ -123,7 +123,27 @@ public class Hero : MonoBehaviour
 
         switch (pUp.type)
         {
-            // Is Empty for now
+            case eWeaponType.shield:
+                shieldLevel++;
+                break;
+
+            default:
+                if (pUp.type == weapons[0].type)        // If it is the same type
+                {
+                    Weapon weap = GetEmptyWeaponSlot();
+                    if (weap != null)
+                    {
+                        // Set ot to pUp.type
+                        weap.SetType(pUp.type);
+                    }
+                }
+                else
+                {       // If this is a different weapon type
+                    ClearWeapons();
+                    weapons[0].SetType(pUp.type);
+                }
+
+                break;
         }
 
         pUp.AbsorbedBy(this.gameObject);
@@ -143,6 +163,34 @@ public class Hero : MonoBehaviour
                 Destroy(this.gameObject);       // Destroy the Hero
                 Main.HERO_DIED();
             }
+        }
+    }
+
+
+    /*
+        Finds the first empty Weapon slot (i.e., type=none) and returns it
+        <returns>The first empty Weapon slot or null if not are empty</return>
+    */
+    Weapon GetEmptyWeaponSlot()
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i].type == eWeaponType.none)
+            {
+                return (weapons[i]);
+            }
+        }
+
+        return (null);
+    }
+
+
+    // Sets the type of all Weapon slots to none
+    void ClearWeapons()
+    {
+        foreach (Weapon w in weapons)
+        {
+            w.SetType(eWeaponType.none);
         }
     }
 
