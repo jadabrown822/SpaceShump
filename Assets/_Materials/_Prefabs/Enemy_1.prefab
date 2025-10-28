@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 964621475982104108}
   - component: {fileID: 8155813190279878361}
   - component: {fileID: -3846374073413677891}
+  - component: {fileID: 4753492124578962072}
   m_Layer: 6
   m_Name: Enemy_1
   m_TagString: Untagged
@@ -103,6 +104,20 @@ MonoBehaviour:
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45
+--- !u!114 &4753492124578962072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42933198507805261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994514c89b592334dae098e80befda2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showingColor: 0
+  blinkCompleteTime: 0
 --- !u!1001 &737283681668598514
 PrefabInstance:
   m_ObjectHideFlags: 0
