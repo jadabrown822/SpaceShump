@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;    // Enables the loading & reloading of scenes
   
-public class Main : MonoBehaviour {
+public class Main : MonoBehaviour 
+{
     static private Main S;    // A private singleton for Main
     // New static field to hold the Weapon Definitions dictionary
     static public Dictionary<eWeaponType, WeaponDefinition> WEAP_DICT;
@@ -19,7 +20,8 @@ public class Main : MonoBehaviour {
   
     private BoundsCheck bndCheck;
   
-    void Awake() {
+    void Awake() 
+    {
         S = this;
   
         // Set bndCheck to reference the BoundsCheck component on this GameObject
@@ -30,17 +32,18 @@ public class Main : MonoBehaviour {
 
         // A generic Dictionary with eWeaponType as the key
         WEAP_DICT = new Dictionary<eWeaponType, WeaponDefinition>();
-        
-        // Loop through all WeaponDefinitions and add them to the Dictionary
-        foreach (WeaponDefinition def in weaponDefinitions) {
+        foreach (WeaponDefinition def in weaponDefinitions) 
+        {
             WEAP_DICT[def.type] = def;
         }
     }
   
   
-    public void SpawnEnemy() {
+    public void SpawnEnemy() 
+    {
         // If spawnEnemies is false, skip to the next invoke of SpawEnemy()
-        if (!spawnEnemies) {
+        if (!spawnEnemies) 
+        {
             Invoke(nameof(SpawnEnemy), 1f / enemySpawnPerSecond);
             return;
         }
@@ -51,7 +54,8 @@ public class Main : MonoBehaviour {
   
         // position the Enemy above the screen with a random x position
         float enemyInset = enemyInsetDefault;
-        if (go.GetComponent<BoundsCheck>() != null) {
+        if (go.GetComponent<BoundsCheck>() != null)
+        {
             enemyInset = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
         }
   
@@ -68,18 +72,21 @@ public class Main : MonoBehaviour {
     }
 
 
-    void DelayedRestart() { // Changed to DelayedRestart to match the call in HERO_DIED
+    void DelayedRestart()
+    { // Changed to DelayedRestart to match the call in HERO_DIED
         // Invoke the Restart() method in gameRestartDelay seconds
         Invoke(nameof(Restart), gameRestartDelay);
     }
 
 
-    void Restart() {
+    void Restart()
+    {
         SceneManager.LoadScene("__Scene_0");
     }
 
 
-    static public void HERO_DIED() {
+    static public void HERO_DIED()
+    {
         S.DelayedRestart();
     }
   
@@ -90,8 +97,8 @@ public class Main : MonoBehaviour {
               eWeaponType of eWeaponType.none</returns>
               <param name = "wt">The eWeaponType of the desired WeaponDefinition</param>    
     */
-    static public WeaponDefinition GET_WEAPON_DEFINITION(eWeaponType wt) {
-        // FIX: Corrected typo 'ContainKey' to 'ContainsKey' and correct return value
+    static public WeaponDefinition GET_WEAPON_DEFINITION(eWeaponType wt) 
+    {
         if (WEAP_DICT.ContainsKey(wt)) {
             return(WEAP_DICT[wt]);
         }
