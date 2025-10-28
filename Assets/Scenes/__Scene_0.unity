@@ -510,7 +510,7 @@ MonoBehaviour:
     damageOnHit: 1
     damagePerSec: 0
     delayBetweenShots: 0.2
-    velocity: 0
+    velocity: 50
   - type: 2
     letter: S
     powerUpColor: {r: 0, g: 1, b: 1, a: 0}
@@ -520,7 +520,7 @@ MonoBehaviour:
     damageOnHit: 1
     damagePerSec: 0
     delayBetweenShots: 0.4
-    velocity: 0
+    velocity: 50
   - type: 6
     letter: O
     powerUpColor: {r: 0, g: 1, b: 0, a: 0}
@@ -530,7 +530,7 @@ MonoBehaviour:
     damageOnHit: 0
     damagePerSec: 0
     delayBetweenShots: 0
-    velocity: 0
+    velocity: 50
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
