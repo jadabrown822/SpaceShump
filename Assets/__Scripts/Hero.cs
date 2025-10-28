@@ -36,7 +36,7 @@ public class Hero : MonoBehaviour
             Debug.LogError("Hero.Awake() - Attempt to assign second Hero.S!");
         }
 
-        fireEvent += TempFire;
+        // fireEvent += TempFire;
     }
 
 
