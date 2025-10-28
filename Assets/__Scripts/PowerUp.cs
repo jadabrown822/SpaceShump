@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(BoundsCheck))]
 
@@ -18,7 +19,7 @@ public class PowerUp : MonoBehaviour
     [Header("Dynamic")]
     public eWeaponType _type;        // The type of the PowerUp
     public GameObject cube;         // Reference to the PowerCube child
-    public TextMesh letter;         // Refernece to the TextMesh
+    public TMP_Text letter;         // Refernece to the TextMesh
     public Vector3 rotPerSecond;    // Euler rotation speed for PowerCube
     public float birthTime;         // The Time.time this was instantiated
 
@@ -33,7 +34,7 @@ public class PowerUp : MonoBehaviour
         cube = transform.GetChild(0).gameObject;
 
         // Find the TextMesh and other components
-        letter = GetComponent<TextMesh>();
+        letter = GetComponent<TMP_Text>();
         rigid = GetComponent<Rigidbody>();
         bndCheck = GetComponent<BoundsCheck>();
         cubeMat = cube.GetComponent<Renderer>().material;

@@ -13,6 +13,7 @@ public class Hero : MonoBehaviour
     public float pitchMult = 30;
     public GameObject projectilePrefab;
     public float projectileSpeed = 40;
+    public Weapon[] weapons;
 
     [Header("Dynamic")]     [Range(0, 4)]       [SerializeField]
     private float _shieldLevel = 1;
@@ -72,7 +73,7 @@ public class Hero : MonoBehaviour
     }
 
 
-    
+    /*
         void TempFire()
         {
             GameObject projGO = Instantiate<GameObject>(projectilePrefab);
@@ -85,7 +86,7 @@ public class Hero : MonoBehaviour
             float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
             rigidB.velocity = Vector3.up * tSpeed;
         }
-    
+    */
 
 
     private void OnTriggerEnter(Collider other)
@@ -99,15 +100,33 @@ public class Hero : MonoBehaviour
         lastTriggerGo = go;
 
         Enemy enemy = go.GetComponent<Enemy>();
+        PowerUp pUp = go.GetComponent<PowerUp>();
         if (enemy != null)
         {                       // If the shield was triggered by an enemy
             shieldLevel--;      // Decreases the level of the shield by 1
             Destroy(go);        // ... and Destroy the enemy
         }
+        else if (pUp != null)
+        {                               // If the shield hits a PowerUp
+            AbsorbPowerUp(pUp);         // .. absorb the PowerUp
+        }
         else
         {
             Debug.LogWarning("Shield trigger hit by non-enemy: " + go.name);
         }
+    }
+
+
+    public void AbsorbPowerUp(PowerUp pUp)
+    {
+        Debug.Log("Absorb PowerUp: " + pUp.type);
+
+        switch (pUp.type)
+        {
+            // Is Empty for now
+        }
+
+        pUp.AbsorbedBy(this.gameObject);
     }
 
 
