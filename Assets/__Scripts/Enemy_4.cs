@@ -6,8 +6,13 @@ using UnityEngine;
 
 public class Enemy_4 : Enemy
 {
+    [Header("Enemy_4 Inscribed Fields")]
+    public float duration = 4;      // Duration of interpolation movement
+
     private EnemyShield[] allShields;
     private EnemyShield thisShield;
+    private Vector3 p0, p1;         // The two points to interpolate
+    private float timeStart;        // Birth time kfoe Enemy_4
 
 
     // Start is called before the first frame update
@@ -15,15 +20,54 @@ public class Enemy_4 : Enemy
     {
         allShields = GetComponentsInChildren<EnemyShield>();
         thisShield = GetComponent<EnemyShield>();
+
+        // Initially set p0 & p1 to the current position (from Main.SpawnEnemy())
+        p0 = p1 = pos;
+        InitMovement();
+    }
+
+
+    void InitMovement()
+    {
+        p0 = p1;        // Set p0 to the old p1
+
+        // Assgine a new on-screen location to p1
+        float widMidRad = bndCheck.camWidth - bndCheck.radius;
+        float hgtMinRad = bndCheck.camHeight - bndCheck.radius;
+        p1.x = Random.Range(-widMidRad, widMidRad);
+        p1.y = Random.Range(-hgtMinRad, hgtMinRad);
+
+        // make sure that it moves to a different quadrant of the screen
+        if (p0.x * p1.x > 0 && p0.y * p1.y > 0)
+        {
+            if (Mathf.Abs(p0.x) > Mathf.Abs(p0.y))
+            {
+                p1.x *= -1;
+            }
+            else
+            {
+                p1.y *= -1;
+            }
+        }
+
+        // Reset the time
+        timeStart = Time.time;
     }
 
 
     public override void Move()
     {
-        /*
-            Will add much mroe here shortly. For noe, it's safer to test if
-                Enemy_4 doesn't move
-        */
+        // This completely overrides Enemy.Move() with a linear interpolation
+        float u = (Time.time - timeStart) / duration;
+
+        if (u >= 1)
+        {
+            InitMovement();
+            u = 0;
+        }
+
+        u = u - 0.15f * Mathf.Sin(u * 2 * Mathf.PI);        // Easing: Sine -0.15
+        pos = (1 - u) * p0 + u * p1;        // Simple linear interpolation
     }
 
 
