@@ -22,7 +22,7 @@ public class EnemyShield : MonoBehaviour
 
         if (transform.parent == null) { return; }
         EnemyShield shieldParent = transform.parent.GetComponent<EnemyShield>();
-        if (shieldParent != null {
+        if (shieldParent != null) {
             shieldParent.AddProtector(this);
         }
     }
@@ -71,7 +71,7 @@ public class EnemyShield : MonoBehaviour
             If teh code gets here, then the EnemyShield will blink and take Damage
             Make the blinker blink
         */
-        blinker.SetColors();        // This will appear uunderlined in red for now
+        blinker.SetColors();        // This will appear underlined in red for now
 
         health -= dmg;
         if (health <= 0)

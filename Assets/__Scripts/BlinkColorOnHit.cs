@@ -61,7 +61,7 @@ public class BlinkColorOnHit : MonoBehaviour
             materials array to blinkColor, set showingColor to true, and sets the
             time that the colors should be reverted
     */
-    void SetColors()
+    public void SetColors()
     {
         foreach (Material m in materials)
         {
