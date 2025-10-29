@@ -11,6 +11,7 @@ public class BlinkColorOnHit : MonoBehaviour
     [Header("Dynamic")]
     public bool showingColor = false;
     public float blinkCompleteTime;      // Time to stop showing the color
+    public bool ignoreOnCollisionEnter = false;
 
     private Material[] materials;       // All the Materials of this & its children
     private Color[] originalColors;

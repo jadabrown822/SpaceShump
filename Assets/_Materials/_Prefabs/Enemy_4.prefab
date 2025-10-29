@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2929293644967299351}
   - component: {fileID: -5855659909122656523}
   - component: {fileID: -6646519887549130889}
+  - component: {fileID: 256110890150143687}
   m_Layer: 6
   m_Name: Enemy_4
   m_TagString: Untagged
@@ -112,6 +113,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showingColor: 0
   blinkCompleteTime: 0
+--- !u!114 &256110890150143687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609042421227108400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a07e35f2692646a768a7ce42cf203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1689915926419106151
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +176,7 @@ GameObject:
   - component: {fileID: 4957511809649836132}
   - component: {fileID: 6384483448150451055}
   - component: {fileID: 6936853596275695466}
+  - component: {fileID: 3089130717831848839}
   m_Layer: 6
   m_Name: enemy4_shield_Left
   m_TagString: Untagged
@@ -249,6 +263,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 67890005723777164, guid: 0124bc53210bf6d488148eb27b996322, type: 3}
+--- !u!114 &3089130717831848839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017604869338854292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a07e35f2692646a768a7ce42cf203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2194208543591761356
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +370,7 @@ GameObject:
   - component: {fileID: 3791858129678847677}
   - component: {fileID: 3441592641946072717}
   - component: {fileID: 8009771345027791299}
+  - component: {fileID: 570100268191215381}
   m_Layer: 6
   m_Name: enemy4_shield_Right
   m_TagString: Untagged
@@ -430,6 +457,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5058095349073789047, guid: 0124bc53210bf6d488148eb27b996322, type: 3}
+--- !u!114 &570100268191215381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2500641394356064124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a07e35f2692646a768a7ce42cf203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2959233567683804036
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,6 +979,7 @@ GameObject:
   - component: {fileID: 9005457272781565869}
   - component: {fileID: 627956988292586046}
   - component: {fileID: 6969860440605516867}
+  - component: {fileID: 5036125721565874597}
   m_Layer: 6
   m_Name: enemy4_shield_Front
   m_TagString: Untagged
@@ -1028,6 +1068,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7471656599575618317, guid: 0124bc53210bf6d488148eb27b996322, type: 3}
+--- !u!114 &5036125721565874597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7542908974077195336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a07e35f2692646a768a7ce42cf203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7846554775495521027
 GameObject:
   m_ObjectHideFlags: 0
