@@ -101,6 +101,7 @@ MonoBehaviour:
   fireRate: 0.3
   health: 10
   score: 100
+  powerUpDropChance: 0.5
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45
@@ -118,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showingColor: 0
   blinkCompleteTime: 0
+  ignoreOnCollisionEnter: 0
 --- !u!1001 &737283681668598514
 PrefabInstance:
   m_ObjectHideFlags: 0
