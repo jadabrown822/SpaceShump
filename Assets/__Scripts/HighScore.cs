@@ -8,8 +8,6 @@ public class HighScore : MonoBehaviour
     static private TextMeshProUGUI _UI_TEXT;
     static private int _SCORE = 1000;
 
-    private TextMeshProUGUI txtCom;     // txtCom is a reference to this GO's Text component
-
 
     private void Awake()
     {

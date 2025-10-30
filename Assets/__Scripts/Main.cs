@@ -20,6 +20,8 @@ public class Main : MonoBehaviour
     public WeaponDefinition[] weaponDefinitions;
     public eWeaponType[] powerUpFrequency = new eWeaponType[] {eWeaponType.blaster, eWeaponType.blaster,
                                                                eWeaponType.spread, eWeaponType.shield};
+
+    static public int finalScoreAtDeath = 0;
   
     private BoundsCheck bndCheck;
   
@@ -90,6 +92,7 @@ public class Main : MonoBehaviour
 
     static public void HERO_DIED()
     {
+        finalScoreAtDeath = ScoreCounter.S.score;
         S.DelayedRestart();
     }
   
