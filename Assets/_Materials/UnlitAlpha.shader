@@ -9,22 +9,24 @@ Shader "ProtoTools/UnlitAlpha"
     Category
     {
         ZWrite On
-		Blend SrcAlpha OneMinusSrcAlpha
+        Blend SrcAlpha OneMinusSrcAlpha
         SubShader
         {
         Tags { "Queue" = "Transparent" }
             Pass
             {
-            	ZWrite Off
-   			    Cull Off
+                ZWrite Off
+                Cull Off
                 Lighting Off
-				SetTexture [_MainTex]
-				{
-					constantColor [_Color]
-					Combine texture * constant, texture * constant 
-				} 
-                
+                SetTexture [_MainTex]
+                {
+                    constantColor [_Color]
+                    Combine texture * constant, texture * constant 
+                }
             }
+
         } 
+
     }
+
 }

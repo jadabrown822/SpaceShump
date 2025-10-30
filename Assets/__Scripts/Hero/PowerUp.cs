@@ -19,7 +19,7 @@ public class PowerUp : MonoBehaviour
     [Header("Dynamic")]
     public eWeaponType _type;        // The type of the PowerUp
     public GameObject cube;         // Reference to the PowerCube child
-    public TMP_Text letter;         // Refernece to the TextMesh
+    public  TMP_Text letter;         // Refernece to the TextMesh
     public Vector3 rotPerSecond;    // Euler rotation speed for PowerCube
     public float birthTime;         // The Time.time this was instantiated
 
@@ -79,10 +79,14 @@ public class PowerUp : MonoBehaviour
             return;
         }
 
+        Color c = cubeMat.color;
+        c.a = 1f;
+        cubeMat.color = c;
+
         // If u > 0, decrease the opacity (i.e., alpha) of teh PowerCube & Letter
         if (u > 0)
         {
-            Color c = cubeMat.color;
+            c = cubeMat.color;
             c.a = 1f - u;       // Set the alpha of PowerCube to 1-u
             cubeMat.color = c;
 
@@ -103,7 +107,7 @@ public class PowerUp : MonoBehaviour
     public eWeaponType type
     {
         get { return (_type); }
-        set { SetType(value); }
+        // set { SetType(value); }
     }
 
 
@@ -114,7 +118,7 @@ public class PowerUp : MonoBehaviour
         cubeMat.color = def.powerUpColor;       // Set the color of PowerCube
         // letter.color = def.color;        // Colorize the letter too
         letter.text = def.letter;       // Set the letter that is shown
-        type = wt;      // Finally actually set the type
+        _type = wt;      // Finally actually set the type
     }
 
 

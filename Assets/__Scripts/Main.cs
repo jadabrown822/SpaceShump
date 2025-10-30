@@ -84,7 +84,7 @@ public class Main : MonoBehaviour
 
     void Restart()
     {
-        SceneManager.LoadScene("__Scene_0");
+        SceneManager.LoadScene("Game_Over");
     }
 
 
@@ -121,6 +121,9 @@ public class Main : MonoBehaviour
     */
     static public void SHIP_DESTROYED(Enemy e)
     {
+        ScoreCounter.S.AddScore(e.score);
+        HighScore.TRY_SET_HIGH_SCORE(ScoreCounter.S.score);
+
         // Potentially generate a PowerUp
         if (Random.value <= e.powerUpDropChance)
         {
