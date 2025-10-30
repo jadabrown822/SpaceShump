@@ -16,6 +16,7 @@ Space Shump
 > * game over with score
 > * instruntions
 > * sound
+> * add more weapons
 
 
 # Getting Started: _Space SHUMP_
