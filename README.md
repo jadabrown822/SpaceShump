@@ -5,13 +5,18 @@ Space Shump
 2. Points will be given for the finished project as follows:
 > a. Increase to 5 enemies as shown in Chapter 32 (5 points)
 > 
-> b. 2 points if the enemies damage the player (2 points)
+> b. the enemies damage the player (2 points) ✔️
 > 
-> c. 1 point if shooting works correctly (1 point)
+> c. shooting works correctly (1 point) ✔️ --> Need to have same code as showing the powerUP cubeMat, ask Gemini
 >
-> d. 1 point for adding a scrolling starfield background (see Chapter 32)
+> d. 1 point for adding a scrolling starfield background (see Chapter 32) ✔️
 > 
 > e. 1 point for making the game cooler in a meaningful way. Be sure to explain the enhancements in the PDF you submit on Moodle.
+> * main menu
+> * game over with score ✔️
+> * instruntions
+> * sound
+> * add more weapons
 
 
 # Getting Started: _Space SHUMP_
