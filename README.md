@@ -12,7 +12,7 @@ Space Shump
 > d. 1 point for adding a scrolling starfield background (see Chapter 32) ✔️
 > 
 > e. 1 point for making the game cooler in a meaningful way. Be sure to explain the enhancements in the PDF you submit on Moodle.
-> * main menu
+> * main menu ✔️
 > * game over with score ✔️
 > * instruntions
 > * sound
