@@ -272,10 +272,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3674437748000059843, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
-      propertyPath: _type
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5300039332989685901, guid: 3390560e3f70c324f9e74d17944a1db7, type: 3}
       propertyPath: m_Name
       value: Weapon
@@ -1061,7 +1057,27 @@ MonoBehaviour:
     damagePerSec: 0
     delayBetweenShots: 0
     velocity: 50
-  powerUpFrequency: 01000000010000000200000006000000
+  - type: 4
+    letter: M
+    powerUpColor: {r: 1, g: 0, b: 0, a: 0}
+    weaponModelPrefab: {fileID: 919132149155446097, guid: 0b915be395eb1f54c87faeaabb622d10, type: 3}
+    projectilePrefab: {fileID: 730212549085087518, guid: a9718e6e234c4e44a973822587ca725b, type: 3}
+    projectileColor: {r: 1, g: 0, b: 0, a: 0}
+    damageOnHit: 1
+    damagePerSec: 0
+    delayBetweenShots: 0.3
+    velocity: 50
+  - type: 3
+    letter: P
+    powerUpColor: {r: 1, g: 0, b: 1, a: 0}
+    weaponModelPrefab: {fileID: 919132149155446097, guid: 2b917555367b8f64fab39ba6974870f3, type: 3}
+    projectilePrefab: {fileID: 730212549085087518, guid: a9718e6e234c4e44a973822587ca725b, type: 3}
+    projectileColor: {r: 1, g: 0, b: 1, a: 0}
+    damageOnHit: 1
+    damagePerSec: 0
+    delayBetweenShots: 0.5
+    velocity: 50
+  powerUpFrequency: 0100000001000000010000000100000001000000010000000100000001000000010000000100000002000000020000000200000002000000020000000400000004000000040000000600000006000000
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1467,7 @@ GameObject:
   - component: {fileID: 1751954115}
   m_Layer: 9
   m_Name: _Hero
-  m_TagString: Untagged
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

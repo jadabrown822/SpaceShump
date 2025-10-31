@@ -159,6 +159,12 @@ public class Weapon : MonoBehaviour
                 p.vel = vel;
                 p.target = FindNearestEnemy();
                 break;
+
+            case eWeaponType.phaser:
+                p = MakeProjectile();
+                p.vel = vel;        // forward velocity
+                p.type = eWeaponType.phaser;
+                break;
         }
     }
 
