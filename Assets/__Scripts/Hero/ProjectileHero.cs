@@ -49,7 +49,10 @@ public class ProjectileHero : MonoBehaviour
     {
         _type = eType;
         WeaponDefinition def = Main.GET_WEAPON_DEFINITION(_type);
-        rend.material.color = def.projectileColor;
+        Color c = def.projectileColor;
+        c.a = 1f;
+
+        rend.material.color = c;
     }
 
 

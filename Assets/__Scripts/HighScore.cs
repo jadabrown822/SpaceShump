@@ -6,14 +6,17 @@ using TMPro;
 public class HighScore : MonoBehaviour
 {
     static private TextMeshProUGUI _UI_TEXT;
-    static private int _SCORE = 1000;
+    static private int _SCORE;
 
+    [Tooltip("Check this box to reset the HighScore in PlayerPrefs")]
+    public bool resetHighScoreNow = false;
 
     private void Awake()
     {
         _UI_TEXT = GetComponent<TextMeshProUGUI>();
+        _SCORE = PlayerPrefs.GetInt("HighScore", 1000);
+        UpdateUIText();
     }
-
 
     static public int SCORE
     {
@@ -21,13 +24,19 @@ public class HighScore : MonoBehaviour
         private set
         {
             _SCORE = value;
-            if (_UI_TEXT != null)
-            {
-                _UI_TEXT.text = "High Score: " + value.ToString("#,0");
-            }
+            PlayerPrefs.SetInt("HighScore", _SCORE);
+            PlayerPrefs.Save();
+            UpdateUIText();
         }
     }
 
+    static private void UpdateUIText()
+    {
+        if (_UI_TEXT != null)
+        {
+            _UI_TEXT.text = "High Score: " + _SCORE.ToString("#,0");
+        }
+    }
 
     static public void TRY_SET_HIGH_SCORE(int scoreToTry)
     {
@@ -35,33 +44,18 @@ public class HighScore : MonoBehaviour
         SCORE = scoreToTry;
     }
 
-
-    // the following code allow easy reset to the PlayerPref HighScore
-    [Tooltip("Sheck this box to reset the HighScore in PlayerPrefs")]
-    public bool resetHighScoreNow = false;
-
-    private void OnDrawGizmos()
+#if UNITY_EDITOR
+    void Update()
     {
         if (resetHighScoreNow)
         {
             resetHighScoreNow = false;
             PlayerPrefs.SetInt("HighScore", 1000);
+            PlayerPrefs.Save();
             Debug.LogWarning("PlayerPrefs HighScore reset to 1,000.");
+            _SCORE = 1000;
+            UpdateUIText();
         }
     }
-
-
-    /*
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-    */
+#endif
 }

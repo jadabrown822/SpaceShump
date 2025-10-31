@@ -1026,7 +1026,7 @@ MonoBehaviour:
   - {fileID: 3075742969293653282, guid: a7c54695e0e2dc94c8c98f7c7f059ac7, type: 3}
   - {fileID: 3075742969293653282, guid: a7c54695e0e2dc94c8c98f7c7f059ac7, type: 3}
   - {fileID: 609042421227108400, guid: 37036cf0586aef14fb30248d8adb8e85, type: 3}
-  enemySpawnPerSecond: 0.45
+  enemySpawnPerSecond: 0.35
   enemyInsetDefault: 1.5
   gameRestartDelay: 2
   prefabPowerUp: {fileID: 6034127960647294204, guid: 3780347406c2e8a4aa6e45dd6ed77415, type: 3}
