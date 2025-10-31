@@ -153,6 +153,12 @@ public class Weapon : MonoBehaviour
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.vel = p.transform.rotation * vel;
                 break;
+
+            case eWeaponType.missile:
+                p = MakeProjectile();
+                p.vel = vel;
+                p.target = FindNearestEnemy();
+                break;
         }
     }
 
@@ -170,6 +176,26 @@ public class Weapon : MonoBehaviour
         p.type = type;
         nextShotTime = Time.time + def.delayBetweenShots;
         return (p);
+    }
+
+
+    private Transform FindNearestEnemy()
+    {
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        Transform nearest = null;
+        float minDist = Mathf.Infinity;
+
+        foreach (Enemy e in enemies)
+        {
+            float dist = Vector3.Distance(transform.position, e.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = e.transform;
+            }
+        }
+
+        return nearest;
     }
 
 

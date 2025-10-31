@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class ProjectileHero : MonoBehaviour
 {
+    public Transform target;        // Assigned by Weapon.cs
+    public float homingStrength = 5f;
+
     private BoundsCheck bndCheck;
     private Renderer rend;
 
@@ -62,7 +65,18 @@ public class ProjectileHero : MonoBehaviour
         get { return rigid.velocity; }
         set { rigid.velocity = value; }
     }
-    
+
+
+    private void FixedUpdate()
+    {
+        if (type == eWeaponType.missile && target != null)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+            Vector3 desiredVelocity = direction * vel.magnitude;
+            rigid.velocity = Vector3.Lerp(rigid.velocity, desiredVelocity, Time.fixedDeltaTime * homingStrength);
+        }
+    }
+
 
     /*
         // Start is called before the first frame update
