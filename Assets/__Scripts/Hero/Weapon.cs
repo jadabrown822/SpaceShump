@@ -58,6 +58,8 @@ public class WeaponDefinition
 
 public class Weapon : MonoBehaviour
 {
+    private AudioSource shootAudio;
+
     static public Transform PROJECTILE_ANCHOR;
 
     [Header("Dynamic")]
@@ -74,6 +76,8 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shootAudio = GetComponent<AudioSource>();
+
         // Set up PROJECTILE_ANCHOR if it has not already been done
         if(PROJECTILE_ANCHOR == null)
         {
@@ -165,6 +169,11 @@ public class Weapon : MonoBehaviour
                 p.vel = vel;        // forward velocity
                 p.type = eWeaponType.phaser;
                 break;
+        }
+
+        if (shootAudio != null)
+        {
+            shootAudio.Play();
         }
     }
 

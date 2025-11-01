@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     public int score = 100;         // Point eared fo rdestroying this
     public float powerUpDropChance = 1f;        // Chance to dorp a PowerUp
 
+    private AudioSource deathAudio;
+
     protected bool calledShipDestroyed = false;
     protected BoundsCheck bndCheck;
 
@@ -20,6 +22,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         bndCheck = GetComponent<BoundsCheck>();
+        deathAudio = GetComponent<AudioSource>();
     }
 
 
@@ -102,15 +105,18 @@ public class Enemy : MonoBehaviour
 
                 if (health <= 0)
                 {
-                    // Tell Main that this ship was destroyed
                     if (!calledShipDestroyed)
                     {
                         calledShipDestroyed = true;
                         Main.SHIP_DESTROYED(this);
-                    }
 
-                    // Destroy the Enemy
-                    Destroy(this.gameObject);
+                        // Play death sound
+                        if (deathAudio != null)
+                        {
+                            AudioSource.PlayClipAtPoint(deathAudio.clip, transform.position);
+                        }
+                        Destroy(gameObject);
+                    }
                 }
             }
 
