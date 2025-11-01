@@ -15,7 +15,7 @@ Space Shump
 > * main menu ✔️
 > * game over with score ✔️
 > * instruntions
-> * sound
+> * sound ✔️
 > * add more weapons ✔️
 
 
