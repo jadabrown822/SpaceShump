@@ -80,7 +80,7 @@ public class BoundsCheck : MonoBehaviour
         }
         if (pos.y < -camHeight - checkRadius)
         {
-            pos.y = -camWidth - checkRadius;
+            pos.y = -camHeight - checkRadius;
             screenLocs |= eScreenLocs.offDown;
             // isOnScreen = false;
         }
