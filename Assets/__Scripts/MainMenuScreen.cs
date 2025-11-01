@@ -10,11 +10,4 @@ public class MainMenuScreen : MonoBehaviour
     {
         SceneManager.LoadScene("__Scene_0");
     }
-
-
-    public void InstructionsButton()
-    {
-        SceneManager.LoadScene("How_To_Play");
-    }
-
 }
