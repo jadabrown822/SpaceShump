@@ -16,6 +16,8 @@ public class PowerUp : MonoBehaviour
     public float lifeTime = 10;     // PowerUp will exist for # seconds
     public float fadeTime = 4;      // Then it fades over # seconds
 
+    public AudioSource collectAudio;
+
     [Header("Dynamic")]
     public eWeaponType _type;        // The type of the PowerUp
     public GameObject cube;         // Reference to the PowerCube child
@@ -57,6 +59,8 @@ public class PowerUp : MonoBehaviour
                                    Random.Range(rotMinMax[0], rotMinMax[1]));
 
         birthTime = Time.time;
+
+        collectAudio = GetComponent<AudioSource>();
     }
 
 
@@ -128,6 +132,11 @@ public class PowerUp : MonoBehaviour
     */
     public void AbsorbedBy(GameObject target)
     {
+        if (collectAudio != null && collectAudio.clip != null)
+        {
+            AudioSource.PlayClipAtPoint(collectAudio.clip, transform.position);
+        }
+
         Destroy(this.gameObject);
     }
 

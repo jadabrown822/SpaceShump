@@ -8,7 +8,7 @@ public class ProjectileHero : MonoBehaviour
 {
 
     public Transform target;        // Missile
-    public float homingStrength = 5f;
+    public float homingStrength = 10f;
 
     private float waveFrequency = 5f;       // Oscillations per second
     private float waveAmplitude = 0.5f;      // Side-to-side distance
